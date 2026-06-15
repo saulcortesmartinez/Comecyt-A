@@ -1,0 +1,133 @@
+/* src/Css/Sidebar.css */
+.sidebar {
+  width: 260px;
+  /* Debe coincidir con margin-left del Layout.css */
+  height: 100vh;
+  background: #6b0f1a;
+  /* Vino fuerte */
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  left: 0;
+  top: 0;
+  /* Si tu topbar es fixed, pon top: 60px */
+  padding: 24px 0;
+  z-index: 20;
+  box-sizing: border-box;
+}
+
+/* Menú de navegación */
+.sidebar-menu {
+  list-style: none;
+  padding: 0 16px;
+  margin: 0;
+  flex: 1;
+  overflow-y: auto;
+}
+
+.sidebar-menu li {
+  margin-bottom: 8px;
+}
+
+.sidebar-menu a {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 16px;
+  color: #f5d0d6;
+  /* Rosa claro para contraste */
+  text-decoration: none;
+  border-radius: 8px;
+  font-weight: 500;
+  font-size: 15px;
+  transition: all 0.2s ease;
+}
+
+.sidebar-menu a:hover {
+  background: #8b1e2d;
+  /* Vino medio al hover */
+  color: #fff;
+  transform: translateX(4px);
+}
+
+.sidebar-menu a.active {
+  background: #a32738;
+  /* Vino brillante para activo */
+  color: #fff;
+  box-shadow: 0 2px 8px rgba(163, 39, 56, 0.4);
+}
+
+.sidebar-menu a svg {
+  font-size: 18px;
+  flex-shrink: 0;
+}
+
+/* Sección WhatsApp - NO SE TOCA EL COLOR VERDE */
+.whatsapp-help {
+  margin-top: auto;
+  padding: 15px 16px;
+  border-top: 1px solid #8b1e2d;
+  /* Línea divisoria vino claro */
+}
+
+.whatsapp-help a {
+  background: #25D366;
+  /* Verde WhatsApp original */
+  color: white;
+  border-radius: 12px;
+  padding: 12px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+
+.whatsapp-help a:hover {
+  background: #20BA5A;
+  /* Verde hover */
+  transform: scale(1.02);
+}
+
+.whatsapp-help a svg {
+  font-size: 24px;
+  flex-shrink: 0;
+}
+
+.whatsapp-help a div {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.whatsapp-title {
+  font-weight: bold;
+  font-size: 14px;
+  margin: 0;
+  line-height: 1.2;
+}
+
+.whatsapp-number {
+  font-size: 12px;
+  margin: 0;
+  opacity: 0.9;
+  line-height: 1.2;
+}
+
+/* Scroll bonito para el menú si hay muchos items */
+.sidebar-menu::-webkit-scrollbar {
+  width: 6px;
+}
+
+.sidebar-menu::-webkit-scrollbar-track {
+  background: #6b0f1a;
+}
+
+.sidebar-menu::-webkit-scrollbar-thumb {
+  background: #8b1e2d;
+  border-radius: 3px;
+}
+
+.sidebar-menu::-webkit-scrollbar-thumb:hover {
+  background: #a32738;
+}

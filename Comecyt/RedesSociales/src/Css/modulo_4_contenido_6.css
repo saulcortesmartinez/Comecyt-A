@@ -1,0 +1,433 @@
+/* ===== CONTENEDOR GENERAL ===== */
+.ig6-container {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 2rem 1rem 3rem;
+  background: linear-gradient(180deg, #fff1f7 0%, #ffffff 45%, #f2f7ff 100%);
+  color: #111827;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+    sans-serif;
+}
+
+/* ===== HEADER ===== */
+.ig6-header {
+  margin-bottom: 2rem;
+}
+
+.ig6-header-inner {
+  color: #ffffff;
+  padding: 1.8rem 2rem;
+  border-radius: 10px;
+  text-align: center;
+  box-shadow: 0 10px 24px rgba(15, 23, 42, 0.18);
+  border-bottom: 4px solid rgba(255, 255, 255, 0.25);
+  background: linear-gradient(
+    135deg,
+    #f58529 0%,
+    #dd2a7b 35%,
+    #8134af 70%,
+    #515bd4 100%
+  );
+}
+
+.ig6-header-inner h1 {
+  font-size: 2.1rem;
+  font-weight: 800;
+  margin: 0 0 0.35rem;
+}
+
+.ig6-header-inner .sub {
+  font-size: 1rem;
+  color: rgba(255, 255, 255, 0.88);
+  max-width: 780px;
+  margin: 0 auto;
+}
+
+/* ===== GRID ===== */
+.ig6-container .content-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  margin-top: 1.8rem;
+}
+
+/* ===== TARJETAS ===== */
+.ig6-container .card,
+.ig6-container .video-section,
+.ig6-container .activities,
+.ig6-container .quiz {
+  background: #ffffff;
+  border-radius: 12px;
+  padding: 1.4rem 1.5rem;
+  border: 1px solid #e5e7eb;
+  box-shadow: 0 4px 14px rgba(15, 23, 42, 0.04);
+}
+
+.ig6-container .card-head {
+  margin-bottom: 0.7rem;
+}
+
+.ig6-container .section-title.inline {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+}
+
+.ig6-container .section-number {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.9rem;
+  height: 1.9rem;
+  border-radius: 999px;
+  font-size: 0.9rem;
+  font-weight: 800;
+  color: #ffffff;
+  background: linear-gradient(135deg, #f58529, #dd2a7b, #8134af, #515bd4);
+}
+
+.ig6-container .card-head h2 {
+  font-size: 1.05rem;
+  color: #4c1d95;
+}
+
+.ig6-container .card-body p {
+  font-size: 0.95rem;
+  line-height: 1.6;
+  color: #374151;
+  margin-bottom: 0.5rem;
+}
+
+/* ===== LISTAS ===== */
+.ig6-container .lista-simple {
+  list-style: disc;
+  margin-left: 1.3rem;
+  font-size: 0.93rem;
+  color: #374151;
+}
+
+.ig6-container .lista-simple li + li {
+  margin-top: 0.15rem;
+}
+
+/* ===== MINI TARJETAS ===== */
+.ig6-container .mini-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+  margin: 12px 0 10px;
+}
+
+.ig6-container .mini-card {
+  border: 1px solid #e5e7eb;
+  border-radius: 14px;
+  padding: 12px 14px;
+  background: linear-gradient(180deg, #ffffff, #faf5ff);
+}
+
+.ig6-container .mini-title {
+  margin: 0 0 8px;
+  font-size: 0.98rem;
+  font-weight: 800;
+  color: #4c1d95;
+}
+
+.ig6-container .mini-list {
+  margin: 0;
+  padding-left: 1.15rem;
+  color: #374151;
+  font-size: 0.93rem;
+  line-height: 1.55;
+}
+
+.ig6-container .mini-list li + li {
+  margin-top: 0.2rem;
+}
+
+/* ===== PASOS ===== */
+.ig6-container .pasos-intro {
+  font-size: 0.95rem;
+  color: #4b5563;
+  margin: 0.9rem 0 0.6rem;
+}
+
+.ig6-container .lista-pasos-img {
+  list-style: none;
+  padding-left: 0;
+  margin: 0;
+}
+
+.ig6-container .paso-bloque {
+  padding: 1rem 0 1.4rem;
+  border-top: 1px solid #e5e7eb;
+}
+
+.ig6-container .paso-titulo {
+  font-weight: 800;
+  font-size: 1rem;
+  color: #111827;
+  margin-bottom: 0.2rem;
+}
+
+.ig6-container .paso-texto {
+  font-size: 0.95rem;
+  line-height: 1.65;
+  color: #374151;
+}
+
+/* ✅ Imagen completa (no recorta) */
+.ig6-container .paso-figure {
+  margin-top: 0.75rem;
+  max-width: 380px;
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+}
+
+.ig6-container .paso-img {
+  display: block;
+  width: 100%;
+  max-height: 380px;
+  height: auto;
+  object-fit: contain;
+  background: #ffffff;
+  border-radius: 14px;
+  border: 1px solid #e5e7eb;
+  box-shadow: 0 10px 20px rgba(15, 23, 42, 0.18);
+}
+
+/* ===== TIP ===== */
+.ig6-container .hint {
+  margin-top: 0.8rem;
+  font-size: 0.87rem;
+  color: #7c2d12;
+  background: #fff7ed;
+  border-radius: 999px;
+  padding: 0.45rem 0.9rem;
+  display: inline-block;
+  border: 1px solid #fed7aa;
+}
+
+/* ===== VIDEO ===== */
+.ig6-container .video-hint {
+  font-size: 0.9rem;
+  color: #4b5563;
+  margin-bottom: 0.9rem;
+}
+
+.ig6-container .video-wrapper {
+  position: relative;
+  width: 100%;
+  max-width: 800px;
+  margin: 0 auto;
+  aspect-ratio: 16 / 9;
+  border-radius: 10px;
+  overflow: hidden;
+  background: #000;
+}
+
+.ig6-container .video-wrapper iframe {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+
+/* ===== QUIZ ===== */
+.ig6-container .quiz-form {
+  margin-top: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.ig6-container .q {
+  padding: 1rem 1.2rem;
+  border-radius: 18px;
+  border: 1px solid #e9d5ff;
+  background: #faf5ff;
+}
+
+.ig6-container .q.correct {
+  border-color: #22c55e;
+  background: #ecfdf3;
+}
+
+.ig6-container .q.incorrect {
+  border-color: #f97373;
+  background: #fef2f2;
+}
+
+.ig6-container .q label {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.45rem;
+}
+
+.ig6-container .question-text {
+  font-size: 0.95rem;
+  color: #111827;
+  line-height: 1.6;
+}
+
+.ig6-container .q select {
+  width: 100%;
+  border-radius: 999px;
+  padding: 0.45rem 0.9rem;
+  border: 1px solid #cbd5f5;
+  font-size: 0.9rem;
+  outline: none;
+  background: #ffffff;
+}
+
+.ig6-container .q select:focus {
+  border-color: #a21caf;
+  box-shadow: 0 0 0 1px rgba(162, 28, 175, 0.3);
+  background: #fcf5ff;
+}
+
+.ig6-container .answer-feedback {
+  margin-top: 0.35rem;
+  font-size: 0.85rem;
+}
+
+.ig6-container .answer-feedback.correct {
+  color: #047857;
+}
+
+.ig6-container .answer-feedback.incorrect {
+  color: #b91c1c;
+}
+
+.ig6-container .btn-primary {
+  margin-top: 0.7rem;
+  align-self: flex-start;
+  padding: 0.55rem 1.4rem;
+  border-radius: 999px;
+  border: none;
+  cursor: pointer;
+  font-size: 0.93rem;
+  font-weight: 700;
+  color: #ffffff;
+  background: linear-gradient(135deg, #f58529, #dd2a7b, #8134af, #515bd4);
+  box-shadow: 0 10px 22px rgba(162, 28, 175, 0.25);
+}
+
+.ig6-container .quiz-result {
+  margin-top: 0.9rem;
+  padding: 0.9rem 1rem;
+  border-radius: 10px;
+  background: #f9fafb;
+  border: 1px solid #e5e7eb;
+  font-size: 0.94rem;
+}
+
+.ig6-container .quiz-result .ok {
+  color: #047857;
+}
+
+.ig6-container .quiz-result .warn {
+  color: #92400e;
+}
+
+/* ===== TOAST ===== */
+.ig6-container .toast {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 60;
+  min-width: 260px;
+  max-width: 320px;
+  padding: 10px 16px;
+  border-radius: 999px;
+  font-size: 0.9rem;
+  box-shadow: 0 10px 25px rgba(15, 23, 42, 0.25);
+  color: #ffffff;
+  background: #2563eb;
+}
+
+.ig6-container .toast-success {
+  background: #16a34a;
+}
+
+.ig6-container .toast-info {
+  background: #0ea5e9;
+}
+
+.ig6-container .toast-error {
+  background: #dc2626;
+}
+
+/* ===== FOOTER ===== */
+.ig6-container .contenido-footer {
+  margin-top: 28px;
+  padding: 16px 0 40px;
+  border-top: 1px solid #e5e7eb;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.ig6-container .avance-mensaje p {
+  font-size: 0.9rem;
+  color: #4b5563;
+}
+
+.ig6-container .botones-nav {
+  display: flex;
+  gap: 10px;
+}
+
+.ig6-container .btn-anterior,
+.ig6-container .btn-siguiente {
+  border-radius: 999px;
+  padding: 8px 16px;
+  font-size: 0.9rem;
+  border: none;
+  cursor: pointer;
+}
+
+.ig6-container .btn-anterior {
+  background: #e5e7eb;
+  color: #111827;
+}
+
+.ig6-container .btn-siguiente {
+  background: linear-gradient(135deg, #dd2a7b, #8134af, #515bd4);
+  color: #ffffff;
+}
+
+.ig6-container .btn-siguiente-locked {
+  opacity: 0.6;
+  cursor: not-allowed;
+  background: #9ca3af;
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 900px) {
+  .ig6-container .mini-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 640px) {
+  .ig6-container {
+    padding: 1.6rem 0.9rem 2.2rem;
+  }
+
+  .ig6-header-inner h1 {
+    font-size: 1.65rem;
+  }
+
+  .ig6-container .paso-figure {
+    max-width: 100%;
+  }
+
+  .ig6-container .paso-img {
+    max-height: 460px;
+  }
+}

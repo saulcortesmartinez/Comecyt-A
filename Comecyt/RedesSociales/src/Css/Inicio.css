@@ -1,0 +1,334 @@
+.inicio-container {
+  padding: 2rem;
+  background-color: #f5f7fa;
+  min-height: 100vh;
+  text-align: center;
+}
+
+.titulo-principal {
+  display: inline-block;
+  margin: 0 auto 2.5rem;
+  padding: 0.8rem 2.8rem;
+  background: linear-gradient(135deg, #d9f6e6, #a8e4c5);
+  border-radius: 999px;
+  box-shadow: 0 10px 24px rgba(15, 23, 42, 0.12);
+  font-size: 1.8rem;
+  color: #111827;
+  font-weight: 700;
+  text-align: center;
+}
+
+/* GRID de módulos - compatible con .cards-container y .modulos-grid */
+.cards-container,
+.modulos-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1.5rem;
+  justify-content: center;
+}
+
+/* 🟢 CARD GRANDE CON DEGRADADO VERDE */
+.modulo-card {
+  background: linear-gradient(135deg, #d9f6e6, #a8e4c5);
+  border-radius: 28px;
+  box-shadow: 0 18px 40px rgba(15, 23, 42, 0.12);
+  padding: 26px 34px 28px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.modulo-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 22px 46px rgba(15, 23, 42, 0.18);
+}
+
+.modulo-card.bloqueado {
+  opacity: 0.7;
+  filter: grayscale(0.2);
+}
+
+.modulo-card.destacado {
+  box-shadow: 0 18px 40px rgba(22, 163, 74, 0.25);
+}
+
+/* TÍTULO Y DESCRIPCIÓN */
+.modulo-info,
+.modulo-header,
+.modulo-body {
+  text-align: center;
+  margin-bottom: 18px;
+  width: 100%;
+}
+
+.modulo-titulo,
+.modulo-header h2 {
+  font-size: 1.6rem;
+  color: #111827;
+  margin-bottom: 4px;
+}
+
+.modulo-descripcion,
+.modulo-body p {
+  font-size: 0.98rem;
+  color: #374151;
+}
+
+.modulo-icon {
+  font-size: 1.4rem;
+  display: block;
+  margin-top: 4px;
+}
+
+/* CONTENEDOR DEL PROGRESO + BOTÓN */
+.modulo-bottom {
+  margin-top: 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+/* CÍRCULO DE PROGRESO BLANCO - compat con barra clásica */
+.modulo-progreso {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.progress-circle {
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  background: #ffffff;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  font-size: 0.95rem;
+  color: #0f172a;
+  box-shadow: 0 8px 18px rgba(15, 23, 42, 0.26);
+  overflow: hidden;
+}
+
+.progress-circle::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: conic-gradient(#16a34a var(--progress, 0%), #e5e7eb var(--progress, 0%));
+  z-index: 0;
+}
+
+.progress-circle span {
+  position: relative;
+  z-index: 1;
+  letter-spacing: 0.5px;
+}
+
+.progreso-label {
+  margin-top: 6px;
+  font-size: 0.9rem;
+  opacity: 0.9;
+}
+
+/* Barra clásica, por si la usas */
+.progreso-bar {
+  width: 100%;
+  height: 8px;
+  background: rgba(255, 255, 255, 0.7);
+  border-radius: 999px;
+  overflow: hidden;
+  margin: 10px 0;
+}
+
+.progreso-fill {
+  height: 100%;
+  background: #16a34a;
+  border-radius: 999px;
+  transition: width .3s ease;
+}
+
+.progreso-texto {
+  font-weight: 700;
+  color: #14532d;
+  margin: 4px 0;
+}
+
+/* BOTÓN */
+.btn-modulo {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 6px 18px;
+  border-radius: 999px;
+  border: none;
+  cursor: pointer;
+  background: #ffffff;
+  color: #14532d;
+  font-weight: 700;
+  font-size: 0.9rem;
+  box-shadow: 0 5px 14px rgba(15, 23, 42, 0.25);
+  white-space: nowrap;
+  transition: transform 0.12s ease, box-shadow 0.12s ease, background 0.12s ease;
+}
+
+.btn-modulo:hover:not(:disabled) {
+  transform: translateY(-1px);
+  box-shadow: 0 10px 24px rgba(15, 23, 42, 0.35);
+  background: #f9fafb;
+}
+
+.btn-modulo:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.btn-bloqueado {
+  background: #f3f4f6;
+  color: #6b7280;
+}
+
+.btn-completado {
+  background: #dcfce7;
+  color: #166534;
+}
+
+.btn-continuar,
+.btn-empezar {
+  background: #ffffff;
+  color: #14532d;
+}
+
+/* --- HEADER BIENVENIDA --- */
+.inicio-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  text-align: left;
+  margin-bottom: 1.5rem;
+}
+
+.inicio-header h1 {
+  font-size: 1.8rem;
+  color: #111827;
+  margin: 0;
+}
+
+.inicio-header p {
+  color: #6b7280;
+  margin: 4px 0 0;
+}
+
+.header-badge {
+  background: #166534;
+  color: #fff;
+  padding: 8px 16px;
+  border-radius: 999px;
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+/* --- DASHBOARD CON GRÁFICAS --- */
+.dashboard-stats {
+  display: grid;
+  grid-template-columns: 260px 1fr 180px;
+  gap: 16px;
+  margin: 18px 0 28px;
+  text-align: left;
+}
+
+.stat-card {
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 16px;
+  padding: 16px 18px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, .06);
+}
+
+.stat-card h3 {
+  font-size: 0.9rem;
+  color: #6b7280;
+  margin: 0 0 8px;
+  font-weight: 600;
+}
+
+.stat-chart {
+  position: relative;
+}
+
+.chart-wrap {
+  position: relative;
+}
+
+.chart-center {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: #166534;
+}
+
+.stat-kpi {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+.kpi-value {
+  font-size: 1.8rem;
+  font-weight: 800;
+  color: #166534;
+}
+
+.kpi-label {
+  color: #6b7280;
+  font-size: 0.85rem;
+  margin-top: 4px;
+}
+
+/* Responsive */
+@media (max-width: 980px) {
+  .dashboard-stats {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .stat-kpi {
+    grid-column: span 2;
+  }
+}
+
+@media (max-width: 768px) {
+  .modulo-card {
+    padding: 20px 18px 22px;
+  }
+
+  .modulo-titulo,
+  .modulo-header h2 {
+    font-size: 1.3rem;
+  }
+}
+
+@media (max-width: 640px) {
+  .dashboard-stats {
+    grid-template-columns: 1fr;
+  }
+
+  .stat-kpi {
+    grid-column: auto;
+  }
+
+  .inicio-header {
+    text-align: center;
+    justify-content: center;
+  }
+}

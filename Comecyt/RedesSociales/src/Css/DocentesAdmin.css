@@ -1,0 +1,309 @@
+/* src/Css/DocentesAdmin.css */
+
+.tabla-wrapper {
+  margin-top: 18px;
+  background: #fff;
+  border-radius: 14px;
+  box-shadow: 0 8px 18px rgba(15, 23, 42, 0.05);
+  border: 1px solid #e5e7eb;
+  overflow: hidden;
+}
+
+.tabla-scroll {
+  max-height: calc(100vh - 260px);
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.tabla-scroll::-webkit-scrollbar {
+  width: 8px;
+}
+.tabla-scroll::-webkit-scrollbar-track {
+  background: #f3f4f6;
+}
+.tabla-scroll::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 999px;
+}
+
+.tabla-docentes {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.92rem;
+}
+
+.tabla-docentes thead {
+  background: #f3f4f6;
+}
+
+.tabla-docentes th,
+.tabla-docentes td {
+  padding: 10px 12px;
+  text-align: left;
+}
+
+.tabla-docentes tbody tr:nth-child(even) {
+  background: #f9fafb;
+}
+
+/* Pastilla de reportes */
+.report-pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 70px;
+  padding: 3px 10px;
+  border-radius: 999px;
+  font-size: 0.8rem;
+  font-weight: 500;
+}
+
+.report-pill-positive {
+  background: #e0f2fe;
+  color: #075985;
+}
+
+.report-pill-zero {
+  background: #f3f4f6;
+  color: #6b7280;
+}
+
+/* Acciones */
+.acciones-cell {
+  display: flex;
+  gap: 8px;
+}
+
+/* Botón "Editar" tipo link */
+.btn-link {
+  border: none;
+  background: none;
+  color: #2563eb;
+  font-size: 0.9rem;
+  cursor: pointer;
+}
+
+.btn-link:hover {
+  text-decoration: underline;
+}
+
+/* Botón rojo para eliminar */
+.btn-danger {
+  border-radius: 999px;
+  border: none;
+  padding: 4px 10px;
+  background: #dc2626;
+  color: #ffffff;
+  font-size: 0.82rem;
+  cursor: pointer;
+  transition: background 0.2s ease, transform 0.1s ease;
+}
+
+.btn-danger:hover {
+  background: #b91c1c;
+  transform: translateY(-1px);
+}
+
+.btn-danger:active {
+  transform: translateY(0);
+}
+
+/* Modal de edición (igual que en alumnos admin) */
+.edit-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.35);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 40;
+}
+
+.edit-modal {
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 20px 22px;
+  width: 100%;
+  max-width: 420px;
+  box-shadow: 0 18px 40px rgba(15, 23, 42, 0.3);
+}
+
+.edit-form .form-row {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-bottom: 10px;
+}
+
+.edit-form label {
+  font-size: 0.85rem;
+  color: #4b5563;
+}
+
+.edit-form input {
+  border-radius: 8px;
+  border: 1px solid #d1d5db;
+  padding: 7px 9px;
+  font-size: 0.9rem;
+}
+
+.edit-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+/* Botones generales */
+.btn-secondary {
+  border-radius: 999px;
+  border: 1px solid #d1d5db;
+  padding: 6px 14px;
+  background: #f9fafb;
+  font-size: 0.9rem;
+  cursor: pointer;
+}
+
+.btn-primary {
+  border-radius: 999px;
+  border: none;
+  padding: 6px 14px;
+  background: #2563eb;
+  color: #ffffff;
+  font-size: 0.9rem;
+  cursor: pointer;
+}
+
+/* Modal de confirmación de borrado */
+.confirm-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 50;
+}
+
+.confirm-modal {
+  background: #ffffff;
+  border-radius: 14px;
+  padding: 18px 20px;
+  width: 100%;
+  max-width: 420px;
+  box-shadow: 0 20px 45px rgba(15, 23, 42, 0.35);
+}
+
+.confirm-modal h2 {
+  margin-bottom: 8px;
+}
+
+.confirm-modal p {
+  font-size: 0.9rem;
+  color: #4b5563;
+}
+
+.confirm-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 14px;
+}
+/* Header con título + botón crear */
+.admin-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+}
+
+.btn-create {
+  border-radius: 999px;
+  padding: 8px 18px;
+  font-size: 0.9rem;
+}
+
+/* === Campos de contraseña en modales === */
+
+.pass-row {
+  margin-top: 8px;
+}
+
+/* Contenedor relativo para colocar el ojito flotando */
+.edit-form .pass-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+/* Input normal, con espacio a la derecha para el icono */
+.edit-form .pass-wrapper .pass-input {
+  width: 100%;
+  box-sizing: border-box;
+  border-radius: 8px;
+  border: 1px solid #d1d5db;
+  padding: 7px 40px 7px 10px; /* 👈 espacio para el ojito */
+  font-size: 0.9rem;
+  background: #ffffff;
+}
+
+/* Botón ojito: pegado a la derecha, tamaño fijo */
+.edit-form .pass-wrapper .pass-toggle {
+  position: absolute !important;
+  top: 50%;
+  right: 10px;
+  transform: translateY(-50%);
+  display: inline-flex !important;
+  align-items: center;
+  justify-content: center;
+  width: 22px !important;
+  height: 22px !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  background: transparent !important;
+  border: none !important;
+  cursor: pointer;
+  font-size: 1.1rem;
+  line-height: 1;
+}
+
+/* Por si algún estilo global anda centrando botones */
+.edit-form .pass-wrapper .pass-toggle::before,
+.edit-form .pass-wrapper .pass-toggle::after {
+  margin: 0;
+}
+
+.edit-form .pass-wrapper .pass-toggle:focus {
+  outline: none;
+}
+
+/* ========== TOAST NOTIFICACIONES ========== */
+.toast {
+  position: fixed;
+  top: 80px;          /* por debajo del topbar */
+  right: 24px;
+  padding: 10px 16px;
+  border-radius: 999px;
+  font-size: 0.9rem;
+  color: #ffffff;
+  box-shadow: 0 10px 25px rgba(15, 23, 42, 0.35);
+  z-index: 999;       /* por encima de sidebar, botones, etc. */
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  animation: toast-in 0.2s ease-out;
+}
+
+/* Info (azul) */
+.toast-info {
+  background: #2563eb;
+}
+
+/* Éxito (verde) */
+.toast-success {
+  background: #16a34a;
+}
+
+/* Error (rojo) */
+.toast-error {
+  background: #dc2626;
+}

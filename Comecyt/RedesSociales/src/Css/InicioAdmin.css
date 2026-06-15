@@ -1,0 +1,160 @@
+/* src/Css/InicioAdmin.css */
+
+.admin-page {
+  padding: 24px 32px;
+}
+
+.admin-header h1 {
+  font-size: 1.6rem;
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+
+.admin-sub {
+  color: #6b7280;
+  font-size: 0.95rem;
+}
+
+/* Tarjetas de arriba */
+.admin-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 16px;
+  margin-top: 18px;
+}
+
+.admin-card {
+  background: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 8px 22px rgba(15, 23, 42, 0.06);
+  border: 1px solid #e5e7eb;
+  padding: 14px 18px;
+}
+
+.stat-card .stat-label {
+  font-size: 0.85rem;
+  color: #6b7280;
+  margin-bottom: 4px;
+}
+
+.stat-card .stat-value {
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: #111827;
+}
+
+/* Grid inferior */
+.admin-main-grid {
+  display: grid;
+  grid-template-columns: 1.3fr 1.3fr;
+  gap: 18px;
+  margin-top: 22px;
+}
+
+/* Tablas */
+.table-card .section-title {
+  font-size: 1rem;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+.admin-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+}
+
+.admin-table thead {
+  background: #f3f4f6;
+}
+
+.admin-table th,
+.admin-table td {
+  padding: 8px 10px;
+  text-align: left;
+}
+
+.admin-table tbody tr:nth-child(even) {
+  background: #f9fafb;
+}
+
+.empty-msg {
+  font-size: 0.9rem;
+  color: #6b7280;
+  padding: 10px 4px;
+}
+
+/* Responsivo */
+@media (max-width: 1024px) {
+  .admin-cards-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .admin-main-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 640px) {
+  .admin-page {
+    padding: 16px;
+  }
+
+  .admin-cards-grid {
+    grid-template-columns: 1fr;
+  }
+}
+/* Botón dentro de las tarjetas de resumen */
+.admin-card-btn {
+  margin-top: 10px;
+  padding: 6px 14px;
+  border-radius: 999px;
+  border: none;
+  font-size: 0.85rem;
+  font-weight: 500;
+  background: #2e7d32;   /* azul bonito */
+  color: #ffffff;
+  cursor: pointer;
+  transition: background 0.2s ease, transform 0.1s ease;
+}
+
+.admin-card-btn:hover {
+  background: #2da84f;
+  transform: translateY(-1px);
+}
+
+.admin-card-btn:active {
+  transform: translateY(0);
+}
+
+/* ========== TOAST NOTIFICACIONES ========== */
+.toast {
+  position: fixed;
+  top: 80px;          /* por debajo del topbar */
+  right: 24px;
+  padding: 10px 16px;
+  border-radius: 999px;
+  font-size: 0.9rem;
+  color: #ffffff;
+  box-shadow: 0 10px 25px rgba(15, 23, 42, 0.35);
+  z-index: 999;       /* por encima de sidebar, botones, etc. */
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  animation: toast-in 0.2s ease-out;
+}
+
+/* Info (azul) */
+.toast-info {
+  background: #2563eb;
+}
+
+/* Éxito (verde) */
+.toast-success {
+  background: #16a34a;
+}
+
+/* Error (rojo) */
+.toast-error {
+  background: #dc2626;
+}
