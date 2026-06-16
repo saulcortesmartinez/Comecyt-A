@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import "../../Css/modulo_2_contenido_4.css";
 
-import Publicacion_fbImg from "../../assets/Publicacion_fb.png";
+//import Publicacion_fbImg from "../../assets/publicacion_fb.png";//FIX TEMP
 import Seguridad_fbImg from "../../assets/Seguridad_fb.png";
 import Seguridad2_fbImg from "../../assets/Seguridad2_fb.png";
 import RecuperarCon_fbImg from "../../assets/RecuperarCon_fb.png";
@@ -217,6 +217,7 @@ export default function ModuloFacebookSeguridad() {
       </div>
     );
   }
+
 
 
 
