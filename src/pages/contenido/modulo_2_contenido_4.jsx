@@ -6,7 +6,7 @@ import "../../Css/modulo_2_contenido_4.css";
 
 const API_URL = "http://localhost:4000";
 const MODULO_ID = 2; // ✅ Es módulo 2
-const NUM_CONTENIDO = 4;
+const NUM_CONTENIDO = 12;
 
 export default function ModuloFacebookSeguridad() {
   const [answers, setAnswers] = useState({});
