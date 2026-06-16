@@ -3,3 +3,5 @@ dist
 *.png
 *.jpg
 *.pdf
+.DS_Store
+**/ .DS_Store
