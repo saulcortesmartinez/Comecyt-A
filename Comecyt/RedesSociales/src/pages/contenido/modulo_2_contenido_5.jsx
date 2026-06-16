@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import "../../Css/modulo_2_contenido_5.css";
 
-//import Publicacion_fbImg from "../../assets/publicacion_fb.png";
+"../../assets/publicacion_fb.png";
 import Seguridad_fbImg from "../../assets/seguridad_fb.png";
 import Seguridad2_fbImg from "../../assets/seguridad2_fb.png";
 import RecuperarCon_fbImg from "../../assets/recuperarCon_fb.png";
