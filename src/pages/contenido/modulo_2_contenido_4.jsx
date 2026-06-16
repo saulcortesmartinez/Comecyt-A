@@ -5,9 +5,7 @@ import axios from "axios";
 import "../../Css/modulo_2_contenido_4.css";
 
 
-import Seguridad2_fbImg from "../../assets/Seguridad2_fb.png";
-import RecuperarCon_fbImg from "../../assets/RecuperarCon_fb.png";
-import Paso2_fbImg from "../../assets/Paso2_fb.png";
+
 
 const API_URL = "http://localhost:4000";
 const MODULO_ID = 1; // ✅ Es módulo 2
