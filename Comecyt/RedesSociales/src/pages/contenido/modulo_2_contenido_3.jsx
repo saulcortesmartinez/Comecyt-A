@@ -5,7 +5,7 @@ import axios from "axios";
 import "../../Css/modulo_2_contenido_3.css";
 
 import gruposImg from "../../assets/Grupos_fb.png";
-import paginasImg from "../../assets/Paginas_fb.png";
+import paginasImg from "../../assets/paginas_fb.png";
 import eventosImg from "../../assets/Eventos_fb.png";
 
 const API_URL = "http://localhost:4000";
