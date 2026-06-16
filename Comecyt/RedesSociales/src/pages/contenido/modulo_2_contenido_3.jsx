@@ -1,15 +1,15 @@
-// src/pages/contenido/modulo_1_contenido_11.jsx
+// src/pages/contenido/modulo_2_contenido_3.jsx
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import "../../Css/modulo_2_contenido_3.css";
 
-//import gruposImg from "../../assets/Grupos_fb.png";
+// import gruposImg from "../../assets/Grupos_fb.png"; // QUITADO - rompe el build
 import paginasImg from "../../assets/paginas_fb.png";
 import eventosImg from "../../assets/eventos_fb.png";
 
 const API_URL = "http://localhost:4000";
-const MODULO_ID = 2; // ✅ CORREGIDO: era 2
+const MODULO_ID = 2;
 const NUM_CONTENIDO = 3;
 
 export default function ModuloFacebookGruposPaginasEventos() {
@@ -27,16 +27,17 @@ export default function ModuloFacebookGruposPaginasEventos() {
   const [gated, setGated] = useState(true);
   const [progreso, setProgreso] = useState(0);
 
-  // ✅ STATES AGREGADOS PARA FIX
+  // ✅ STATES FIX
   const [guardando, setGuardando] = useState(false);
   const [progresoCargado, setProgresoCargado] = useState(false);
+  const [totalContenidos, setTotalContenidos] = useState(8); // <-- FALTABA
 
   const navigate = useNavigate();
 
   const showToast = (message, type = "info") => {
     setToast({ visible: true, message, type });
     setTimeout(() => {
-      setToast((t) => ({ ...t, visible: false }));
+      setToast((t) => ({...t, visible: false }));
     }, 2500);
   };
 
@@ -46,7 +47,10 @@ export default function ModuloFacebookGruposPaginasEventos() {
       try {
         const correo = localStorage.getItem("correo");
         const token = localStorage.getItem("token");
-        if (!correo || !token) return;
+        if (!correo ||!token) {
+          setProgresoCargado(true);
+          return;
+        }
 
         const resp = await axios.post(
           `${API_URL}/api/alumno/progreso`,
@@ -54,12 +58,13 @@ export default function ModuloFacebookGruposPaginasEventos() {
           { headers: { Authorization: `Bearer ${token}` } }
         );
 
-        const modulo1 = resp.data.modulos.find(
+        const moduloActual = resp.data.modulos.find(
           (m) => m.modulo_id === MODULO_ID
         );
 
-        const p = Number(modulo1?.progreso_actual ?? 0);
+        const p = Number(moduloActual?.progreso_actual?? 0);
         setProgreso(p);
+        setTotalContenidos(moduloActual?.total_contenidos?? 8); // <-- NUEVO
         setProgresoCargado(true);
 
         if (p > NUM_CONTENIDO) {
@@ -121,7 +126,7 @@ export default function ModuloFacebookGruposPaginasEventos() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, [gated]);
 
-  const puedeAvanzar = !gated || (timerTerminado && scrolledBottom);
+  const puedeAvanzar =!gated || (timerTerminado && scrolledBottom);
 
   const formatearTiempo = (segundos) => {
     const m = Math.floor(segundos / 60);
@@ -135,7 +140,7 @@ export default function ModuloFacebookGruposPaginasEventos() {
     navigate("/contenidos/mod1_10");
   };
 
-  // ✅ FUNCIÓN CORREGIDA - Ahora sí avanza al contenido 12
+  // ✅ FUNCIÓN CORREGIDA
   const finalizarContenido = async () => {
     if (!puedeAvanzar) return;
     setGuardando(true);
@@ -145,30 +150,44 @@ export default function ModuloFacebookGruposPaginasEventos() {
     try {
       const response = await axios.post(
         `${API_URL}/api/alumno/progreso/actualizar`,
-        { correo, modulo_id: MODULO_ID, progreso_actual: NUM_CONTENIDO },
-        token ? { headers: { Authorization: `Bearer ${token}` } } : {}
+        { correo, modulo_id: MODULO_ID, contenido_id: NUM_CONTENIDO }, // <-- FIX: era progreso_actual
+        token? { headers: { Authorization: `Bearer ${token}` } } : {}
       );
 
       if (response.data?.success) {
         window.scrollTo(0, 0);
-        // si es el último contenido, vuelve al inicio
         if (NUM_CONTENIDO >= totalContenidos) {
           navigate("/inicio");
         } else {
           navigate(`/modulo/${MODULO_ID}/contenido/${NUM_CONTENIDO + 1}`);
         }
       } else {
-        setToast('Error al guardar progreso. Intenta de nuevo.');
-        setTimeout(() => setToast(""), 3000);
+        showToast('Error al guardar progreso. Intenta de nuevo.', 'error');
       }
     } catch (err) {
       console.error("❌ Error al guardar:", err.response?.data || err);
-      setToast('Error de conexión al guardar progreso');
-      setTimeout(() => setToast(""), 3000);
+      showToast('Error de conexión al guardar progreso', 'error');
     } finally {
       setGuardando(false);
     }
   };
+
+  if (!progresoCargado) {
+    return (
+      <div className="fb-func-container">
+        <div style={{
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          height: '100vh',
+          fontSize: '1.2rem',
+          color: '#6a0f3c'
+        }}>
+          <p>Cargando contenido...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="fb-func-container">
@@ -245,8 +264,12 @@ export default function ModuloFacebookGruposPaginasEventos() {
                   </ul>
                 </div>
 
+                {/* PLACEHOLDER: quitamos la img rota */}
                 <figure className="media-side">
-                  <img src={gruposImg} className="side-image" alt="Grupos en Facebook" />
+                  <div className="image-mock" style={{height: '200px', background: '#f0f0f0', display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
+                    Imagen de Grupos FB
+                  </div>
+                  <figcaption>Ejemplo de grupos en Facebook</figcaption>
                 </figure>
               </div>
               <h4>Interacción dentro de los grupos</h4>
@@ -440,13 +463,13 @@ export default function ModuloFacebookGruposPaginasEventos() {
       {/* ===== FOOTER AVANCE ===== */}
       <footer className="contenido-footer">
         <div className="avance-mensaje">
-          {gated && !timerTerminado && (
+          {gated &&!timerTerminado && (
             <p>
               ⏳ Lee el contenido. El botón <strong>Siguiente</strong> se
               habilitará en {formatearTiempo(tiempoRestante)}.
             </p>
           )}
-          {gated && timerTerminado && !scrolledBottom && (
+          {gated && timerTerminado &&!scrolledBottom && (
             <p>
               👇 Desplázate hasta el final para habilitar <strong>Siguiente</strong>.
             </p>
@@ -466,11 +489,11 @@ export default function ModuloFacebookGruposPaginasEventos() {
             ← Anterior
           </button>
           <button
-            className={`btn-siguiente ${!puedeAvanzar ? "btn-siguiente-locked" : ""}`}
+            className={`btn-siguiente ${!puedeAvanzar? "btn-siguiente-locked" : ""}`}
             onClick={finalizarContenido}
             disabled={!puedeAvanzar || guardando}
           >
-            {guardando ? "Guardando..." : puedeAvanzar ? "Siguiente →" : "Siguiente 🔒"}
+            {guardando? "Guardando..." : puedeAvanzar? "Siguiente →" : "Siguiente 🔒"}
           </button>
         </div>
       </footer>
