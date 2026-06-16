@@ -1,0 +1,45 @@
+/* src/styles/ModuloBase.css */
+.modulo-container {
+    padding: 40px;
+    color: #222;
+    background: #f5f5f5;
+    min-height: calc(100vh - 60px);
+}
+
+.modulo-header {
+    color: #6a0f3c;
+    font-size: 32px;
+    margin-bottom: 20px;
+}
+
+.modulo-content p {
+    line-height: 1.6;
+    margin-bottom: 16px;
+    color: #222;
+}
+
+.btn-completar {
+    background: #2d5f2e;
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 8px;
+    font-size: 16px;
+    cursor: pointer;
+    margin-top: 30px;
+}
+
+.btn-completar:hover {
+    background: #1e4220;
+}
+
+.btn-siguiente {
+    background: #6a0f3c;
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 8px;
+    font-size: 16px;
+    cursor: pointer;
+    margin-left: 12px;
+}

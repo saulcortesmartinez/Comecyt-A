@@ -1,0 +1,99 @@
+/* src/Components/GradientText.css */
+
+.animated-gradient-text {
+    position: relative;
+    display: flex;
+    max-width: fit-content;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    border-radius: 1.25rem;
+    font-weight: 500;
+    backdrop-filter: blur(10px);
+    transition: box-shadow 0.5s ease-out;
+    overflow: hidden;
+    cursor: pointer;
+    /* Font-size base para todos los GradientText si no se especifica */
+    font-size: 2.5em;
+    /* Un tamaño por defecto más grande */
+    line-height: 1;
+}
+
+.animated-gradient-text.with-border {
+    padding: 0.35rem 0.75rem;
+}
+
+.gradient-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border-radius: inherit;
+    z-index: 0;
+    pointer-events: none;
+}
+
+.gradient-overlay::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    border-radius: inherit;
+    width: calc(100% - 2px);
+    height: calc(100% - 2px);
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #060010;
+    z-index: -1;
+}
+
+.text-content {
+    display: inline-block !important;
+    /* Asegura que funcione el background-clip */
+    position: relative;
+    z-index: 2;
+    background-clip: text !important;
+    /* ¡Fundamental para el efecto! */
+    -webkit-background-clip: text !important;
+    /* Para compatibilidad */
+    color: transparent !important;
+    /* ¡Fundamental para el efecto! */
+    white-space: nowrap;
+}
+
+/* Animación de brillo para el texto */
+@keyframes textGlow {
+    0% {
+        text-shadow: 0 0 8px rgba(0, 255, 204, 0.7), 0 0 15px rgba(0, 255, 204, 0.5);
+    }
+
+    50% {
+        text-shadow: 0 0 12px rgba(0, 255, 204, 0.9), 0 0 25px rgba(0, 255, 204, 0.7), 0 0 40px rgba(0, 255, 204, 0.3);
+    }
+
+    100% {
+        text-shadow: 0 0 8px rgba(0, 255, 204, 0.7), 0 0 15px rgba(0, 255, 204, 0.5);
+    }
+}
+
+/* Estilo específico para el texto "ÁGORA" en el login */
+.logo-text-gradient {
+    font-size: 3.5em;
+    /* Tamaño grande para que el degradado y el brillo sean visibles */
+    font-weight: bold;
+    letter-spacing: 2px;
+    animation: textGlow 3s ease-in-out infinite alternate;
+    /* Aplica la animación */
+}
+
+/* Estilo específico para el título "ÁGORA" en Inicio.jsx */
+.custom-agora-title-gradient {
+    font-size: 4em;
+    /* Más grande para el título principal en Inicio */
+    font-weight: bold;
+    letter-spacing: 3px;
+    animation: textGlow 3s ease-in-out infinite alternate;
+    /* Aplica la animación */
+}

@@ -1,0 +1,151 @@
+/* src/Css/CalificacionesDocente.css */
+
+.top5-card {
+  margin-top: 16px;
+}
+
+.top5-list {
+  list-style: none;
+  padding: 0;
+  margin: 10px 0 0;
+}
+
+.top5-list li {
+  display: grid;
+  grid-template-columns: 40px 1fr auto;
+  align-items: center;
+  padding: 6px 0;
+  border-bottom: 1px dashed #e5e7eb;
+  font-size: 0.92rem;
+}
+
+.top5-list li:last-child {
+  border-bottom: none;
+}
+
+.top5-rank {
+  font-weight: 600;
+  color: #6b7280;
+}
+
+.top5-name {
+  font-weight: 500;
+}
+
+.top5-score {
+  font-weight: 600;
+  color: #2563eb;
+}
+
+/* ===== Tabla detalle ===== */
+
+.tabla-calif-card {
+  margin-top: 20px;
+}
+
+.tabla-calif-card .section-title {
+  margin-bottom: 8px;
+}
+
+/* contenedor con borde */
+.tabla-calif-wrapper {
+  border-radius: 12px;
+  border: 1px solid #e5e7eb;
+  background: #ffffff;
+  overflow: hidden;
+}
+
+/* SOLO aquí hay scroll */
+.tabla-calif-scroll {
+  max-height: 310px;      /* ajusta la altura si quieres más/menos */
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+/* scroll bonito */
+.tabla-calif-scroll::-webkit-scrollbar {
+  width: 8px;
+}
+.tabla-calif-scroll::-webkit-scrollbar-track {
+  background: #f3f4f6;
+}
+.tabla-calif-scroll::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 999px;
+}
+
+.tabla-calif {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+}
+
+/* encabezado fijo mientras haces scroll */
+.tabla-calif thead {
+  background: #f3f4f6;
+  position: sticky;
+  top: 0;
+  z-index: 5;
+}
+
+.tabla-calif th,
+.tabla-calif td {
+  padding: 9px 11px;
+  text-align: left;
+}
+
+.tabla-calif tbody tr:nth-child(even) {
+  background: #f9fafb;
+}
+
+/* -------- PASTILLA DE PUNTAJE -------- */
+
+.cell-score {
+  white-space: nowrap;
+}
+
+.score-pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 3rem;
+  padding: 3px 10px;
+  border-radius: 999px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  background: #f9fafb;
+  border: 1px solid transparent; /* el color lo ponemos en inline-style */
+}
+
+
+/* ========== TOAST NOTIFICACIONES ========== */
+.toast {
+  position: fixed;
+  top: 80px;          /* por debajo del topbar */
+  right: 24px;
+  padding: 10px 16px;
+  border-radius: 999px;
+  font-size: 0.9rem;
+  color: #ffffff;
+  box-shadow: 0 10px 25px rgba(15, 23, 42, 0.35);
+  z-index: 999;       /* por encima de sidebar, botones, etc. */
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  animation: toast-in 0.2s ease-out;
+}
+
+/* Info (azul) */
+.toast-info {
+  background: #2563eb;
+}
+
+/* Éxito (verde) */
+.toast-success {
+  background: #16a34a;
+}
+
+/* Error (rojo) */
+.toast-error {
+  background: #dc2626;
+}

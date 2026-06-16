@@ -1,0 +1,100 @@
+.perfil-docente-root {
+  display: flex;
+  justify-content: center;
+  padding: 30px;
+}
+
+.perfil-card {
+  width: 430px;
+  padding: 25px;
+  background: white;
+  border-radius: 15px;
+  box-shadow: 0 3px 15px rgba(0,0,0,0.15);
+}
+
+.perfil-info p {
+  margin: 8px 0;
+  font-size: 1.1rem;
+}
+
+.perfil-form input {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 12px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+}
+
+.password-box input {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 10px;
+}
+
+button {
+  width: 100%;
+  padding: 12px;
+  margin-top: 12px;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.btn-editar { background: #2a68ff; color: white; }
+.btn-guardar { background: #28a745; color: white; }
+.btn-password { background: #f7b500; color: black; }
+.btn-guardar-pass { background: #28a745; color: white; }
+
+.input-password {
+  position: relative;
+  margin-bottom: 12px;
+}
+
+.input-password input {
+  width: 100%;
+  padding: 10px;
+  padding-right: 40px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+}
+
+.ojo {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  font-size: 18px;
+}
+
+/* ========== TOAST NOTIFICACIONES PERFIL DOCENTE ========== */
+.toast {
+  position: fixed;
+  top: 80px;          /* por debajo del topbar */
+  right: 24px;
+  padding: 10px 16px;
+  border-radius: 999px;
+  font-size: 0.9rem;
+  color: #ffffff;
+  box-shadow: 0 10px 25px rgba(15, 23, 42, 0.35);
+  z-index: 999;       /* por encima de sidebar, botones, etc. */
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  animation: toast-in 0.2s ease-out;
+}
+
+/* Info (azul) */
+.toast-info {
+  background: #2563eb;
+}
+
+/* Éxito (verde) */
+.toast-success {
+  background: #16a34a;
+}
+
+/* Error (rojo) */
+.toast-error {
+  background: #dc2626;
+}

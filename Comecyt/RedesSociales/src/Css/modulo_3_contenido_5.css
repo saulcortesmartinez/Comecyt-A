@@ -1,0 +1,473 @@
+/* ===== CONTENEDOR GENERAL (con degradado) ===== */
+.wa-intro-container {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 2rem 1rem 3rem;
+  background: linear-gradient(180deg, #ecfdf5 0%, #ffffff 45%, #ecfdf5 100%);
+  color: #111827;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+    sans-serif;
+}
+
+/* ===== ENCABEZADO TIPO BANNER ===== */
+.wa-header {
+  margin-bottom: 2rem;
+}
+
+.wa-header-inner {
+  background: #0f766e; /* verde oscuro tipo WhatsApp */
+  color: #ffffff;
+  padding: 1.8rem 2rem;
+  border-radius: 8px;
+  text-align: center;
+  box-shadow: 0 10px 24px rgba(15, 23, 42, 0.18);
+  border-bottom: 4px solid #16a34a; /* franja inferior */
+}
+
+.wa-header-inner h1 {
+  font-size: 2.1rem;
+  font-weight: 700;
+  margin: 0 0 0.35rem;
+}
+
+.wa-header-inner .sub {
+  font-size: 1rem;
+  color: #e5e7eb;
+  max-width: 720px;
+  margin: 0 auto;
+}
+
+/* ===== TARJETAS EN UNA SOLA COLUMNA ===== */
+.wa-intro-container .content-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  margin-top: 1.8rem;
+}
+
+/* ===== TARJETAS ===== */
+.wa-intro-container .card,
+.video-section,
+.activities,
+.quiz {
+  background: #ffffff;
+  border-radius: 12px;
+  padding: 1.4rem 1.5rem;
+  border: 1px solid #e5e7eb;
+  box-shadow: 0 4px 14px rgba(15, 23, 42, 0.04);
+}
+
+.wa-intro-container .card-head {
+  margin-bottom: 0.7rem;
+}
+
+.section-title.inline {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+}
+
+.section-number {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.9rem;
+  height: 1.9rem;
+  border-radius: 999px;
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: #ffffff;
+  background: #16a34a; /* verde WhatsApp */
+}
+
+.wa-intro-container .card-head h2 {
+  font-size: 1.05rem;
+  color: #14532d;
+}
+
+.wa-intro-container .card-body p {
+  font-size: 0.95rem;
+  line-height: 1.6;
+  color: #374151;
+  margin-bottom: 0.5rem;
+}
+
+.wa-intro-container .card-body h3 {
+  font-size: 0.98rem;
+  margin-top: 0.65rem;
+  margin-bottom: 0.35rem;
+  color: #166534;
+}
+
+.lista-simple {
+  list-style: disc;
+  margin-left: 1.3rem;
+  font-size: 0.93rem;
+  color: #374151;
+}
+
+.lista-simple li + li {
+  margin-top: 0.15rem;
+}
+
+/* ===== DOS COLUMNAS INTERNAS (texto + imagen) ===== */
+.two-col {
+  display: grid;
+  grid-template-columns: minmax(0, 1.6fr) minmax(0, 1.1fr);
+  gap: 1rem 1.4rem;
+  align-items: flex-start;
+}
+
+.media-side {
+  text-align: center;
+}
+
+.side-image {
+  max-width: 110%;
+  border-radius: 10px;
+  border: 1px solid #e5e7eb;
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.08);
+  object-fit: cover;
+}
+
+.caption {
+  margin-top: 0.3rem;
+  font-size: 0.78rem;
+  color: #6b7280;
+}
+
+/* ===== VIDEO ===== */
+.video-section .section-title {
+  margin-bottom: 0.6rem;
+}
+
+.video-hint {
+  font-size: 0.9rem;
+  color: #4b5563;
+  margin-bottom: 0.9rem;
+}
+
+.video-wrapper {
+  position: relative;
+  width: 100%;
+  max-width: 800px;
+  margin: 0 auto;
+  aspect-ratio: 16 / 9;
+  border-radius: 10px;
+  overflow: hidden;
+  background: #000000;
+}
+
+.video-wrapper iframe {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+
+/* ===== ACTIVIDADES ===== */
+.activities {
+  margin-top: 1.8rem;
+}
+
+.activities ol {
+  margin-left: 1.3rem;
+  font-size: 0.95rem;
+  color: #374151;
+}
+
+.activities ol li + li {
+  margin-top: 0.3rem;
+}
+
+.hint {
+  margin-top: 0.8rem;
+  font-size: 0.87rem;
+  color: #166534;
+  background: #ecfdf3;
+  border-radius: 999px;
+  padding: 0.45rem 0.9rem;
+  display: inline-block;
+}
+
+/* ===== QUIZ ===== */
+.quiz {
+  margin-top: 2rem;
+}
+
+.quiz-form {
+  margin-top: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.q {
+  padding: 1rem 1.2rem;
+  border-radius: 18px;
+  border: 1px solid #facc6b;
+  background: #fff7e6;
+  transition: border-color 0.15s ease, background-color 0.15s ease,
+    box-shadow 0.15s ease;
+  height: auto;
+  overflow: visible;
+}
+
+.q.correct {
+  border-color: #22c55e;
+  background: #ecfdf3;
+  box-shadow: 0 0 0 1px rgba(34, 197, 94, 0.25);
+}
+
+.q.incorrect {
+  border-color: #f97373;
+  background: #fef2f2;
+  box-shadow: 0 0 0 1px rgba(248, 113, 113, 0.25);
+}
+
+.q label {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.45rem;
+}
+
+.question-text {
+  font-size: 0.95rem;
+  color: #111827;
+  line-height: 1.6;
+  white-space: normal;
+}
+
+.q select {
+  width: 100%;
+  border-radius: 999px;
+  padding: 0.45rem 0.9rem;
+  border: 1px solid #cbd5f5;
+  font-size: 0.9rem;
+  outline: none;
+  background: #ffffff;
+  transition: border-color 0.12s ease, box-shadow 0.12s ease,
+    background-color 0.12s ease;
+}
+
+.q select:focus {
+  border-color: #22c55e;
+  box-shadow: 0 0 0 1px rgba(34, 197, 94, 0.35);
+  background: #f0fdf4;
+}
+
+.answer-feedback {
+  margin-top: 0.35rem;
+  font-size: 0.85rem;
+}
+
+.answer-feedback.correct {
+  color: #047857;
+}
+
+.answer-feedback.incorrect {
+  color: #b91c1c;
+}
+
+/* Botón Calificar */
+.btn-primary {
+  margin-top: 0.7rem;
+  align-self: flex-start;
+  padding: 0.55rem 1.4rem;
+  border-radius: 999px;
+  border: none;
+  cursor: pointer;
+  font-size: 0.93rem;
+  font-weight: 600;
+  background: linear-gradient(135deg, #16a34a, #22c55e);
+  color: #ffffff;
+  box-shadow: 0 8px 20px rgba(34, 197, 94, 0.35);
+  transition: transform 0.1s ease, box-shadow 0.1s ease, filter 0.12s ease;
+}
+
+.btn-primary:hover {
+  transform: translateY(-1px);
+  filter: brightness(1.03);
+  box-shadow: 0 12px 26px rgba(34, 197, 94, 0.45);
+}
+
+.btn-primary:active {
+  transform: translateY(0);
+  box-shadow: 0 6px 16px rgba(34, 197, 94, 0.35);
+}
+
+/* Resultado quiz */
+.quiz-result {
+  margin-top: 0.9rem;
+  padding: 0.9rem 1rem;
+  border-radius: 10px;
+  background: #f9fafb;
+  border: 1px solid #e5e7eb;
+  font-size: 0.94rem;
+}
+
+.quiz-result p + p {
+  margin-top: 0.3rem;
+}
+
+.quiz-result .ok {
+  color: #047857;
+}
+
+.quiz-result .warn {
+  color: #92400e;
+}
+
+/* ===== PASOS (4.2) ===== */
+.pasos-intro {
+  font-size: 0.95rem;
+  color: #4b5563;
+  margin-bottom: 0.9rem;
+}
+
+.lista-pasos-img {
+  list-style: none;
+  padding-left: 0;
+  margin: 0;
+}
+
+.paso-bloque {
+  padding: 1rem 0 1.4rem;
+  border-top: 1px solid #e5e7eb;
+}
+
+.paso-bloque:first-child {
+  border-top: 1px solid #e5e7eb;
+}
+
+.paso-titulo {
+  font-weight: 700;
+  font-size: 1rem;
+  color: #111827;
+  margin-bottom: 0.2rem;
+}
+
+.paso-texto {
+  font-size: 0.95rem;
+  line-height: 1.6;
+  color: #374151;
+}
+
+/* Contenedor de la imagen del paso */
+.paso-figure {
+  margin-top: 0.75rem;
+  max-width: 460px;      /* tamaño pequeño */
+  margin-left: auto;
+  margin-right: auto;
+  text-align: left;
+}
+
+/* Imagen real del paso */
+.paso-img {
+  display: block;
+  width: 85%;
+  max-height: 380px;
+  object-fit: cover;
+  border-radius: 14px;
+  box-shadow: 0 10px 20px rgba(15, 23, 42, 0.18);
+}
+
+/* Pie de foto */
+.paso-caption {
+  margin-top: 0.35rem;
+  font-size: 0.85rem;
+  color: #6b7280;
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 900px) {
+  .two-col {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 640px) {
+  .wa-intro-container {
+    padding: 1.6rem 0.9rem 2.2rem;
+  }
+
+  .wa-header-inner h1 {
+    font-size: 1.7rem;
+  }
+}
+/* ===== TOAST (notificación arriba a la derecha) ===== */
+.toast {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 60;
+  min-width: 260px;
+  max-width: 320px;
+  padding: 10px 16px;
+  border-radius: 999px;
+  font-size: 0.9rem;
+  box-shadow: 0 10px 25px rgba(15, 23, 42, 0.25);
+  color: #ffffff;
+  background: #2563eb; /* azul tipo topbar */
+}
+
+.toast-success {
+  background: #2563eb;
+}
+
+.toast-info {
+  background: #0ea5e9;
+}
+
+.toast-error {
+  background: #dc2626;
+}
+
+/* ===== Footer de navegación ===== */
+.contenido-footer {
+  margin-top: 28px;
+  padding: 16px 0 40px;
+  border-top: 1px solid #e5e7eb;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.avance-mensaje p {
+  font-size: 0.9rem;
+  color: #4b5563;
+}
+
+.botones-nav {
+  display: flex;
+  gap: 10px;
+}
+
+.btn-anterior,
+.btn-siguiente {
+  border-radius: 999px;
+  padding: 8px 16px;
+  font-size: 0.9rem;
+  border: none;
+  cursor: pointer;
+}
+
+.btn-anterior {
+  background: #e5e7eb;
+  color: #111827;
+}
+
+.btn-siguiente {
+  background: #2e7d32;
+  color: #ffffff;
+}
+
+.btn-siguiente-locked {
+  opacity: 0.6;
+  cursor: not-allowed;
+  background: #9ca3af;
+}

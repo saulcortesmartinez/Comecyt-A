@@ -1,0 +1,27 @@
+.dashboard-layout {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+/* Cuerpo: sidebar + contenido */
+.dashboard-body {
+  display: flex;
+  margin-top: 60px;
+  /* espacio para topbar */
+  height: calc(100vh - 60px);
+  /* importante para que el hijo pueda scrollear */
+  min-height: 0;
+  /* evita que "reviente" el flex y se rompa el scroll */
+}
+
+/* Contenedor donde se ve el contenido de los módulos */
+.dashboard-content {
+  flex-grow: 1;
+  padding: 20px;
+  margin-left: 220px;
+  /* espacio para sidebar */
+  background-color: #f7f8fa;
+  overflow-y: auto;
+  /* 👈 ahora este es el que tiene scroll */
+}

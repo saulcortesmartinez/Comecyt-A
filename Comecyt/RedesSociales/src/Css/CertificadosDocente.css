@@ -1,0 +1,147 @@
+/* src/Css/CertificadosDocente.css */
+
+.tabla-cert-card {
+  margin-top: 18px;
+}
+
+.tabla-wrapper {
+  border-radius: 12px;
+  border: 1px solid #e5e7eb;
+  overflow: hidden;
+  margin-top: 8px;
+}
+
+.tabla-cert {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+}
+
+.tabla-cert thead {
+  background: #f3f4f6;
+}
+
+.tabla-cert th,
+.tabla-cert td {
+  padding: 9px 11px;
+  text-align: left;
+}
+
+.tabla-cert tbody tr:nth-child(even) {
+  background: #f9fafb;
+}
+
+.btn-ver {
+  display: inline-block;
+  padding: 4px 12px;
+  border-radius: 999px;
+  background: #16a34a;
+  color: #ffffff;
+  font-size: 0.85rem;
+  text-decoration: none;
+}
+
+.btn-ver:hover {
+  opacity: 0.9;
+}
+
+.tag-pendiente {
+  font-size: 0.8rem;
+  padding: 3px 8px;
+  border-radius: 999px;
+  background: #fee2e2;
+  color: #b91c1c;
+}
+
+/* Backdrop del modal */
+/* Fondo oscuro del modal */
+.cert-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 50;
+}
+
+/* Contenedor del modal */
+.cert-modal {
+  background: #ffffff;
+  border-radius: 18px;
+  box-shadow: 0 25px 60px rgba(15, 23, 42, 0.45);
+  position: relative;
+
+  /* 👇 aquí lo hacemos más grande */
+  width: 80vw;        /* antes 60–70, por ejemplo */
+  max-width: 1150px;
+  height: 80vh;       /* más alto para ver casi todo el PDF */
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+/* Encabezado del modal */
+.cert-modal-header {
+  padding: 12px 18px;
+  border-bottom: 1px solid #e5e7eb;
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+
+/* Cuerpo donde va el iframe */
+.cert-modal-body {
+  flex: 1;
+  padding: 0;
+}
+
+/* Iframe del PDF */
+.cert-modal-frame {
+  width: 100%;
+  height: 100%;
+  border: none;
+}
+
+/* Botón cerrar (X) */
+.cert-modal-close {
+  position: absolute;
+  top: 10px;
+  right: 12px;
+  border: none;
+  background: transparent;
+  font-size: 1.2rem;
+  cursor: pointer;
+}
+
+
+/* ========== TOAST NOTIFICACIONES ========== */
+.toast {
+  position: fixed;
+  top: 80px;          /* por debajo del topbar */
+  right: 24px;
+  padding: 10px 16px;
+  border-radius: 999px;
+  font-size: 0.9rem;
+  color: #ffffff;
+  box-shadow: 0 10px 25px rgba(15, 23, 42, 0.35);
+  z-index: 999;       /* por encima de sidebar, botones, etc. */
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  animation: toast-in 0.2s ease-out;
+}
+
+/* Info (azul) */
+.toast-info {
+  background: #2563eb;
+}
+
+/* Éxito (verde) */
+.toast-success {
+  background: #16a34a;
+}
+
+/* Error (rojo) */
+.toast-error {
+  background: #dc2626;
+}

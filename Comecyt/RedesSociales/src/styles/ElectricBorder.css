@@ -1,0 +1,117 @@
+/* src/styles/ElectricBorder.css */
+
+.electric-border {
+    --electric-border-color: #00ffcc;
+    --electric-light-color: #caf0fe;
+    position: relative;
+    border-radius: inherit;
+    overflow: visible;
+    isolation: isolate;
+    display: block;
+}
+
+.eb-canvas-container {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+    z-index: 2;
+}
+
+.eb-canvas {
+    display: block;
+}
+
+.eb-content {
+    position: relative;
+    border-radius: inherit;
+    z-index: 1;
+}
+
+.eb-layers {
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    pointer-events: none;
+    z-index: 0;
+}
+
+.eb-glow-1,
+.eb-glow-2,
+.eb-background-glow {
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    pointer-events: none;
+    box-sizing: border-box;
+}
+
+.eb-glow-1 {
+    border: 2px solid rgba(0, 255, 204, 0.6);
+    filter: blur(1px);
+}
+
+.eb-glow-2 {
+    border: 2px solid var(--electric-light-color);
+    filter: blur(4px);
+}
+
+.eb-background-glow {
+    z-index: -1;
+    transform: scale(1.1);
+    filter: blur(32px);
+    opacity: 0.3;
+    background: linear-gradient(-30deg, #00ffcc, transparent, #caf0fe);
+}
+
+@keyframes pulseGlow {
+    0% {
+        opacity: 0.2;
+        transform: scale(1.05);
+    }
+
+    50% {
+        opacity: 0.4;
+        transform: scale(1.15);
+    }
+
+    100% {
+        opacity: 0.2;
+        transform: scale(1.05);
+    }
+}
+
+.eb-background-glow {
+    animation: pulseGlow 4s ease-in-out infinite;
+}
+
+.card-inicio {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(0, 255, 204, 0.2);
+    padding: 30px;
+    border-radius: 15px;
+    text-align: center;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    cursor: pointer;
+    color: white;
+}
+
+.card-inicio:hover {
+    background: rgba(0, 255, 204, 0.08);
+    border-color: #00ffcc;
+    transform: translateY(-8px);
+    box-shadow: 0 15px 30px rgba(0, 255, 204, 0.15);
+}
+
+.card-inicio h3 {
+    margin-top: 0;
+    color: #00ffcc;
+    font-size: 1.4rem;
+}
+
+.card-inicio p {
+    margin-bottom: 0;
+    opacity: 0.8;
+    line-height: 1.5;
+}

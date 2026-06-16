@@ -1,0 +1,417 @@
+/* ==========================================================================
+   🚨 ANULACIÓN ULTRA AGRESIVA DE ESTILOS GLOBALES (SOLUCIÓN TEXTO INVISIBLE)
+   ========================================================================== */
+
+/* Fuerza a que el texto de la tarjeta, contenedores y párrafos sea blanco brillante por defecto */
+.game-card,
+.game-card div,
+.game-card p,
+.game-card label,
+.game-card h2,
+.game-card h3 {
+    color: #ffffff !important;
+    -webkit-text-fill-color: #ffffff !important;
+    /* Brute-force para Chrome, Safari, iOS y Edge */
+    opacity: 1 !important;
+}
+
+/* Evita que los navegadores apaguen o alteren los elementos bloqueados (disabled) */
+.game-card button,
+.game-card button:disabled,
+.game-card input:disabled {
+    opacity: 1 !important;
+    filter: none !important;
+    cursor: not-allowed;
+}
+
+/* ==========================================================================
+   🎨 EXCEPCIONES DE COLOR Y TEXTOS DINÁMICOS (CYAN Y SEMÁNTICOS)
+   ========================================================================== */
+
+/* Color Cyan Neón para números de preguntas y textos destacados */
+.game-card .text-cyan-400,
+.game-card span.text-cyan-400,
+.game-card p .text-cyan-400,
+.game-card strong {
+    color: #22d3ee !important;
+    -webkit-text-fill-color: #22d3ee !important;
+}
+
+/* Texto del temporizador en modo normal o repaso */
+.game-card .timer-text,
+.game-card .bg-cyan-500\/20 p,
+.game-card .bg-red-500\/20 p {
+    color: #ffffff !important;
+    -webkit-text-fill-color: #ffffff !important;
+}
+
+/* Alertas dinámicas del Footer (Toasts) */
+.toast-info,
+.toast-info * {
+    color: #22d3ee !important;
+    -webkit-text-fill-color: #22d3ee !important;
+}
+
+.toast-warning,
+.toast-warning * {
+    color: #fbbf24 !important;
+    -webkit-text-fill-color: #fbbf24 !important;
+}
+
+.toast-error,
+.toast-error * {
+    color: #fca5a5 !important;
+    -webkit-text-fill-color: #fca5a5 !important;
+}
+
+.toast-success,
+.toast-success * {
+    color: #34d399 !important;
+    -webkit-text-fill-color: #34d399 !important;
+}
+
+/* ==========================================================================
+   🕹️ CONTENEDOR PRINCIPAL (GAME CARD)
+   ========================================================================== */
+.game-card {
+    background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%) !important;
+    border: 2px solid rgba(6, 182, 212, 0.2) !important;
+    border-radius: 24px;
+    padding: 40px;
+    box-shadow:
+        0 20px 60px rgba(0, 0, 0, 0.6),
+        0 0 40px rgba(6, 182, 212, 0.1),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    margin: 30px 0;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Línea láser superior animada */
+.game-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, #00d9ff, #d946ef, transparent);
+    animation: scanLine 4s linear infinite;
+    z-index: 10;
+}
+
+.game-header {
+    text-align: center;
+    margin-bottom: 35px;
+}
+
+.game-header h2 {
+    font-size: 2.2rem !important;
+    font-weight: 800 !important;
+    text-shadow: 0 0 20px rgba(6, 182, 212, 0.6) !important;
+}
+
+/* ==========================================================================
+   🎮 BOTONES DE OPCIONES DEL CUESTIONARIO
+   ========================================================================== */
+
+/* Opción estándar (NO seleccionada) */
+.game-card button.bg-slate-700\/60 {
+    background-color: rgba(30, 41, 59, 0.8) !important;
+    border: 2px solid rgba(71, 85, 105, 0.5) !important;
+    color: #cbd5e1 !important;
+    -webkit-text-fill-color: #cbd5e1 !important;
+    font-weight: 500 !important;
+}
+
+/* Hover interactivo para las opciones (solo si no está bloqueado) */
+.game-card button.bg-slate-700\/60:hover:not(:disabled) {
+    border-color: #06b6d4 !important;
+    background-color: rgba(15, 23, 42, 0.9) !important;
+    color: #ffffff !important;
+    -webkit-text-fill-color: #ffffff !important;
+    box-shadow: 0 0 15px rgba(6, 182, 212, 0.2);
+    transform: translateX(4px);
+}
+
+/* Opción SELECCIONADA / ACTIVA */
+.game-card button.bg-cyan-500\/30 {
+    background: linear-gradient(90deg, rgba(6, 182, 212, 0.3) 0%, rgba(59, 130, 246, 0.2) 100%) !important;
+    border: 2px solid #06b6d4 !important;
+    color: #ffffff !important;
+    -webkit-text-fill-color: #ffffff !important;
+    font-weight: 700 !important;
+    box-shadow:
+        0 0 20px rgba(6, 182, 212, 0.3),
+        inset 0 0 10px rgba(6, 182, 212, 0.2) !important;
+}
+
+/* ==========================================================================
+   🚀 BOTONES DE ACCIÓN (ENVIAR Y REINTENTAR)
+   ========================================================================== */
+.btn-finish-game {
+    width: 100%;
+    padding: 20px 32px;
+    background: linear-gradient(135deg, #10b981 0%, #059669 100%) !important;
+    color: #ffffff !important;
+    -webkit-text-fill-color: #ffffff !important;
+    border: none !important;
+    border-radius: 16px;
+    font-size: 1.25rem;
+    font-weight: 800;
+    cursor: pointer;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    box-shadow: 0 6px 20px rgba(16, 185, 129, 0.4) !important;
+    margin-top: 25px;
+}
+
+.btn-finish-game:hover:not(:disabled) {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 25px rgba(16, 185, 129, 0.6) !important;
+}
+
+.btn-reintentar {
+    padding: 14px 35px;
+    background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%) !important;
+    color: white !important;
+    -webkit-text-fill-color: white !important;
+    border: none !important;
+    border-radius: 12px;
+    font-size: 1.1rem;
+    font-weight: 800;
+    cursor: pointer;
+    text-transform: uppercase;
+    box-shadow: 0 4px 15px rgba(239, 68, 68, 0.4) !important;
+}
+
+/* ==========================================================================
+   🏆 PANEL DE VICTORIA DE ALTO IMPACTO
+   ========================================================================== */
+.victory-message {
+    position: relative;
+    text-align: center;
+    padding: 50px 40px;
+    background: linear-gradient(135deg, #020617, #0f172a, #1e1b4b) !important;
+    border: 3px solid transparent !important;
+    border-radius: 24px;
+    margin-top: 35px;
+    overflow: hidden;
+    animation: bounceIn 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    box-shadow: 0 0 40px rgba(16, 185, 129, 0.3);
+    z-index: 1;
+}
+
+.victory-message::before {
+    content: '';
+    position: absolute;
+    top: -3px;
+    left: -3px;
+    right: -3px;
+    bottom: -3px;
+    background: linear-gradient(45deg, #10b981, #3b82f6, #f59e0b, #10b981);
+    background-size: 300% 300%;
+    border-radius: 24px;
+    z-index: -1;
+    animation: gradientShift 4s ease infinite;
+}
+
+/* ==========================================================================
+   🏁 SECCIÓN INFERIOR Y NAVEGACIÓN (FOOTER)
+   ========================================================================== */
+.contenido-footer {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    margin-top: 40px;
+    padding-top: 25px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1) !important;
+}
+
+.avance-texto {
+    display: flex;
+    align-items: center;
+    padding: 16px 24px;
+    border-radius: 14px;
+    font-size: 1.05rem;
+    font-weight: 600;
+    width: 100%;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+    animation: fadeIn 0.4s ease-out;
+}
+
+.toast-info {
+    background: rgba(6, 182, 212, 0.15) !important;
+    border: 1px solid #06b6d4 !important;
+}
+
+.toast-warning {
+    background: rgba(245, 158, 11, 0.15) !important;
+    border: 1px solid #f59e0b !important;
+}
+
+.toast-error {
+    background: rgba(239, 68, 68, 0.15) !important;
+    border: 1px solid #ef4444 !important;
+}
+
+.toast-success {
+    background: rgba(16, 185, 129, 0.15) !important;
+    border: 1px solid #10b981 !important;
+}
+
+.botones-nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 25px;
+}
+
+.btn-anterior,
+.btn-siguiente {
+    padding: 16px 36px;
+    border-radius: 14px;
+    font-size: 1.15rem;
+    font-weight: 800;
+    cursor: pointer;
+    border: none !important;
+    color: white !important;
+    -webkit-text-fill-color: white !important;
+}
+
+.btn-anterior {
+    background: #334155 !important;
+}
+
+.btn-siguiente {
+    background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%) !important;
+}
+
+.btn-disabled {
+    background: #1e293b !important;
+    color: #475569 !important;
+    -webkit-text-fill-color: #475569 !important;
+    border: 1px solid #334155 !important;
+    cursor: not-allowed !important;
+    box-shadow: none !important;
+    transform: none !important;
+}
+
+/* ==========================================================================
+   ✨ EFECTOS Y ANIMACIONES
+   ========================================================================== */
+.victory-message .particles {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    pointer-events: none;
+}
+
+.victory-message .particle {
+    position: absolute;
+    width: 6px;
+    height: 6px;
+    background: #f59e0b;
+    border-radius: 50%;
+    animation: float 3s infinite ease-in-out;
+    box-shadow: 0 0 10px #f59e0b;
+}
+
+.victory-message .particle:nth-child(1) {
+    left: 10%;
+    animation-delay: 0s;
+}
+
+.victory-message .particle:nth-child(2) {
+    left: 30%;
+    animation-delay: 0.5s;
+}
+
+.victory-message .particle:nth-child(3) {
+    left: 50%;
+    animation-delay: 1s;
+}
+
+@keyframes scanLine {
+    0% {
+        transform: translateX(-100%);
+    }
+
+    100% {
+        transform: translateX(100%);
+    }
+}
+
+@keyframes gradientShift {
+
+    0%,
+    100% {
+        background-position: 0% 50%;
+    }
+
+    50% {
+        background-position: 100% 50%;
+    }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes bounceIn {
+    0% {
+        transform: scale(0);
+        opacity: 0;
+    }
+
+    60% {
+        transform: scale(1.05);
+    }
+
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+@keyframes float {
+    0% {
+        transform: translateY(0);
+        opacity: 0;
+    }
+
+    50% {
+        opacity: 1;
+    }
+
+    100% {
+        transform: translateY(-100px);
+        opacity: 0;
+    }
+}
+
+@media (max-width: 768px) {
+    .game-card {
+        padding: 24px 16px;
+    }
+
+    .botones-nav {
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    .btn-anterior,
+    .btn-siguiente {
+        width: 100%;
+    }
+}

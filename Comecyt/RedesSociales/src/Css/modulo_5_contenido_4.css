@@ -1,0 +1,472 @@
+/* ==========================================================================
+   📧 RETO 33: CSS EXPERTO Y BLINDAJE DE TEXTO
+   ========================================================================== */
+
+/* Parche definitivo contra herencias oscuras de frameworks/temas base */
+.game-card h2,
+.game-card .game-header p,
+.game-card .question-text,
+.game-card text,
+.game-card p {
+    color: #ffffff !important;
+    -webkit-text-fill-color: #ffffff !important;
+}
+
+/* ==========================================================================
+   🕹️ BOTONES DE OPCIÓN (COMPORTAMIENTO INTERACTIVO DE DESPLAZAMIENTO)
+   ========================================================================== */
+
+.game-card .option-btn {
+    width: 100%;
+    text-align: left;
+    padding: 16px 20px !important;
+    border-radius: 12px !important;
+    border: 2px solid #475569 !important;
+    /* border-slate-600 */
+    background-color: rgba(30, 41, 59, 0.6) !important;
+    /* bg-slate-800/60 */
+    color: #94a3b8 !important;
+    /* text-slate-400 */
+    -webkit-text-fill-color: #94a3b8 !important;
+    font-size: 1rem !important;
+    font-weight: 500 !important;
+    cursor: pointer !important;
+    display: block !important;
+    margin-bottom: 12px !important;
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    transform: translateX(0);
+}
+
+/* Hover: Animación fluida con desplazamiento horizontal a la derecha */
+.game-card .option-btn:hover:not(:disabled) {
+    border-color: rgba(6, 182, 212, 0.7) !important;
+    /* Cyan-500 */
+    background-color: rgba(51, 65, 85, 0.8) !important;
+    /* Slate-700 */
+    color: #ffffff !important;
+    -webkit-text-fill-color: #ffffff !important;
+    transform: translateX(8px) !important;
+    box-shadow: 0 4px 20px rgba(6, 182, 212, 0.25) !important;
+}
+
+/* Estado Seleccionado / Activo por el Usuario */
+.game-card .option-btn.selected {
+    border-color: #06b6d4 !important;
+    /* Borde Cyan Brillante */
+    background-color: rgba(6, 182, 212, 0.25) !important;
+    color: #ffffff !important;
+    -webkit-text-fill-color: #ffffff !important;
+    box-shadow: 0 0 20px rgba(6, 182, 212, 0.4) !important;
+    font-weight: 600 !important;
+    transform: translateX(4px) !important;
+}
+
+.game-card .option-btn:disabled {
+    cursor: not-allowed !important;
+    opacity: 0.5 !important;
+}
+
+/* ==========================================================================
+   💥 CONTENEDOR CENTRAL (ESTÉTICA CYBERPUNK - NEÓN SLATE)
+   ========================================================================== */
+
+.game-card {
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%) !important;
+    border-radius: 24px;
+    padding: 40px;
+    box-shadow:
+        0 20px 60px rgba(0, 0, 0, 0.3),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    margin: 30px 0;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Escáner de luz superior */
+.game-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, #00d9ff, transparent);
+    animation: scanLine 3s linear infinite;
+}
+
+.game-header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.game-header h2 {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 12px;
+    text-shadow: 0 0 20px rgba(255, 255, 255, 0.3) !important;
+}
+
+.game-header p {
+    color: #b8c5d6 !important;
+    -webkit-text-fill-color: #b8c5d6 !important;
+    font-size: 1.1rem;
+    line-height: 1.6;
+}
+
+/* ==========================================================================
+   🚀 BOTONES DE ACCIÓN (TERMINAR, REINTENTAR, SIGUIENTE)
+   ========================================================================== */
+
+.btn-finish-game {
+    width: 100%;
+    padding: 18px 32px;
+    background: linear-gradient(135deg, #28a745 0%, #20c997 100%) !important;
+    color: #fff !important;
+    -webkit-text-fill-color: #fff !important;
+    border: none !important;
+    border-radius: 12px;
+    font-size: 1.2rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(40, 167, 69, 0.4);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-top: 20px;
+}
+
+.btn-finish-game:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(40, 167, 69, 0.6);
+    background: linear-gradient(135deg, #218838 0%, #1aa179 100%) !important;
+}
+
+.btn-finish-game:active {
+    transform: translateY(0);
+}
+
+.btn-reintentar {
+    padding: 12px 30px;
+    background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%) !important;
+    color: white !important;
+    -webkit-text-fill-color: white !important;
+    border: none !important;
+    border-radius: 10px;
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+    text-transform: uppercase;
+    box-shadow: 0 4px 15px rgba(239, 68, 68, 0.4) !important;
+    transition: all 0.2s ease;
+}
+
+.btn-reintentar:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 20px rgba(239, 68, 68, 0.6) !important;
+}
+
+.btn-siguiente {
+    padding: 16px 36px;
+    border-radius: 14px;
+    font-size: 1.15rem;
+    font-weight: 800;
+    cursor: pointer;
+    border: none !important;
+    color: white !important;
+    -webkit-text-fill-color: white !important;
+    background: linear-gradient(135deg, #007bff 0%, #0056b3 100%) !important;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(0, 123, 255, 0.3);
+}
+
+.btn-siguiente:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(0, 123, 255, 0.5);
+}
+
+.btn-disabled {
+    background: #1e293b !important;
+    color: #475569 !important;
+    -webkit-text-fill-color: #475569 !important;
+    border: 1px solid #334155 !important;
+    cursor: not-allowed !important;
+    box-shadow: none !important;
+    transform: none !important;
+}
+
+/* ==========================================================================
+   🏆 PANEL DE VICTORIA Y ANIMACIONES GAMER
+   ========================================================================== */
+
+.victory-message {
+    position: relative;
+    text-align: center;
+    padding: 40px 30px;
+    background: linear-gradient(135deg, #0f2027, #203a43, #2c5364) !important;
+    border: 3px solid transparent !important;
+    border-radius: 20px;
+    margin: 30px 0;
+    overflow: hidden;
+    animation: bounceIn 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    box-shadow:
+        0 0 30px rgba(40, 167, 69, 0.4),
+        0 0 60px rgba(0, 123, 255, 0.3);
+    z-index: 1;
+}
+
+.victory-message::before {
+    content: '';
+    position: absolute;
+    top: -3px;
+    left: -3px;
+    right: -3px;
+    bottom: -3px;
+    background: linear-gradient(45deg, #28a745, #007bff, #ffc107, #28a745);
+    background-size: 300% 300%;
+    border-radius: 20px;
+    z-index: -1;
+    animation: gradientShift 3s ease infinite;
+}
+
+.victory-message svg {
+    filter: drop-shadow(0 0 12px #ffc107);
+    animation: trophyBounce 1s ease infinite alternate;
+}
+
+.victory-message h3 {
+    font-size: 2.2rem;
+    font-weight: 800;
+    margin: 20px 0 12px;
+    animation: textGlow 2s ease-in-out infinite;
+}
+
+.victory-message p {
+    color: #e0e0e0 !important;
+    -webkit-text-fill-color: #e0e0e0 !important;
+    font-size: 1.2rem;
+    font-weight: 500;
+}
+
+/* Micro-partículas flotantes internas */
+.victory-message .particles {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    pointer-events: none;
+}
+
+.victory-message .particle {
+    position: absolute;
+    width: 6px;
+    height: 6px;
+    background: #ffc107;
+    border-radius: 50%;
+    animation: float 3s infinite ease-in-out;
+    box-shadow: 0 0 10px #ffc107;
+}
+
+.victory-message .particle:nth-child(1) {
+    left: 10%;
+    animation-delay: 0s;
+}
+
+.victory-message .particle:nth-child(2) {
+    left: 30%;
+    animation-delay: 0.5s;
+}
+
+.victory-message .particle:nth-child(3) {
+    left: 50%;
+    animation-delay: 1s;
+}
+
+.victory-message .particle:nth-child(4) {
+    left: 70%;
+    animation-delay: 1.5s;
+}
+
+.victory-message .particle:nth-child(5) {
+    left: 90%;
+    animation-delay: 2s;
+}
+
+/* ==========================================================================
+   📢 TOASTS DE CONTROL / MENSAJES DE ALERTA DE AVANCE
+   ========================================================================== */
+
+.avance-texto {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 16px 24px;
+    border-radius: 14px;
+    font-size: 1.05rem;
+    font-weight: 600;
+    width: 100%;
+    text-align: center;
+}
+
+.toast-info {
+    background: rgba(6, 182, 212, 0.15) !important;
+    border: 1px solid #06b6d4 !important;
+    color: #0cf !important;
+    -webkit-text-fill-color: #0cf !important;
+}
+
+.toast-warning {
+    background: rgba(245, 158, 11, 0.15) !important;
+    border: 1px solid #f59e0b !important;
+    color: #f59e0b !important;
+    -webkit-text-fill-color: #f59e0b !important;
+}
+
+/* ==========================================================================
+   ⏱️ CONTENEDORES ADICIONALES E IFRAMES 
+   ========================================================================== */
+
+.game-card .timer-text {
+    color: #fff !important;
+    text-shadow: 0 0 10px rgba(0, 217, 255, 0.5);
+}
+
+.educaplay-wrapper {
+    position: relative;
+    width: 100%;
+    padding-bottom: 56.25%;
+    height: 0;
+    border-radius: 16px;
+    overflow: hidden;
+    background: #000;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(0, 217, 255, 0.3);
+    margin: 25px 0;
+}
+
+.educaplay-wrapper iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border: none;
+}
+
+/* ==========================================================================
+   🔮 ANIMACIONES (KEYFRAMES COHERENTES)
+   ========================================================================== */
+
+@keyframes scanLine {
+    0% {
+        transform: translateX(-100%);
+    }
+
+    100% {
+        transform: translateX(100%);
+    }
+}
+
+@keyframes gradientShift {
+
+    0%,
+    100% {
+        background-position: 0% 50%;
+    }
+
+    50% {
+        background-position: 100% 50%;
+    }
+}
+
+@keyframes trophyBounce {
+    0% {
+        transform: translateY(0) scale(1);
+    }
+
+    100% {
+        transform: translateY(-10px) scale(1.08);
+    }
+}
+
+@keyframes textGlow {
+
+    0%,
+    100% {
+        text-shadow: 0 0 10px rgba(40, 167, 69, 0.8);
+    }
+
+    50% {
+        text-shadow: 0 0 25px rgba(40, 167, 69, 1);
+    }
+}
+
+@keyframes bounceIn {
+    0% {
+        transform: scale(0.3);
+        opacity: 0;
+    }
+
+    50% {
+        transform: scale(1.05);
+    }
+
+    70% {
+        transform: scale(0.9 mechanism);
+    }
+
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+@keyframes float {
+
+    0%,
+    100% {
+        transform: translateY(0) scale(1);
+        opacity: 0;
+    }
+
+    10%,
+    90% {
+        opacity: 1;
+    }
+
+    100% {
+        transform: translateY(-80px) scale(0);
+        opacity: 0;
+    }
+}
+
+/* ==========================================================================
+   📱 ADAPTACIÓN RESPONSIVA COMPLETA
+   ========================================================================== */
+
+@media (max-width: 768px) {
+    .game-card {
+        padding: 25px 20px;
+        border-radius: 16px;
+    }
+
+    .game-header h2 {
+        font-size: 1.5rem;
+    }
+
+    .victory-message h3 {
+        font-size: 1.8rem;
+    }
+
+    .btn-finish-game {
+        padding: 16px 24px;
+        font-size: 1rem;
+    }
+
+    .game-card .option-btn:hover:not(:disabled) {
+        transform: translateX(4px) !important;
+    }
+}
