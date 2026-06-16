@@ -7,7 +7,7 @@ import "../../Css/modulo_2_contenido_1.css";
 import fbIntroImg from "../../assets/fbIntro.png";
 import fbObjetivosImg from "../../assets/fbObjetivos.png";
 import fbImg from "../../assets/fb.png";
-import fbAlcanceImg from "../../assets/fbalcance.png";
+import fbAlcanceImg from "../../assets/fbAlcance.png";
 import fbMarketImg from "../../assets/fbMarket.png";
 
 const API_URL = "http://localhost:4000";
