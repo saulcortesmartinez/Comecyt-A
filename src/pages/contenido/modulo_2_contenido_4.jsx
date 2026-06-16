@@ -1,8 +1,5 @@
 // src/pages/contenido/modulo_1_contenido_12.jsx
-import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-import axios from "axios";
-import "../../Css/modulo_2_contenido_4.css";
+
 
 
 
@@ -398,18 +395,12 @@ export default function ModuloFacebookSeguridad() {
               </div>
 
               <figure className="media-side">
-                <img
-                  src={Seguridad_fbImg}
-                  className="step-image"
-                  alt="Opciones de seguridad en Facebook"
-                />
-                <img
-                  src={Seguridad2_fbImg}
-                  className="step-image"
-                  alt="Más ajustes de seguridad en Facebook"
-                />
-              </figure>
-            </div>
+        <img src="/Seguridad_fb.png" className="step-image" alt="Opciones de seguridad en Facebook" />
+        <img src="/Seguridad2_fb.png" className="step-image" alt="Más ajustes de seguridad en Facebook" />
+      </figure>
+    </div>
+  </div>
+</article>
 
             <p className="hint">
               Si activas la autenticación en dos pasos, aunque alguien sepa tu
