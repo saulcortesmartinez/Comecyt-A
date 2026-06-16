@@ -1,0 +1,130 @@
+.presentacion {
+  max-width: 1100px;
+  margin: auto;
+  padding: 2.5rem;
+}
+
+/* ENCABEZADO */
+.presentacion-header {
+  text-align: center;
+  margin-bottom: 4rem;
+}
+
+.presentacion-header h1 {
+  font-size: 2.6rem;
+  color: #2e7d32;
+  margin-bottom: 1rem;
+}
+
+.presentacion-header p {
+  font-size: 1.15rem;
+  max-width: 800px;
+  margin: auto;
+  line-height: 1.7;
+}
+
+/* MISIÓN / VISIÓN */
+.mv-section {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 2.5rem;
+  margin-bottom: 4.5rem;
+}
+
+.mv-card {
+  background: #fff;
+  border-radius: 18px;
+  padding: 2.2rem;
+  border-top: 6px solid #2e7d32;
+  box-shadow: 0 14px 30px rgba(0, 0, 0, 0.08);
+  transition: transform 0.4s ease;
+}
+
+.mv-card:hover {
+  transform: translateY(-6px);
+}
+
+.mv-card h2 {
+  color: #2e7d32;
+  margin-bottom: 1rem;
+}
+
+/* VALORES */
+.valores-section {
+  background: #f4f7f6;
+  border-radius: 24px;
+  padding: 3.2rem 2rem;
+}
+
+.valores-section h2 {
+  text-align: center;
+  color: #2e7d32;
+  margin-bottom: 3rem;
+}
+
+.valores-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2rem;
+}
+
+.valor-card {
+  background: #fff;
+  padding: 1.8rem;
+  border-radius: 16px;
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.07);
+  transition: all 0.35s ease;
+}
+
+.valor-card:hover {
+  transform: translateY(-8px) scale(1.02);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.12);
+}
+
+.valor-card h3 {
+  color: #2e7d32;
+  margin-bottom: 0.6rem;
+}
+
+/* Centrar los últimos */
+.valor-card.center {
+  grid-column: span 1;
+  justify-self: center;
+}
+
+/* ANIMACIONES SCROLL */
+.reveal {
+  opacity: 0;
+  transform: translateY(30px) scale(0.95);
+  transition: all 0.9s ease;
+}
+
+.reveal.left {
+  transform: translateX(-40px) scale(0.95);
+}
+
+.reveal.right {
+  transform: translateX(40px) scale(0.95);
+}
+
+.reveal.show {
+  opacity: 1;
+  transform: translate(0) scale(1);
+}
+
+/* RESPONSIVE */
+@media (max-width: 900px) {
+  .valores-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 600px) {
+  .valores-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .presentacion-header h1 {
+    font-size: 2rem;
+  }
+}

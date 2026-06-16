@@ -1,0 +1,200 @@
+/* src/Components/StarBorder.css */
+
+.star-border-container {
+    display: inline-block;
+    /* Permite que el botón tome el ancho de su contenido */
+    position: relative;
+    border-radius: 999px;
+    /* Borde muy redondeado para botones */
+    overflow: hidden;
+    padding: 0;
+    /* Quitamos el padding aquí, se maneja en inner-content */
+    border: none;
+    /* Quitamos el borde nativo del botón */
+    cursor: pointer;
+    box-shadow: 0 14px 30px rgba(0, 0, 0, 0.5);
+    /* Sombra que ya tenías */
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+    /* Transiciones para el hover */
+}
+
+/* Hover effects */
+.star-border-container:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 18px 35px rgba(0, 0, 0, 0.6);
+}
+
+.star-border-container:active {
+    transform: translateY(0);
+    box-shadow: 0 10px 22px rgba(0, 0, 0, 0.55);
+}
+
+.border-gradient-bottom {
+    position: absolute;
+    width: 300%;
+    height: 50%;
+    opacity: 0.7;
+    /* Opacidad para que no opaque el contenido */
+    bottom: -12px;
+    right: -250%;
+    /* Ajuste inicial para la animación */
+    border-radius: 50%;
+    animation: star-movement-bottom linear infinite alternate;
+    z-index: 0;
+    /* Aseguramos que esté detrás del contenido */
+}
+
+.border-gradient-top {
+    position: absolute;
+    opacity: 0.7;
+    /* Opacidad para que no opaque el contenido */
+    width: 300%;
+    height: 50%;
+    top: -12px;
+    left: -250%;
+    /* Ajuste inicial para la animación */
+    border-radius: 50%;
+    animation: star-movement-top linear infinite alternate;
+    z-index: 0;
+    /* Aseguramos que esté detrás del contenido */
+}
+
+.inner-content {
+    position: relative;
+    /* Aquí re-aplicamos los estilos de los botones */
+    background: linear-gradient(135deg, #127437, #0c5a28);
+    /* Fondo del botón verde */
+    color: #ffffff;
+    /* Color del texto blanco */
+    font-size: 0.98rem;
+    /* Tamaño de fuente */
+    font-weight: 600;
+    /* Peso de fuente */
+    padding: 11px 18px;
+    /* Padding interior del botón */
+    border-radius: 999px;
+    /* Borde redondeado */
+    white-space: nowrap;
+    /* Evita que el texto del botón se rompa */
+    display: block;
+    /* Para que ocupe todo el espacio del contenedor */
+    z-index: 1;
+    /* Aseguramos que esté por encima de la animación */
+    transition: background 0.15s ease;
+    /* Transición para el hover de fondo */
+}
+
+/* Hover para el contenido interno del botón verde */
+.star-border-container:hover .inner-content {
+    background: linear-gradient(135deg, #179744, #0d6b2f);
+}
+
+/* Estilos para el botón de cancelar (para que sea diferente) */
+.star-border-container.btn-cancel-star .inner-content {
+    background: transparent;
+    /* Fondo transparente */
+    color: #f5fff8;
+    /* Color del texto */
+    border: 1px solid rgba(245, 255, 248, 0.75);
+    /* Borde blanco semi-transparente */
+    padding: 9px 18px;
+    /* Padding ajustado para el borde */
+    font-size: 0.92rem;
+    /* Tamaño de fuente */
+    font-weight: 500;
+    /* Peso de fuente */
+}
+
+.star-border-container.btn-cancel-star:hover .inner-content {
+    background: rgba(245, 255, 248, 0.1);
+    /* Fondo levemente oscuro al hacer hover */
+}
+
+/* Estilos para el link de registro (para que sea un link, no un botón completo) */
+.star-border-container.link-button-star {
+    display: inline-block;
+    /* Para que se comporte como un link inline */
+    box-shadow: none;
+    /* Sin sombra para el link */
+    background: none;
+    /* Sin fondo */
+    border-radius: 0;
+    /* Sin bordes redondeados */
+    transition: none;
+    /* Sin transiciones de transform/shadow */
+}
+
+.star-border-container.link-button-star:hover {
+    transform: none;
+    /* Sin transform en hover */
+    box-shadow: none;
+    /* Sin shadow en hover */
+}
+
+.star-border-container.link-button-star .border-gradient-bottom,
+.star-border-container.link-button-star .border-gradient-top {
+    display: none;
+    /* Ocultamos la animación del borde para el link */
+}
+
+.star-border-container.link-button-star .inner-content {
+    background: none;
+    /* Sin fondo */
+    border: none;
+    /* Sin borde */
+    padding: 0;
+    /* Sin padding */
+    text-decoration: underline;
+    /* Subrayado */
+    color: #b6ffcf;
+    /* Color del link */
+    font-size: 0.9rem;
+    /* Tamaño de fuente */
+    font-weight: normal;
+    /* Peso de fuente normal */
+}
+
+.star-border-container.link-button-star:hover .inner-content {
+    color: #ffffff;
+    /* Color de hover */
+    background: none;
+    /* Sin fondo en hover */
+}
+
+@keyframes star-movement-bottom {
+    0% {
+        transform: translate(0%, 0%);
+        opacity: 0.8;
+        /* Ajustado para que las estrellas sean más visibles al inicio */
+    }
+
+    50% {
+        opacity: 0;
+        /* Se desvanecen en el medio */
+    }
+
+    100% {
+        transform: translate(-100%, 0%);
+        opacity: 0.8;
+        /* Aparecen al final del movimiento */
+    }
+}
+
+@keyframes star-movement-top {
+    0% {
+        transform: translate(0%, 0%);
+        opacity: 0.8;
+        /* Ajustado para que las estrellas sean más visibles al inicio */
+    }
+
+    50% {
+        opacity: 0;
+        /* Se desvanecen en el medio */
+    }
+
+    100% {
+        transform: translate(100%, 0%);
+        opacity: 0.8;
+        /* Aparecen al final del movimiento */
+    }
+}

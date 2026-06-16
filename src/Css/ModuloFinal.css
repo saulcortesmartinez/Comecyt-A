@@ -1,0 +1,259 @@
+/* src/Css/ModuloFinal.css */
+.modulo-final-container {
+    min-height: 100vh;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 40px 20px;
+    position: relative;
+    overflow: hidden;
+}
+
+.confeti-animation {
+    position: absolute;
+    font-size: 3rem;
+    animation: float 3s ease-in-out infinite;
+    top: 20px;
+}
+
+@keyframes float {
+
+    0%,
+    100% {
+        transform: translateY(0px);
+    }
+
+    50% {
+        transform: translateY(-20px);
+    }
+}
+
+.graduacion-card {
+    background: white;
+    border-radius: 24px;
+    padding: 60px 40px;
+    max-width: 900px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    text-align: center;
+    animation: slideUp 0.6s ease-out;
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.trofeo-icon {
+    margin-bottom: 20px;
+    animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+
+    0%,
+    100% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.1);
+    }
+}
+
+.titulo-graduacion {
+    font-size: 2.5rem;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 30px;
+    font-weight: 800;
+}
+
+.texto-principal {
+    font-size: 1.3rem;
+    color: #374151;
+    margin-bottom: 20px;
+    font-weight: 600;
+}
+
+.texto-agradecimiento-largo {
+    margin: 30px 0;
+    padding: 25px;
+    background: #f9fafb;
+    border-left: 4px solid #00ffcc;
+    border-radius: 12px;
+    text-align: justify;
+    line-height: 1.9;
+    font-size: 1.05rem;
+    color: #374151;
+}
+
+.texto-agradecimiento-largo p {
+    margin: 0;
+}
+
+.logros-lista {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+    margin: 30px 0;
+}
+
+.logro-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 15px;
+    background: #f0fdf4;
+    border-radius: 12px;
+    font-weight: 600;
+    color: #15803d;
+}
+
+.firma-agora {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin: 30px 0;
+    font-size: 1.1rem;
+    color: #667eea;
+    font-weight: 600;
+}
+
+.acciones-finales {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-top: 40px;
+}
+
+.btn-descargar-certificado {
+    padding: 18px 32px;
+    background: linear-gradient(135deg, #22c55e 0%, #15803d 100%);
+    color: white;
+    border: none;
+    border-radius: 12px;
+    font-size: 1.1rem;
+    font-weight: bold;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(34, 197, 94, 0.4);
+}
+
+.btn-descargar-certificado:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(34, 197, 94, 0.5);
+}
+
+.btn-descargar-certificado:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.cert-descargado-msg {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 18px;
+    background: #dcfce7;
+    border-radius: 12px;
+    color: #15803d;
+    font-weight: 600;
+}
+
+.btn-volver-inicio {
+    padding: 14px 32px;
+    background: #f3f4f6;
+    color: #374151;
+    border: 2px solid #d1d5db;
+    border-radius: 12px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: all 0.3s ease;
+}
+
+.btn-volver-inicio:hover {
+    background: #e5e7eb;
+    transform: translateY(-2px);
+}
+
+.stats-finales {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    margin-top: 40px;
+    padding-top: 30px;
+    border-top: 2px solid #f3f4f6;
+}
+
+.stat-final h3 {
+    font-size: 2rem;
+    color: #667eea;
+    margin: 0;
+}
+
+.stat-final p {
+    color: #6b7280;
+    margin: 5px 0 0 0;
+}
+
+.modulo-final-loading {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+}
+
+.spinner {
+    width: 50px;
+    height: 50px;
+    border: 4px solid #f3f4f6;
+    border-top: 4px solid #667eea;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+@media (max-width: 768px) {
+    .logros-lista {
+        grid-template-columns: 1fr;
+    }
+
+    .stats-finales {
+        grid-template-columns: 1fr;
+    }
+
+    .titulo-graduacion {
+        font-size: 1.8rem;
+    }
+}

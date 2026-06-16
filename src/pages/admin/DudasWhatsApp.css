@@ -1,0 +1,241 @@
+.admin-dudas {
+    padding: 24px;
+    background: #f5f7fa;
+    min-height: 100vh;
+    font-family: 'Segoe UI', sans-serif;
+}
+
+.admin-header h1 {
+    color: #0f4d2d;
+    margin-bottom: 4px;
+    font-size: 2rem;
+}
+
+.admin-header p {
+    color: #666;
+    margin-bottom: 24px;
+    font-size: 1rem;
+}
+
+.stats-container {
+    display: flex;
+    gap: 16px;
+    margin-bottom: 24px;
+    flex-wrap: wrap;
+}
+
+.stat-card {
+    background: white;
+    padding: 20px 32px;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    text-align: center;
+    border-top: 4px solid;
+    flex: 1;
+    min-width: 150px;
+}
+
+.stat-card.nueva {
+    border-color: #ff9800;
+}
+
+.stat-card.respondida {
+    border-color: #2196f3;
+}
+
+.stat-card.cerrada {
+    border-color: #4caf50;
+}
+
+.stat-number {
+    font-size: 2.5rem;
+    font-weight: 800;
+    color: #0f4d2d;
+    display: block;
+}
+
+.stat-card p {
+    margin: 8px 0 0 0;
+    color: #666;
+    font-weight: 600;
+}
+
+.filtros {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 16px;
+    flex-wrap: wrap;
+}
+
+.filtros button {
+    padding: 10px 20px;
+    border: 2px solid #ddd;
+    background: white;
+    border-radius: 24px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.2s;
+}
+
+.filtros button:hover {
+    border-color: #0f4d2d;
+    transform: translateY(-1px);
+}
+
+.filtros button.active {
+    background: #0f4d2d;
+    color: white;
+    border-color: #0f4d2d;
+}
+
+.tabla-container {
+    background: white;
+    border-radius: 12px;
+    overflow-x: auto;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.tabla-dudas {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 900px;
+}
+
+.tabla-dudas th {
+    background: #0f4d2d;
+    color: white;
+    padding: 14px 12px;
+    text-align: left;
+    font-size: 0.9rem;
+    font-weight: 600;
+}
+
+.tabla-dudas td {
+    padding: 14px 12px;
+    border-bottom: 1px solid #eee;
+    vertical-align: middle;
+}
+
+.fila-nueva {
+    background: #fff8e1;
+}
+
+.fila-respondida {
+    background: #e3f2fd;
+}
+
+.fila-cerrada {
+    opacity: 0.7;
+}
+
+.badge-estado {
+    padding: 6px 14px;
+    border-radius: 12px;
+    font-size: 0.8rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    display: inline-block;
+}
+
+.badge-estado.nueva {
+    background: #ff9800;
+    color: white;
+}
+
+.badge-estado.respondida {
+    background: #2196f3;
+    color: white;
+}
+
+.badge-estado.cerrada {
+    background: #4caf50;
+    color: white;
+}
+
+.badge-modulo {
+    background: #e8f5e9;
+    color: #0f4d2d;
+    padding: 5px 10px;
+    border-radius: 6px;
+    font-size: 0.85rem;
+    font-weight: 600;
+}
+
+.link-wa {
+    color: #25D366;
+    text-decoration: none;
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.link-wa:hover {
+    text-decoration: underline;
+}
+
+.mensaje-col {
+    max-width: 350px;
+    white-space: pre-wrap;
+    line-height: 1.5;
+}
+
+.acciones {
+    display: flex;
+    gap: 8px;
+}
+
+.btn-responder {
+    background: #2196f3;
+    color: white;
+    border: none;
+    padding: 8px 14px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.85rem;
+    font-weight: 600;
+    transition: all 0.2s;
+}
+
+.btn-responder:hover {
+    background: #1976d2;
+    transform: translateY(-1px);
+}
+
+.btn-cerrar {
+    background: #4caf50;
+    color: white;
+    border: none;
+    padding: 8px 14px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.85rem;
+    font-weight: 600;
+    transition: all 0.2s;
+}
+
+.btn-cerrar:hover {
+    background: #388e3c;
+    transform: translateY(-1px);
+}
+
+.texto-finalizado {
+    color: #4caf50;
+    font-weight: 600;
+    font-size: 0.9rem;
+}
+
+.sin-dudas {
+    text-align: center;
+    padding: 60px;
+    color: #999;
+    font-size: 1.1rem;
+}
+
+.admin-loading {
+    text-align: center;
+    padding: 60px;
+    font-size: 1.2rem;
+    color: #0f4d2d;
+    font-weight: 600;
+}

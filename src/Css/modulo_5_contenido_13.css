@@ -1,0 +1,334 @@
+/* ===== CONTENEDOR DEL JUEGO ===== */
+.game-card {
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+    border-radius: 24px;
+    padding: 40px;
+    box-shadow:
+        0 20px 60px rgba(0, 0, 0, 0.3),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    margin: 30px 0;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Efecto de luz superior */
+.game-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, #00d9ff, transparent);
+    animation: scanLine 3s linear infinite;
+}
+
+.game-header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.game-header h2 {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    color: #ff0000;
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 12px;
+    text-shadow: 0 0 20px rgba(255, 0, 0, 0.5);
+}
+
+.game-header p {
+    color: #b8c5d6;
+    font-size: 1.1rem;
+    line-height: 1.6;
+}
+
+/* ===== WRAPPER DEL IFRAME ===== */
+.educaplay-wrapper {
+    position: relative;
+    width: 100%;
+    padding-bottom: 56.25%;
+    height: 0;
+    border-radius: 16px;
+    overflow: hidden;
+    background: #000;
+    box-shadow:
+        0 10px 40px rgba(0, 0, 0, 0.5),
+        0 0 0 1px rgba(0, 217, 255, 0.3);
+    margin: 25px 0;
+}
+
+.educaplay-wrapper iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border: none;
+}
+
+/* ===== BOTÓN TERMINAR JUEGO ===== */
+.btn-finish-game {
+    width: 100%;
+    padding: 18px 32px;
+    background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+    color: #fff;
+    border: none;
+    border-radius: 12px;
+    font-size: 1.2rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow:
+        0 4px 15px rgba(40, 167, 69, 0.4),
+        inset 0 1px 0 rgba(255, 255, 255, 0.2);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-top: 20px;
+}
+
+.btn-finish-game:hover {
+    transform: translateY(-2px);
+    box-shadow:
+        0 8px 25px rgba(40, 167, 69, 0.6),
+        inset 0 1px 0 rgba(255, 255, 255, 0.3);
+    background: linear-gradient(135deg, #218838 0%, #1aa179 100%);
+}
+
+.btn-finish-game:active {
+    transform: translateY(0);
+}
+
+/* ===== MENSAJE DE VICTORIA PRO ===== */
+.victory-message {
+    position: relative;
+    text-align: center;
+    padding: 40px 30px;
+    background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+    border: 3px solid transparent;
+    border-radius: 20px;
+    margin: 30px 0;
+    overflow: hidden;
+    animation: bounceIn 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    box-shadow:
+        0 0 30px rgba(40, 167, 69, 0.4),
+        0 0 60px rgba(0, 123, 255, 0.3),
+        inset 0 0 20px rgba(255, 255, 255, 0.05);
+}
+
+.victory-message::before {
+    content: '';
+    position: absolute;
+    top: -3px;
+    left: -3px;
+    right: -3px;
+    bottom: -3px;
+    background: linear-gradient(45deg, #28a745, #007bff, #ffc107, #28a745);
+    background-size: 300% 300%;
+    border-radius: 20px;
+    z-index: -1;
+    animation: gradientShift 3s ease infinite;
+}
+
+.victory-message::after {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+    transform: rotate(45deg);
+    animation: shine 2s infinite;
+}
+
+.victory-message svg {
+    filter: drop-shadow(0 0 10px #ffc107);
+    animation: trophyBounce 1s ease infinite alternate;
+}
+
+.victory-message h3 {
+    color: #fff;
+    font-size: 2.2rem;
+    font-weight: 800;
+    margin: 20px 0 12px;
+    text-shadow:
+        0 0 10px rgba(40, 167, 69, 0.8),
+        0 0 20px rgba(40, 167, 69, 0.5);
+    animation: textGlow 2s ease-in-out infinite;
+}
+
+.victory-message p {
+    color: #e0e0e0;
+    font-size: 1.2rem;
+    font-weight: 500;
+    margin: 0;
+}
+
+.victory-message .particles {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    pointer-events: none;
+}
+
+.victory-message .particle {
+    position: absolute;
+    width: 6px;
+    height: 6px;
+    background: #ffc107;
+    border-radius: 50%;
+    animation: float 3s infinite ease-in-out;
+    box-shadow: 0 0 10px #ffc107;
+}
+
+.victory-message .particle:nth-child(1) {
+    left: 10%;
+    animation-delay: 0s;
+}
+
+.victory-message .particle:nth-child(2) {
+    left: 30%;
+    animation-delay: 0.5s;
+}
+
+.victory-message .particle:nth-child(3) {
+    left: 50%;
+    animation-delay: 1s;
+}
+
+.victory-message .particle:nth-child(4) {
+    left: 70%;
+    animation-delay: 1.5s;
+}
+
+.victory-message .particle:nth-child(5) {
+    left: 90%;
+    animation-delay: 2s;
+}
+
+@keyframes scanLine {
+    0% {
+        transform: translateX(-100%);
+    }
+
+    100% {
+        transform: translateX(100%);
+    }
+}
+
+@keyframes bounceIn {
+    0% {
+        transform: scale(0) rotate(-180deg);
+        opacity: 0;
+    }
+
+    50% {
+        transform: scale(1.1) rotate(10deg);
+    }
+
+    70% {
+        transform: scale(0.95) rotate(-5deg);
+    }
+
+    100% {
+        transform: scale(1) rotate(0deg);
+        opacity: 1;
+    }
+}
+
+@keyframes gradientShift {
+
+    0%,
+    100% {
+        background-position: 0% 50%;
+    }
+
+    50% {
+        background-position: 100% 50%;
+    }
+}
+
+@keyframes shine {
+    0% {
+        transform: translateX(-100%) translateY(-100%) rotate(45deg);
+    }
+
+    100% {
+        transform: translateX(100%) translateY(100%) rotate(45deg);
+    }
+}
+
+@keyframes trophyBounce {
+    0% {
+        transform: translateY(0) scale(1);
+    }
+
+    100% {
+        transform: translateY(-10px) scale(1.1);
+    }
+}
+
+@keyframes textGlow {
+
+    0%,
+    100% {
+        text-shadow: 0 0 10px rgba(40, 167, 69, 0.8), 0 0 20px rgba(40, 167, 69, 0.5);
+    }
+
+    50% {
+        text-shadow: 0 0 20px rgba(40, 167, 69, 1), 0 0 40px rgba(40, 167, 69, 0.8);
+    }
+}
+
+@keyframes float {
+
+    0%,
+    100% {
+        transform: translateY(0) scale(1);
+        opacity: 0;
+    }
+
+    10% {
+        opacity: 1;
+    }
+
+    90% {
+        opacity: 1;
+    }
+
+    100% {
+        transform: translateY(-100px) scale(0);
+        opacity: 0;
+    }
+}
+
+@media (max-width: 768px) {
+    .game-card {
+        padding: 25px 20px;
+        border-radius: 16px;
+    }
+
+    .game-header h2 {
+        font-size: 1.5rem;
+    }
+
+    .victory-message h3 {
+        font-size: 1.8rem;
+    }
+
+    .btn-finish-game {
+        padding: 16px 24px;
+        font-size: 1rem;
+    }
+}
+
+.game-card .timer-text {
+    color: #fff !important;
+    text-shadow: 0 0 10px rgba(0, 217, 255, 0.5);
+}

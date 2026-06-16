@@ -1,0 +1,174 @@
+/* src/Css/InicioDocente.css */
+.docente-page {
+  padding: 20px 24px;
+}
+
+.docente-header h1 {
+  font-size: 1.7rem;
+  margin-bottom: 4px;
+}
+
+.docente-sub {
+  color: #6c727f;
+  font-size: 0.95rem;
+}
+
+/* Tarjetas de resumen */
+.doc-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+  gap: 16px;
+  margin: 18px 0 24px;
+}
+
+.doc-card {
+  background: #ffffff;
+  border-radius: 14px;
+  padding: 14px 16px;
+  box-shadow: 0 8px 18px rgba(15, 23, 42, 0.06);
+  border: 1px solid #e5e7eb;
+}
+
+.stat-card {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.stat-label {
+  font-size: 0.85rem;
+  color: #6b7280;
+}
+
+.stat-value {
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: #16a34a;
+}
+
+/* layout central */
+.docente-main-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(0, 1.3fr);
+  gap: 18px;
+}
+
+@media (max-width: 960px) {
+  .docente-main-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Top 3 */
+.top-section .section-title,
+.progress-section .section-title {
+  font-size: 1.05rem;
+  margin-bottom: 12px;
+}
+
+.top-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.top-list li {
+  display: grid;
+  grid-template-columns: 40px 1fr auto;
+  align-items: center;
+  padding: 8px 0;
+  border-bottom: 1px dashed #e5e7eb;
+  font-size: 0.95rem;
+}
+
+.top-list li:last-child {
+  border-bottom: none;
+}
+
+.top-rank {
+  font-weight: 600;
+  color: #6b7280;
+}
+
+.top-name {
+  font-weight: 500;
+}
+
+.top-score {
+  font-weight: 600;
+  color: #2563eb;
+}
+
+/* Progreso por alumno */
+.progress-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.progress-item {
+  display: grid;
+  grid-template-columns: 1.8fr 3fr auto;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.9rem;
+}
+
+.progress-label {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.progress-bar {
+  height: 10px;
+  border-radius: 999px;
+  background: #e5e7eb;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  border-radius: 999px;
+  background: #22c55e;
+  transition: width 0.25s ease;
+}
+
+.progress-value {
+  font-weight: 600;
+  color: #111827;
+}
+
+.empty-msg {
+  font-size: 0.9rem;
+  color: #6b7280;
+}
+
+.error-msg {
+  color: #b91c1c;
+}
+
+/* Lista de barras de progreso */
+.progress-section .progress-list {
+  max-height: 260px;      /* ajusta la altura que quieras */
+  overflow-y: auto;
+  margin: 0;
+  padding-right: 8px;
+}
+
+/* Scrollbar discreto (opcional) */
+.progress-section .progress-list::-webkit-scrollbar {
+  width: 6px;
+}
+
+.progress-section .progress-list::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.progress-section .progress-list::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.18);
+  border-radius: 4px;
+}
