@@ -4,6 +4,9 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import "../../Css/modulo_2_contenido_4.css";
 
+import imagen from '/src/assets/publicacion_fb.png'; 
+// o si es relativo
+import imagen from '../../assets/publicacion_fb.png';
 const API_URL = "http://localhost:4000";
 const MODULO_ID = 2; // ✅ Es módulo 2
 const NUM_CONTENIDO = 4;
