@@ -4,16 +4,6 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import "../../Css/modulo_4_contenido_2.css";
 
-import igPaso1Img from "../../assets/igPaso1.png";
-import igPaso2Img from "../../assets/igPaso2.png";
-import igPaso3Img from "../../assets/igPaso3.png";
-import igPaso4Img from "../../assets/igPaso4.png";
-import igPaso5Img from "../../assets/igPaso5.png";
-import igPaso6Img from "../../assets/igPaso6.png";
-import igUsuarioBioImg from "../../assets/igUsuarioBio.png";
-import igFotoPerfilImg from "../../assets/igFotoPerfil.png";
-import igEnlacesContactoImg from "../../assets/igEnlacesContacto.png";
-import igPrivacidadImg from "../../assets/igPrivacidad.png";
 
 const API_URL = "http://localhost:4000";
 const MODULO_ID = 4; // ✅ Es módulo 4

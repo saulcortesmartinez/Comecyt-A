@@ -4,11 +4,6 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import "@/Css/modulo_3_contenido_6 copy.css";
 
-import wImagenPerfilImg from "../../assets/wImagenPerfil.png";
-import WImagenMensajesImg from "../../assets/WImagenMensajes.png";
-import ImagenEtiquetasImg from "../../assets/ImagenEtiquetas.png";
-import ImagenEstadisticasImg from "../../assets/ImagenEstadisticas.png";
-import ImagenCatalogoImg from "../../assets/ImagenCatalogo.png";
 
 const API_URL = "http://localhost:4000";
 const MODULO_ID = 3; // ✅ Es módulo 3

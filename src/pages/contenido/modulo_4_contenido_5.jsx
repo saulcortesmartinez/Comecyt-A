@@ -4,14 +4,7 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import "../../Css/modulo_4_contenido_5.css";
 
-import igBuscarPaso1 from "../../assets/igBuscarPaso1.png";
-import igBuscarPaso2 from "../../assets/igBuscarPaso2.png";
-import igBuscarPaso3 from "../../assets/igBuscarPaso3.png";
 
-import igRecomendPaso1 from "../../assets/igRecomendPaso1.png";
-import igRecomendPaso2 from "../../assets/igRecomendPaso2.png";
-import igInteraccionPaso1 from "../../assets/igInteraccionPaso1.png";
-import igInteraccionPaso2 from "../../assets/igInteraccionPaso2.png";
 
 const API_URL = "http://localhost:4000";
 const MODULO_ID = 4; // ✅ Es módulo 4

@@ -4,8 +4,6 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import "../../Css/modulo_4_contenido_1.css";
 
-import igIntroImg from "../../assets/igIntro.png";
-import igPopularidadImg from "../../assets/igPopularidad.png";
 
 const API_URL = "http://localhost:4000";
 const MODULO_ID = 4; // ✅ Es módulo 4

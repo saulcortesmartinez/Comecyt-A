@@ -4,11 +4,6 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import "../../Css/modulo_2_contenido_1.css";
 
-import fbIntroImg from "../../assets/fbIntro.png";
-import fbObjetivosImg from "../../assets/fbObjetivos.png";
-import fbImg from "../../assets/fb.png";
-import fbAlcanceImg from "../../assets/fbalcance.png";
-import fbMarketImg from "../../assets/fbmarket.png";
 
 const API_URL = "http://localhost:4000";
 const MODULO_ID = 2; // ✅ Es módulo 2

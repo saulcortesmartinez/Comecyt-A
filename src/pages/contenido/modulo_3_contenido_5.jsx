@@ -4,16 +4,6 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import "@/Css/modulo_3_contenido_5.css";
 
-import wBusinessIntroImg from "../../assets/wBusinessIntro.png";
-import wBusinessBeneficiosImg from "../../assets/wBusinessBeneficios.png";
-import wBusinessImpactoImg from "../../assets/wBusinessImpacto.png";
-import wBusinessPaso1 from "../../assets/wBusinessPaso1.png";
-import wBusinessPaso2 from "../../assets/wBusinessPaso2.png";
-import wBusinessPaso3 from "../../assets/wBusinessPaso3.png";
-import whatsappRegistroPaso3 from "../../assets/whatsappRegistroPaso3.png";
-import wBusinessPaso5 from "../../assets/wBusinessPaso5.jpg";
-import wBusinessPaso6 from "../../assets/wBusinessPaso6.png";
-import wBusinessPaso7 from "../../assets/wBusinessPaso7.png";
 
 const API_URL = "http://localhost:4000";
 const MODULO_ID = 3; // ✅ Es módulo 3

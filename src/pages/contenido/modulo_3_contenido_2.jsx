@@ -5,16 +5,6 @@ import axios from "axios";
 import "../../Css/modulo_3_contenido_2.css";
 
 // 🔹 Imágenes de ejemplo para los pasos (1–6)
-import whatsappRegistroPaso1 from "../../assets/whatsappRegistroPaso1.png";
-import whatsappRegistroPaso2 from "../../assets/whatsappRegistroPaso2.png";
-import whatsappRegistroPaso3 from "../../assets/whatsappRegistroPaso3.png";
-import whatsappRegistroPaso4 from "../../assets/whatsappRegistroPaso4.png";
-import whatsappRegistroPaso5 from "../../assets/whatsappRegistroPaso5.png";
-import whatsappRegistroPaso6 from "../../assets/whatsappRegistroPaso6.png";
-import whatsappComunicacionImg from "../../assets/whatsappComunicacion.png";
-import whatsappLlamadasImg from "../../assets/whatsappLlamadas.png";
-import whatsappGruposImg from "../../assets/whatsappGrupos.png";
-import whatsappEstadosImg from "../../assets/whatsappEstados.png";
 
 const API_URL = "http://localhost:4000";
 const MODULO_ID = 3; // ✅ Es módulo 3

@@ -4,17 +4,6 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import "../../Css/modulo_2_contenido_2.css";
 
-import conexionImg from "../../assets/conexion.png";
-import publicacionesImg from "../../assets/publicaciones.png";
-import messengerImg from "../../assets/messenger.png";
-import paso1FbImg from "../../assets/Paso1_fb.png";
-import paso2FbImg from "../../assets/Paso2_fb.png";
-import paso3FbImg from "../../assets/Paso3_fb.png";
-import paso4FbImg from "../../assets/Paso4_fb.png";
-import paso5FbImg from "../../assets/Paso5_fb.png";
-import paso6FbImg from "../../assets/Paso6_fb.png";
-import paso7FbImg from "../../assets/Paso7_fb.png";
-import paso8FbImg from "../../assets/Paso8_fb.png";
 
 const API_URL = "http://localhost:4000";
 const MODULO_ID = 2;

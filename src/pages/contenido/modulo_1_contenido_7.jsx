@@ -4,12 +4,6 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import "../../Css/modulo_1_contenido_7.css";
 
-import fotoPerfilImg from "../../assets/foto-perfil.png";
-import temaImg from "../../assets/tema.png";
-import firmaImg from "../../assets/firma.png";
-import notificacionesImg from "../../assets/notificaciones.png";
-import notificaciones2Img from "../../assets/notificaciones2.png";
-import seguridadImg from "../../assets/seguridad.png";
 
 const API_URL = "http://localhost:4000";
 const MODULO_ID = 1;

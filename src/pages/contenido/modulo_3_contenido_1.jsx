@@ -4,10 +4,6 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import "../../Css/modulo_3_contenido_1.css";
 
-import whatsappIntroImg from "../../assets/whatsappIntro.png";
-import whatsappWorldImg from "../../assets/whatsappWorld.png";
-import whatsappPersonalBusinessImg from "../../assets/whatsappPersonalBusiness.png";
-import whatsappSecurityImg from "../../assets/whatsappSecurity.png";
 
 const API_URL = "http://localhost:4000";
 const MODULO_ID = 3; // ✅ Es módulo 3
