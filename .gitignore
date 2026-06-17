@@ -1,7 +1,9 @@
-node_modules
-dist
-*.png
-*.jpg
-*.pdf
+node_modules/
+dist/
+.vite/
 .DS_Store
-**/ .DS_Store
+.env
+.env.save
+.env.local
+*.sql
+*.pdf
