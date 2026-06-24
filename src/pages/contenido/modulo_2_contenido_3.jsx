@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import "../../Css/modulo_2_contenido_3.css";
+
 import gruposImg from "../../assets/Grupos_fb.png";
 import paginasImg from "../../assets/Paginas_fb.png";
 import eventosImg from "../../assets/Eventos_fb.png";
