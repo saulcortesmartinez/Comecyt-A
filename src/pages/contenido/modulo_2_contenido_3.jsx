@@ -19,6 +19,7 @@ export default function ModuloFacebookGruposPaginasEventos() {
     type: "info",
   });
 
+  
   const [tiempoRestante, setTiempoRestante] = useState(120);
   const [timerTerminado, setTimerTerminado] = useState(false);
   const [scrolledBottom, setScrolledBottom] = useState(false);
