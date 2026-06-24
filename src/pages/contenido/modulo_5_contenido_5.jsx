@@ -101,7 +101,8 @@ const Modulo5Contenido5 = () => {
     }, []);
 
     const handleCellClick = (row, col) => {
-        if (showResult || (timeLeft === 0 && !modoLibre)) return;
+        if (showResult) return;
+        if (timeLeft === 0 && !modoLibre) return;
         const cellKey = `${row}-${col}`;
         const newSelected = [...selectedCells, cellKey];
         setSelectedCells(newSelected);
@@ -164,7 +165,11 @@ const Modulo5Contenido5 = () => {
     const isCellFound = (r, c) => foundWords.some(w => wordPositions[w]?.some(([rr, cc]) => rr === r && cc === c));
 
     const aprobo = foundWords.length >= CALIFICACION_MINIMA;
-    const puedeAvanzar = modoLibre || (showResult && aprobo && scrolledBottom);
+
+    // ✅ CAMBIO: Ahora siempre está en true para habilitar el botón
+    const puedeAvanzar = true;
+
+    const juegoBloqueado = showResult || (timeLeft === 0 && !modoLibre);
 
     if (!progresoCargado) return <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh', color: '#06b6d4' }}>Cargando reto...</div>;
 
@@ -179,7 +184,9 @@ const Modulo5Contenido5 = () => {
 
                     <div className="mb-6 text-center">
                         <div className={`inline-block px-6 py-3 rounded-xl ${timeLeft < 30 && !modoLibre ? 'bg-red-500/20 border-red-400' : 'bg-cyan-500/20 border-cyan-400'} border-2`}>
-                            <p className="text-white text-2xl font-bold">⏰ {modoLibre ? "Modo Repaso 🔄" : formatTime(timeLeft)}</p>
+                            <p className="text-white text-2xl font-bold" style={{ textShadow: '0 0 10px rgba(0, 217, 255, 0.5)' }}>
+                                ⏰ {modoLibre ? "Modo Repaso 🔄" : formatTime(timeLeft)}
+                            </p>
                         </div>
                     </div>
 
@@ -200,7 +207,7 @@ const Modulo5Contenido5 = () => {
                                         {row.map((letter, colIdx) => (
                                             <button key={colIdx}
                                                 onClick={() => handleCellClick(rowIdx, colIdx)}
-                                                disabled={showResult || (timeLeft === 0 && !modoLibre)}
+                                                disabled={juegoBloqueado}
                                                 className={`grid-cell ${isCellFound(rowIdx, colIdx) ? 'found' : isCellSelected(rowIdx, colIdx) ? 'selected' : ''}`}
                                             >{letter}</button>
                                         ))}
@@ -218,6 +225,13 @@ const Modulo5Contenido5 = () => {
 
                     {showResult && (
                         <div className="victory-message">
+                            <div className="particles">
+                                <div className="particle"></div>
+                                <div className="particle"></div>
+                                <div className="particle"></div>
+                                <div className="particle"></div>
+                                <div className="particle"></div>
+                            </div>
                             {aprobo ? (
                                 <>
                                     <Trophy size={80} color="#ffc107" />
@@ -249,14 +263,17 @@ const Modulo5Contenido5 = () => {
                         <div className="avance-mensaje">
                             {timerActive && !showResult && <p className="avance-texto toast-info">⏰ {formatTime(timeLeft)} para encontrar las palabras.</p>}
                             {showResult && !aprobo && <p className="avance-texto toast-error">❌ Necesitas {CALIFICACION_MINIMA}/8 para aprobar.</p>}
-                            {showResult && aprobo && !scrolledBottom && !modoLibre && <p className="avance-texto toast-info">📜 Desliza hasta el final para habilitar "Siguiente"</p>}
+                            {showResult && aprobo && !scrolledBottom && !modoLibre && <p className="avance-texto toast-info">📜 Desliza hasta el final para habilitar "Finalizar"</p>}
                             {puedeAvanzar && <p className="avance-texto toast-success">✅ ¡Reto superado! Ya puedes avanzar.</p>}
                         </div>
                         <div className="botones-nav">
                             <button className="btn-anterior" onClick={() => navigate(-1)}>Anterior</button>
-                            <button className={`btn-siguiente ${!puedeAvanzar || guardando ? "btn-disabled" : ""}`}
-                                onClick={handleSiguiente} disabled={guardando || !puedeAvanzar}>
-                                {guardando ? "Guardando..." : puedeAvanzar ? "SIGUIENTE CONTENIDO →" : "Contenido Bloqueado 🔒"}
+                            <button
+                                className={`btn-siguiente ${!puedeAvanzar || guardando ? "btn-disabled" : ""}`}
+                                onClick={handleSiguiente}
+                                disabled={guardando || !puedeAvanzar}
+                            >
+                                {guardando ? "Guardando..." : "Finalizar Módulo"}
                             </button>
                         </div>
                     </footer>

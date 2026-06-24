@@ -1,12 +1,17 @@
-// src/pages/contenido/modulo_1_contenido_13.jsx
+// src/pages/contenido/modulo_2_contenido_5.jsx
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import "../../Css/modulo_2_contenido_5.css";
 
+import Publicacion_fbImg from "../../assets/publicacion_fb.png";
+import Seguridad_fbImg from "../../assets/seguridad_fb.png";
+import Seguridad2_fbImg from "../../assets/seguridad2_fb.png";
+import Paso2_fbImg from "../../assets/paso2_fb.png";
+import RecuperarCon_fbImg from "../../assets/recuperarcon_fb.png";
 
 const API_URL = "http://localhost:4000";
-const MODULO_ID = 2; // ✅ Es módulo 2
+const MODULO_ID = 2;
 const NUM_CONTENIDO = 5;
 
 export default function ModuloFacebookSeguridad() {
@@ -27,7 +32,6 @@ export default function ModuloFacebookSeguridad() {
   const [gated, setGated] = useState(true);
   const [progreso, setProgreso] = useState(0);
 
-  // ✅ CAMBIO 1: States nuevos para el fix
   const [totalContenidos, setTotalContenidos] = useState(8);
   const [modulos, setModulos] = useState([]);
 
@@ -55,7 +59,6 @@ export default function ModuloFacebookSeguridad() {
     q6: "actualizarDatos",
   };
 
-  // ✅ CAMBIO 2: useEffect modificado con setModulos y setTotalContenidos
   useEffect(() => {
     const fetchProgreso = async () => {
       try {
@@ -70,14 +73,14 @@ export default function ModuloFacebookSeguridad() {
           { correo }
         );
         const modulosData = resp.data.modulos || [];
-        setModulos(modulosData); // 👈 NUEVO
+        setModulos(modulosData);
 
         const modulo2 = modulosData.find(
           (m) => m.modulo_id === MODULO_ID
         );
 
         if (modulo2) {
-          setTotalContenidos(modulo2.total_contenidos); // 👈 NUEVO
+          setTotalContenidos(modulo2.total_contenidos);
           const p = Number(modulo2.progreso_actual ?? 0);
           setProgreso(p);
 
@@ -189,13 +192,11 @@ export default function ModuloFacebookSeguridad() {
     );
   };
 
-  // 🔙 Anterior
   const irAnterior = () => {
     window.scrollTo({ top: 0, left: 0, behavior: "instant" });
-    navigate("/modulo/2/contenido/12");
+    navigate(`/modulo/${MODULO_ID}/contenido/${NUM_CONTENIDO - 1}`);
   };
 
-  // ✅ CAMBIO 3: irSiguiente con fix para último contenido
   if (!progresoCargado) {
     return (
       <div className="fb-sec-container">
@@ -213,8 +214,6 @@ export default function ModuloFacebookSeguridad() {
     );
   }
 
-
-
   const finalizarContenido = async () => {
     if (!puedeAvanzar) return;
     setGuardando(true);
@@ -230,20 +229,17 @@ export default function ModuloFacebookSeguridad() {
 
       if (response.data?.success) {
         window.scrollTo(0, 0);
-        // si es el último contenido, vuelve al inicio
         if (NUM_CONTENIDO >= totalContenidos) {
           navigate("/inicio");
         } else {
           navigate(`/modulo/${MODULO_ID}/contenido/${NUM_CONTENIDO + 1}`);
         }
       } else {
-        setToast('Error al guardar progreso. Intenta de nuevo.');
-        setTimeout(() => setToast(""), 3000);
+        showToast('Error al guardar progreso. Intenta de nuevo.', 'error');
       }
     } catch (err) {
       console.error("❌ Error al guardar:", err.response?.data || err);
-      setToast('Error de conexión al guardar progreso');
-      setTimeout(() => setToast(""), 3000);
+      showToast('Error de conexión al guardar progreso', 'error');
     } finally {
       setGuardando(false);
     }
@@ -672,7 +668,7 @@ export default function ModuloFacebookSeguridad() {
             {quizAnswered && feedback.q6 && (
               <p className={`answer-feedback ${feedback.q6}`}>
                 {feedback.q6 === "correct"
-                  ? "✅ Correcto: si tus datos están actualizados, Facebook puede ayudarte a recuperar la cuenta."
+                  ? "✅ Correcto: si tus datos están actualizados, Facebook puede ayudarte a recuperar tu cuenta."
                   : "❗ El teléfono y el correo de recuperación sirven para que puedas recuperar tu cuenta, no para decorar el perfil ni recibir más publicidad."}
               </p>
             )}

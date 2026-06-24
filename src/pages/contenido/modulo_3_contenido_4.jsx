@@ -4,7 +4,10 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import "@/Css/modulo_3_contenido_4.css";
 
-// 🔹 Imágenes de ejemplo para los pasos (1–6)
+import whatsappSeguridadIntroImg from "../../assets/whatsappSeguridadIntro.png";
+import whatsappBackupImg from "../../assets/whatsappBackup.png";
+import whatsappEncryptionImg from "../../assets/whatsappEncryption.png";
+import whatsappBlockImg from "../../assets/whatsappBlock.png";
 
 const API_URL = "http://localhost:4000";
 const MODULO_ID = 3; // ✅ Es módulo 3

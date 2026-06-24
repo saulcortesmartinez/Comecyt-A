@@ -24,7 +24,7 @@ router.get('/test', (req, res) => {
     res.json({ msg: 'Auth routes funcionando' });
 });
 
-// ✅ REGISTRO - Guarda en la tabla correcta según el rol
+// ✅ REGISTRO - Guarda en usuarios + tabla de progreso, devuelve token
 router.post('/registrar', async (req, res) => {
     try {
         const { nombre, apellido, correo, contraseña, rol, telefono } = req.body;
@@ -46,39 +46,60 @@ router.post('/registrar', async (req, res) => {
         }
 
         const hash = await bcrypt.hash(contraseña, 10);
-        let result;
+        let userId;
+        let rolFinal = rol;
 
         // ✅ GUARDAR EN LA TABLA CORRECTA SEGÚN EL ROL
         if (rol === 'alumno') {
-            [result] = await pool.query(
+            // 1. cuenta para login en usuarios
+            const [userResult] = await pool.query(
+                'INSERT INTO usuarios (nombre, apellido, correo, contraseña, rol) VALUES (?,?,?,?, "alumno")',
+                [nombre, apellido, correo, hash]
+            );
+            userId = userResult.insertId;
+            console.log('✅ [REGISTRO] Alumno guardado en tabla usuarios:', correo);
+
+            // 2. progreso en ALUMNO
+            await pool.query(
                 'INSERT INTO ALUMNO (nombre, apellido, correo, contraseña, telefono) VALUES (?,?,?,?,?)',
-                [nombre, apellido, correo, hash, telefono || '']
+                [nombre, apellido, correo, hash, telefono || null]
             );
             console.log('✅ [REGISTRO] Alumno guardado en tabla ALUMNO:', correo);
         }
         else if (rol === 'docente') {
             // ✅ AHORA SÍ INCLUYE telefono porque tu tabla ya lo tiene
-            [result] = await pool.query(
+            const [result] = await pool.query(
                 'INSERT INTO DOCENTE (nombre, apellido, correo, contraseña, telefono) VALUES (?,?,?,?,?)',
-                [nombre, apellido, correo, hash, telefono || '']
+                [nombre, apellido, correo, hash, telefono || null]
             );
+            userId = result.insertId;
             console.log('✅ [REGISTRO] Docente guardado en tabla DOCENTE:', correo);
         }
         else if (rol === 'admin') {
-            [result] = await pool.query(
+            const [result] = await pool.query(
                 'INSERT INTO ADMINISTRADOR (nombre, apellido, usuario, contraseña) VALUES (?,?,?,?)',
                 [nombre, apellido, correo, hash]
             );
+            userId = result.insertId;
+            rolFinal = 'admin';
             console.log('✅ [REGISTRO] Admin guardado en tabla ADMINISTRADOR:', correo);
         }
         else {
             return res.status(400).json({ message: 'Rol no válido' });
         }
 
+        const token = jwt.sign(
+            { id: userId, rol: rolFinal, correo },
+            process.env.JWT_SECRET || "secreto_temporal",
+            { expiresIn: "24h" }
+        );
+
         res.json({
+            success: true,
             message: 'Usuario registrado exitosamente',
-            id: result.insertId,
-            rol: rol
+            token,
+            role: rolFinal,
+            user: { id: userId, nombre, apellido, correo, rol: rolFinal }
         });
     } catch (error) {
         console.error('💥 [REGISTRO] Error completo:', error);

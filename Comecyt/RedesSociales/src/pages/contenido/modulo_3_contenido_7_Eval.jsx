@@ -1,13 +1,13 @@
-// src/pages/contenido/modulo_1_contenido_21_Eval.jsx
+// src/pages/contenido/modulo_3_contenido_7_Eval.jsx
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import "@/Css/modulo_3_contenido_7_Eval.css";
+import "../../Css/modulo_3_contenido_7_Eval.css";
 
 const API_URL = "http://localhost:4000";
-const MODULO_ID = 3; // ✅ Es módulo 1 - Examen final del módulo 1
+const MODULO_ID = 3;
 const NUM_CONTENIDO = 7;
-const EVALUACION_ID = 3; // Examen final Módulo 1
+const EVALUACION_ID = 3;
 const MAX_INTENTOS = 2;
 const TOTAL_PREGUNTAS = 15;
 const APROBADO_MIN_PERCENT = 70;
@@ -29,8 +29,7 @@ export default function ContenidoWhatsappExamenFinal() {
     type: "info",
   });
 
-  // ✅ CAMBIO 1: States nuevos para el fix
-  const [totalContenidos, setTotalContenidos] = useState(21);
+  const [totalContenidos, setTotalContenidos] = useState(7);
   const [modulos, setModulos] = useState([]);
 
   const navigate = useNavigate();
@@ -38,7 +37,7 @@ export default function ContenidoWhatsappExamenFinal() {
   const [guardando, setGuardando] = useState(false);
 
   useEffect(() => {
-    console.log("🔥 SÍ ENTRA AL COMPONENTE Contenido21 - Examen Final");
+    console.log("🔥 SÍ ENTRA AL COMPONENTE Contenido 7 - Examen Final Módulo 3");
   }, []);
 
   const showToast = (message, type = "info") => {
@@ -66,7 +65,6 @@ export default function ContenidoWhatsappExamenFinal() {
     q15: "usoResponsableBusiness",
   };
 
-  // ✅ CAMBIO 2: useEffect modificado con setModulos y setTotalContenidos
   useEffect(() => {
     const cargarEstadoEvaluacion = async () => {
       try {
@@ -76,20 +74,19 @@ export default function ContenidoWhatsappExamenFinal() {
           return;
         }
 
-        // Cargar datos del módulo y evaluación
         const resp = await axios.post(
           `${API_URL}/api/alumno/progreso`,
           { correo }
         );
         const modulosData = resp.data.modulos || [];
-        setModulos(modulosData); // 👈 NUEVO
+        setModulos(modulosData);
 
-        const modulo1 = modulosData.find(
+        const moduloActual = modulosData.find(
           (m) => m.modulo_id === MODULO_ID
         );
 
-        if (modulo1) {
-          setTotalContenidos(modulo1.total_contenidos); // 👈 NUEVO
+        if (moduloActual) {
+          setTotalContenidos(moduloActual.total_contenidos);
         }
 
         const { data } = await axios.post(
@@ -98,8 +95,8 @@ export default function ContenidoWhatsappExamenFinal() {
         );
 
         const intentosDB = data.intentos || 0;
-        const maxDB = data.mejor_puntaje || 0;
-        const aprobadoDB = data.aprobado || false;
+        const maxDB = data.max_puntaje || data.mejor_puntaje || 0;
+        const aprobadoDB = !!data.aprobado;
 
         setIntentos(intentosDB);
         setMejorPuntaje(maxDB);
@@ -133,6 +130,7 @@ export default function ContenidoWhatsappExamenFinal() {
   const handleChange = (e) => {
     const { name, value } = e.target;
     setAnswers((prev) => ({ ...prev, [name]: value }));
+    setQuizAnswered(false);
   };
 
   const puedeIntentar = !aprobado && intentos < MAX_INTENTOS;
@@ -154,11 +152,12 @@ export default function ContenidoWhatsappExamenFinal() {
       }
     });
 
-    setQuizScore(score);
     setFeedback(newFeedback);
+    setQuizScore(score);
     setQuizAnswered(true);
 
     const porcentaje = (score / TOTAL_PREGUNTAS) * 100;
+    const aprobadoLocal = porcentaje >= APROBADO_MIN_PERCENT;
 
     setGuardando(true);
     try {
@@ -166,13 +165,13 @@ export default function ContenidoWhatsappExamenFinal() {
       if (!correo) return;
 
       const { data } = await axios.post(
-        `${API_URL}/api/alumno/evaluacion/guardar`,
+        `${API_URL}/api/alumno/evaluacion/resultado`,
         { correo, evaluacion_id: EVALUACION_ID, puntaje: score }
       );
 
-      const intentosDB = data.intentos;
-      const maxDB = Math.max(mejorPuntaje, score);
-      const aprobadoDB = porcentaje >= APROBADO_MIN_PERCENT;
+      const intentosDB = data.intentos ?? intentos + 1;
+      const maxDB = data.max_puntaje ?? data.mejor_puntaje ?? Math.max(mejorPuntaje, score);
+      const aprobadoDB = !!data.aprobado || aprobadoLocal;
 
       setIntentos(intentosDB);
       setMejorPuntaje(maxDB);
@@ -181,9 +180,7 @@ export default function ContenidoWhatsappExamenFinal() {
       if (aprobadoDB) {
         setEstadoMsg("🎉 ¡Felicidades! Has aprobado el examen.");
         showToast(
-          `Aprobaste con ${score}/${TOTAL_PREGUNTAS} (${porcentaje.toFixed(
-            0
-          )}%)`,
+          `Aprobaste con ${score}/${TOTAL_PREGUNTAS} (${porcentaje.toFixed(0)}%)`,
           "success"
         );
       } else if (intentosDB >= MAX_INTENTOS) {
@@ -194,19 +191,29 @@ export default function ContenidoWhatsappExamenFinal() {
         showToast("Examen registrado.", "info");
       }
     } catch {
-      showToast("No se pudo guardar el examen.", "error");
+      const intentosNext = intentos + 1;
+      setIntentos(intentosNext);
+      setMejorPuntaje(prev => Math.max(prev, score));
+      if (aprobadoLocal) {
+        setAprobado(true);
+        setEstadoMsg("🎉 ¡Felicidades! Has aprobado el examen.");
+        showToast(`Aprobaste con ${score}/${TOTAL_PREGUNTAS} (${porcentaje.toFixed(0)}%)`, "success");
+      } else if (intentosNext >= MAX_INTENTOS) {
+        setEstadoMsg("Has agotado tus intentos. Debes repasar el contenido.");
+        showToast("Ya no tienes más intentos.", "error");
+      } else {
+        showToast("No se pudo guardar el examen en el servidor.", "error");
+      }
     } finally {
       setGuardando(false);
     }
   };
 
-  // 🔙 Anterior
   const irAnterior = () => {
     window.scrollTo({ top: 0, left: 0, behavior: "instant" });
-    navigate("/modulo/1/contenido/20"); // ✅ Va al contenido 20
+    navigate(`/modulo/${MODULO_ID}/contenido/${NUM_CONTENIDO - 1}`);
   };
 
-  // ✅ CAMBIO 3: irSiguiente con fix para último contenido
   const reiniciarModulo = async () => {
     try {
       const correo = localStorage.getItem("correo");
@@ -224,8 +231,7 @@ export default function ContenidoWhatsappExamenFinal() {
     } catch {
       showToast("No se pudo reiniciar.", "error");
     }
-
-    navigate("/modulo/1/contenido/17"); // Regresa a WhatsApp Business
+    navigate(`/modulo/${MODULO_ID}/contenido/1`);
   };
 
   const puntajePorcentaje = (quizScore / TOTAL_PREGUNTAS) * 100;
@@ -247,8 +253,6 @@ export default function ContenidoWhatsappExamenFinal() {
     );
   }
 
-
-
   const finalizarContenido = async () => {
     if (!puedeAvanzar) return;
     setGuardando(true);
@@ -262,22 +266,19 @@ export default function ContenidoWhatsappExamenFinal() {
         token ? { headers: { Authorization: `Bearer ${token}` } } : {}
       );
 
-      if (response.data?.success) {
+      if (response.data?.success !== false) {
         window.scrollTo(0, 0);
-        // si es el último contenido, vuelve al inicio
         if (NUM_CONTENIDO >= totalContenidos) {
           navigate("/inicio");
         } else {
           navigate(`/modulo/${MODULO_ID}/contenido/${NUM_CONTENIDO + 1}`);
         }
       } else {
-        setToast('Error al guardar progreso. Intenta de nuevo.');
-        setTimeout(() => setToast(""), 3000);
+        showToast('Error al guardar progreso. Intenta de nuevo.', 'error');
       }
     } catch (err) {
       console.error("❌ Error al guardar:", err.response?.data || err);
-      setToast('Error de conexión al guardar progreso');
-      setTimeout(() => setToast(""), 3000);
+      showToast('Error de conexión al guardar progreso', 'error');
     } finally {
       setGuardando(false);
     }
@@ -411,8 +412,7 @@ export default function ContenidoWhatsappExamenFinal() {
           <div className={`q ${quizAnswered ? feedback.q5 || "" : ""}`}>
             <label>
               <span className="question-text">
-                5) Respecto a los estados de WhatsApp, ¿qué afirmación es
-                correcta sobre su privacidad?
+                5) Respecto a los estados de WhatsApp, ¿qué afirmación es correcta sobre su privacidad?
               </span>
               <select name="q5" required onChange={handleChange} value={answers.q5 || ""}>
                 <option value="">Selecciona…</option>
@@ -442,9 +442,7 @@ export default function ContenidoWhatsappExamenFinal() {
           <div className={`q ${quizAnswered ? feedback.q6 || "" : ""}`}>
             <label>
               <span className="question-text">
-                6) En privacidad desactivas “Última vez en línea”, pero dejas
-                activadas las confirmaciones de lectura (doble check azul).
-                ¿Qué ocurre?
+                6) En privacidad desactivas “Última vez en línea”, pero dejas activadas las confirmaciones de lectura (doble check azul). ¿Qué ocurre?
               </span>
               <select name="q6" required onChange={handleChange} value={answers.q6 || ""}>
                 <option value="">Selecciona…</option>
@@ -474,8 +472,7 @@ export default function ContenidoWhatsappExamenFinal() {
           <div className={`q ${quizAnswered ? feedback.q7 || "" : ""}`}>
             <label>
               <span className="question-text">
-                7) ¿Qué ventaja tiene activar las copias de seguridad de
-                WhatsApp en Google Drive o iCloud?
+                7) ¿Qué ventaja tiene activar las copias de seguridad de WhatsApp en Google Drive o iCloud?
               </span>
               <select name="q7" required onChange={handleChange} value={answers.q7 || ""}>
                 <option value="">Selecciona…</option>
@@ -505,8 +502,7 @@ export default function ContenidoWhatsappExamenFinal() {
           <div className={`q ${quizAnswered ? feedback.q8 || "" : ""}`}>
             <label>
               <span className="question-text">
-                8) ¿Qué describe mejor el cifrado de extremo a extremo en
-                WhatsApp?
+                8) ¿Qué describe mejor el cifrado de extremo a extremo en WhatsApp?
               </span>
               <select name="q8" required onChange={handleChange} value={answers.q8 || ""}>
                 <option value="">Selecciona…</option>
@@ -536,8 +532,7 @@ export default function ContenidoWhatsappExamenFinal() {
           <div className={`q ${quizAnswered ? feedback.q9 || "" : ""}`}>
             <label>
               <span className="question-text">
-                9) Recibes mensajes insistentes pidiéndote códigos que llegan
-                por SMS. ¿Cuál es la acción más segura dentro de WhatsApp?
+                9) Recibes mensajes insistentes pidiéndote códigos que llegan por SMS. ¿Cuál es la acción más segura dentro de WhatsApp?
               </span>
               <select name="q9" required onChange={handleChange} value={answers.q9 || ""}>
                 <option value="">Selecciona…</option>
@@ -567,8 +562,7 @@ export default function ContenidoWhatsappExamenFinal() {
           <div className={`q ${quizAnswered ? feedback.q10 || "" : ""}`}>
             <label>
               <span className="question-text">
-                10) En WhatsApp Business, ¿qué diferencia clave tiene el perfil
-                empresarial frente a un perfil personal?
+                10) En WhatsApp Business, ¿qué diferencia clave tiene el perfil empresarial frente a un perfil personal?
               </span>
               <select name="q10" required onChange={handleChange} value={answers.q10 || ""}>
                 <option value="">Selecciona…</option>
@@ -598,9 +592,7 @@ export default function ContenidoWhatsappExamenFinal() {
           <div className={`q ${quizAnswered ? feedback.q11 || "" : ""}`}>
             <label>
               <span className="question-text">
-                11) Una tienda de ropa usa WhatsApp Business y quiere saludar
-                automáticamente a quienes escriben por primera vez. ¿Qué
-                herramienta debe configurar?
+                11) Una tienda de ropa usa WhatsApp Business y quiere saludar automáticamente a quienes escriben por primera vez. ¿Qué herramienta debe configurar?
               </span>
               <select name="q11" required onChange={handleChange} value={answers.q11 || ""}>
                 <option value="">Selecciona…</option>
@@ -630,8 +622,7 @@ export default function ContenidoWhatsappExamenFinal() {
           <div className={`q ${quizAnswered ? feedback.q12 || "" : ""}`}>
             <label>
               <span className="question-text">
-                12) Un negocio etiqueta sus chats como “Nuevo cliente”, “Pedido
-                en proceso” y “Pagado”. ¿Qué beneficio aporta?
+                12) Un negocio etiqueta sus chats como “Nuevo cliente”, “Pedido en proceso” y “Pagado”. ¿Qué beneficio aporta?
               </span>
               <select name="q12" required onChange={handleChange} value={answers.q12 || ""}>
                 <option value="">Selecciona…</option>
@@ -661,9 +652,7 @@ export default function ContenidoWhatsappExamenFinal() {
           <div className={`q ${quizAnswered ? feedback.q13 || "" : ""}`}>
             <label>
               <span className="question-text">
-                13) En las estadísticas de WhatsApp Business ves que muchos
-                mensajes se envían pero muy pocos se leen. ¿Qué sería una
-                decisión razonable?
+                13) En las estadísticas de WhatsApp Business ves que muchos mensajes se envían pero muy pocos se leen. ¿Qué sería una decisión razonable?
               </span>
               <select name="q13" required onChange={handleChange} value={answers.q13 || ""}>
                 <option value="">Selecciona…</option>
@@ -693,8 +682,7 @@ export default function ContenidoWhatsappExamenFinal() {
           <div className={`q ${quizAnswered ? feedback.q14 || "" : ""}`}>
             <label>
               <span className="question-text">
-                14) ¿Cuál de estas acciones aprovecha mejor el catálogo de
-                WhatsApp Business?
+                14) ¿Cuál de estas acciones aprovecha mejor el catálogo de WhatsApp Business?
               </span>
               <select name="q14" required onChange={handleChange} value={answers.q14 || ""}>
                 <option value="">Selecciona…</option>
@@ -724,9 +712,7 @@ export default function ContenidoWhatsappExamenFinal() {
           <div className={`q ${quizAnswered ? feedback.q15 || "" : ""}`}>
             <label>
               <span className="question-text">
-                15) Una emprendedora vende postres con WhatsApp Business. Quiere
-                atender de forma profesional y cuidar la seguridad. ¿Cuál opción
-                representa el uso más responsable?
+                15) Una emprendedora vende postres con WhatsApp Business. Quiere atender de forma profesional y cuidar la seguridad. ¿Cuál opción representa el uso más responsable?
               </span>
               <select name="q15" required onChange={handleChange} value={answers.q15 || ""}>
                 <option value="">Selecciona…</option>
@@ -757,7 +743,6 @@ export default function ContenidoWhatsappExamenFinal() {
             type="submit"
             className="btn-primary"
             disabled={!puedeIntentar || guardando}
-            onClick={finalizarContenido}
           >
             {guardando ? "Guardando..." : puedeIntentar ? "Calificar" : "Sin intentos disponibles"}
           </button>
@@ -791,7 +776,7 @@ export default function ContenidoWhatsappExamenFinal() {
               {guardando ? "Guardando..." : "Siguiente Módulo →"}
             </button>
           ) : intentos >= MAX_INTENTOS ? (
-            <button className="btn-repasar" onClick={finalizarContenido} disabled={guardando || !puedeAvanzar}>
+            <button className="btn-repasar" onClick={reiniciarModulo} disabled={guardando}>
               Repasar el tema
             </button>
           ) : (

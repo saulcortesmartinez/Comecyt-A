@@ -174,7 +174,11 @@ const Modulo5Contenido8 = () => {
     const isCellFound = (r, c) => foundWords.some(w => wordPositions[w]?.some(([rr, cc]) => rr === r && cc === c));
 
     const aprobo = foundWords.length >= CALIFICACION_MINIMA;
-    const puedeAvanzar = modoLibre || (showResult && aprobo && scrolledBottom);
+
+    // ✅ CAMBIO: Ahora siempre está en true para habilitar el botón
+    const puedeAvanzar = true;
+
+    const juegoBloqueado = showResult || (timeLeft === 0 && !modoLibre);
 
     if (!progresoCargado) return <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh', color: '#06b6d4' }}>Cargando reto...</div>;
 
@@ -213,7 +217,7 @@ const Modulo5Contenido8 = () => {
                                             <button
                                                 key={colIdx}
                                                 onClick={() => handleCellClick(rowIdx, colIdx)}
-                                                disabled={showResult || (timeLeft === 0 && !modoLibre)}
+                                                disabled={juegoBloqueado}
                                                 className={`grid-cell ${isCellFound(rowIdx, colIdx) ? 'found' : isCellSelected(rowIdx, colIdx) ? 'selected' : ''}`}
                                             >
                                                 {letter}
@@ -275,7 +279,7 @@ const Modulo5Contenido8 = () => {
                             <button className="btn-anterior" onClick={() => navigate(-1)}>Anterior</button>
                             <button className={`btn-siguiente ${!puedeAvanzar || guardando ? "btn-disabled" : ""}`}
                                 onClick={handleSiguiente} disabled={guardando || !puedeAvanzar}>
-                                {guardando ? "Guardando..." : puedeAvanzar ? "SIGUIENTE CONTENIDO →" : "Contenido Bloqueado 🔒"}
+                                {guardando ? "Guardando..." : "SIGUIENTE CONTENIDO →"}
                             </button>
                         </div>
                     </footer>

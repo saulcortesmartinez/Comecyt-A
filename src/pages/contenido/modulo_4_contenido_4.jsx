@@ -1,12 +1,23 @@
-// src/pages/contenido/modulo_1_contenido_25.jsx
+// src/pages/contenido/modulo_4_contenido_4.jsx
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import "../../Css/modulo_4_contenido_4.css";
 
+import igStoriesPaso1 from "../../assets/igStoriesPaso1.png";
+import igStoriesPaso2 from "../../assets/igStoriesPaso2.png";
+import igStoriesPaso3 from "../../assets/igStoriesPaso3.png";
+import igStoriesPaso4 from "../../assets/igStoriesPaso4.png";
+import igReelsPaso1 from "../../assets/igReelsPaso1.png";
+import igReelsPaso2 from "../../assets/igReelsPaso2.png";
+import igReelsPaso3 from "../../assets/igReelsPaso3.png";
+import igReelsPaso4 from "../../assets/igReelsPaso4.png";
+import igDmPaso1 from "../../assets/igDmPaso1.png";
+import igDmPaso2 from "../../assets/igDmPaso2.png";
+import igDmPaso3 from "../../assets/igDmPaso3.png";
 
 const API_URL = "http://localhost:4000";
-const MODULO_ID = 4; // ✅ Es módulo 4
+const MODULO_ID = 4;
 const NUM_CONTENIDO = 4;
 const TOTAL_PREGUNTAS = 6;
 
@@ -28,8 +39,7 @@ export default function ContenidoInstagramStoriesReelsDM() {
   const [gated, setGated] = useState(true);
   const [progreso, setProgreso] = useState(0);
 
-  // ✅ CAMBIO 1: States nuevos para el fix
-  const [totalContenidos, setTotalContenidos] = useState(25);
+  const [totalContenidos, setTotalContenidos] = useState(8);
   const [modulos, setModulos] = useState([]);
 
   const navigate = useNavigate();
@@ -37,7 +47,7 @@ export default function ContenidoInstagramStoriesReelsDM() {
   const [guardando, setGuardando] = useState(false);
 
   useEffect(() => {
-    console.log("🔥 SÍ ENTRA AL COMPONENTE Contenido25");
+    console.log("🔥 SÍ ENTRA AL COMPONENTE Contenido 4 - Módulo 4");
   }, []);
 
   const showToast = (message, type = "info") => {
@@ -54,7 +64,6 @@ export default function ContenidoInstagramStoriesReelsDM() {
     q6: "seguridad",
   };
 
-  // ✅ CAMBIO 2: useEffect modificado con setModulos y setTotalContenidos
   useEffect(() => {
     const fetchProgreso = async () => {
       try {
@@ -69,11 +78,11 @@ export default function ContenidoInstagramStoriesReelsDM() {
           { correo }
         );
         const modulosData = resp.data.modulos || [];
-        setModulos(modulosData); // 👈 NUEVO
+        setModulos(modulosData);
 
         const modulo = modulosData.find((m) => m.modulo_id === MODULO_ID);
         if (modulo) {
-          setTotalContenidos(modulo.total_contenidos); // 👈 NUEVO
+          setTotalContenidos(modulo.total_contenidos);
           const p = Number(modulo?.progreso_actual ?? 0);
           setProgreso(p);
 
@@ -180,13 +189,11 @@ export default function ContenidoInstagramStoriesReelsDM() {
     );
   };
 
-  // 🔙 Anterior
   const irAnterior = () => {
     window.scrollTo({ top: 0, left: 0, behavior: "instant" });
-    navigate("/modulo/1/contenido/24"); // ✅ Va al contenido 24
+    navigate(`/modulo/${MODULO_ID}/contenido/${NUM_CONTENIDO - 1}`);
   };
 
-  // ✅ CAMBIO 3: irSiguiente con fix para último contenido
   if (!progresoCargado) {
     return (
       <div className="ig4-container">
@@ -204,8 +211,6 @@ export default function ContenidoInstagramStoriesReelsDM() {
     );
   }
 
-
-
   const finalizarContenido = async () => {
     if (!puedeAvanzar) return;
     setGuardando(true);
@@ -219,22 +224,19 @@ export default function ContenidoInstagramStoriesReelsDM() {
         token ? { headers: { Authorization: `Bearer ${token}` } } : {}
       );
 
-      if (response.data?.success) {
+      if (response.data?.success !== false) {
         window.scrollTo(0, 0);
-        // si es el último contenido, vuelve al inicio
         if (NUM_CONTENIDO >= totalContenidos) {
           navigate("/inicio");
         } else {
           navigate(`/modulo/${MODULO_ID}/contenido/${NUM_CONTENIDO + 1}`);
         }
       } else {
-        setToast('Error al guardar progreso. Intenta de nuevo.');
-        setTimeout(() => setToast(""), 3000);
+        showToast('Error al guardar progreso. Intenta de nuevo.', 'error');
       }
     } catch (err) {
       console.error("❌ Error al guardar:", err.response?.data || err);
-      setToast('Error de conexión al guardar progreso');
-      setTimeout(() => setToast(""), 3000);
+      showToast('Error de conexión al guardar progreso', 'error');
     } finally {
       setGuardando(false);
     }
@@ -569,7 +571,7 @@ export default function ContenidoInstagramStoriesReelsDM() {
               <span className="question-text">
                 1) ¿Cuánto tiempo duran normalmente las Stories?
               </span>
-              <select name="q1" required onChange={handleChange}>
+              <select name="q1" required onChange={handleChange} value={answers.q1 || ""}>
                 <option value="">Selecciona…</option>
                 <option value="stories24">24 horas.</option>
                 <option value="semana">7 días.</option>
@@ -590,7 +592,7 @@ export default function ContenidoInstagramStoriesReelsDM() {
               <span className="question-text">
                 2) ¿Cómo se llaman las Stories que guardas para que permanezcan en tu perfil?
               </span>
-              <select name="q2" required onChange={handleChange}>
+              <select name="q2" required onChange={handleChange} value={answers.q2 || ""}>
                 <option value="">Selecciona…</option>
                 <option value="destacadas">Destacadas (Highlights).</option>
                 <option value="archivos">Archivos borrados.</option>
@@ -611,7 +613,7 @@ export default function ContenidoInstagramStoriesReelsDM() {
               <span className="question-text">
                 3) ¿Por qué los Reels ayudan a crecer una cuenta?
               </span>
-              <select name="q3" required onChange={handleChange}>
+              <select name="q3" required onChange={handleChange} value={answers.q3 || ""}>
                 <option value="">Selecciona…</option>
                 <option value="reelsAlcance">
                   Porque Instagram los recomienda y pueden llegar a más personas.
@@ -634,7 +636,7 @@ export default function ContenidoInstagramStoriesReelsDM() {
               <span className="question-text">
                 4) ¿Qué es importante en los primeros 3 segundos de un Reel?
               </span>
-              <select name="q4" required onChange={handleChange}>
+              <select name="q4" required onChange={handleChange} value={answers.q4 || ""}>
                 <option value="">Selecciona…</option>
                 <option value="primeros3">
                   Llamar la atención para que no se salten el video.
@@ -657,7 +659,7 @@ export default function ContenidoInstagramStoriesReelsDM() {
               <span className="question-text">
                 5) ¿Qué es un DM en Instagram?
               </span>
-              <select name="q5" required onChange={handleChange}>
+              <select name="q5" required onChange={handleChange} value={answers.q5 || ""}>
                 <option value="">Selecciona…</option>
                 <option value="dmPrivado">Un mensaje privado (chat directo).</option>
                 <option value="publico">Una publicación pública del feed.</option>
@@ -678,7 +680,7 @@ export default function ContenidoInstagramStoriesReelsDM() {
               <span className="question-text">
                 6) ¿Cuál es una buena práctica de seguridad en DM?
               </span>
-              <select name="q6" required onChange={handleChange}>
+              <select name="q6" required onChange={handleChange} value={answers.q6 || ""}>
                 <option value="">Selecciona…</option>
                 <option value="seguridad">
                   No compartir contraseñas ni datos sensibles y evitar enlaces sospechosos.

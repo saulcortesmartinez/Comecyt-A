@@ -87,8 +87,8 @@ app.post('/webhook', async (req, res) => {
 
       console.log('📱 Mensaje WhatsApp recibido:', telefono, texto);
 
-      await db.execute(
-        'INSERT INTO dudas_whatsapp (telefono, mensaje, fecha, estado, nombre, modulo) VALUES (?,?, NOW(),?,?,?)',
+      await db.query(
+        'INSERT INTO dudas_whatsapp (telefono, mensaje, fecha, estado, nombre, modulo) VALUES ($1,$2, NOW(),$3,$4,$5)',
         [telefono, texto, 'nueva', nombre, '/whatsapp']
       );
 
@@ -131,7 +131,8 @@ const enviarWhatsApp = async (telefono, mensaje) => {
 // ===== API DUDAS WHATSAPP =====
 app.get('/api/dudas', verificarToken, async (req, res) => {
   try {
-    const [rows] = await db.execute('SELECT * FROM dudas_whatsapp ORDER BY fecha DESC LIMIT 100');
+    const result = await db.query('SELECT * FROM dudas_whatsapp ORDER BY fecha DESC LIMIT 100');
+    const rows = result.rows;
     const stats = {
       total: rows.length,
       nuevas: rows.filter(r => r.estado === 'nueva').length,
@@ -151,14 +152,38 @@ app.put('/api/dudas/:id', verificarToken, async (req, res) => {
     const { id } = req.params;
     const { estado, respuesta } = req.body;
     console.log('➡️ LLEGÓ PUT /api/dudas/' + id, 'estado=', estado);
-    await db.execute(
-      'UPDATE dudas_whatsapp SET estado =?, respuesta =?, fecha_respuesta = NOW() WHERE id =?',
+    await db.query(
+      'UPDATE dudas_whatsapp SET estado =$1, respuesta =$2, fecha_respuesta = NOW() WHERE id =$3',
       [estado, respuesta || null, id]
     );
     res.json({ success: true });
   } catch (error) {
     console.error('❌ Error PUT:', error);
     res.status(500).json({ error: error.message });
+  }
+});
+
+// ====== NUEVO: GUARDAR PROGRESO DE CONTENIDOS ======
+app.post('/api/progreso/actualizar', verificarToken, async (req, res) => {
+  const { moduloId, contenidoId } = req.body;
+  const correo = req.user.correo;
+
+  if (!moduloId || !contenidoId) {
+    return res.status(400).json({ error: 'Faltan datos' });
+  }
+
+  try {
+    await db.query(
+      `INSERT INTO contenidos_completados (correo, modulo_id, contenido_id)
+       VALUES ($1, $2, $3)
+       ON CONFLICT (correo, modulo_id, contenido_id) DO NOTHING`,
+      [correo, moduloId, contenidoId]
+    );
+    console.log('✅ Progreso guardado:', correo, 'M', moduloId, 'C', contenidoId);
+    res.json({ ok: true });
+  } catch (e) {
+    console.error('❌ Error progreso:', e);
+    res.status(500).json({ error: 'Error al guardar progreso' });
   }
 });
 
@@ -175,37 +200,37 @@ app.post('/api/registro', async (req, res) => {
   }
 
   try {
-    const [existe] = await db.execute('SELECT * FROM usuarios WHERE correo =?', [correo]);
-    if (existe.length > 0) {
+    const existe = await db.query('SELECT * FROM usuarios WHERE correo =$1', [correo]);
+    if (existe.rows.length > 0) {
       return res.status(409).json({ error: 'El correo ya está registrado' });
     }
 
     const hash = await bcrypt.hash(contraseña, 10);
 
-    const [result] = await db.execute(
-      'INSERT INTO usuarios (nombre, apellido, correo, contraseña, rol) VALUES (?,?,?,?,?)',
+    const result = await db.query(
+      'INSERT INTO usuarios (nombre, apellido, correo, contraseña, rol) VALUES ($1,$2,$3,$4,$5) RETURNING alumno_id',
       [nombre, apellido, correo, hash, rol]
     );
 
-    const alumno_id = result.insertId;
+    const alumno_id = result.rows[0].alumno_id;
 
     if (rol === 'alumno') {
-      await db.execute(
-        'INSERT INTO ALUMNO (correo, password, nombre, apellido) VALUES (?,?,?,?)',
+      await db.query(
+        'INSERT INTO alumno (correo, password, nombre, apellido) VALUES ($1,$2,$3,$4) ON CONFLICT DO NOTHING',
         [correo, hash, nombre, apellido]
       );
-      await db.execute(
-        'INSERT INTO progreso_modulos (correo, modulo_id, progreso_actual) VALUES (?, 1, 0)',
+      await db.query(
+        'INSERT INTO progreso_modulos (correo, modulo_id, progreso_actual) VALUES ($1, 1, 0) ON CONFLICT DO NOTHING',
         [correo]
       );
     } else if (rol === 'docente') {
-      await db.execute(
-        'INSERT INTO DOCENTE (correo, password, nombre, apellido) VALUES (?,?,?,?)',
+      await db.query(
+        'INSERT INTO docente (correo, password, nombre, apellido) VALUES ($1,$2,$3,$4) ON CONFLICT DO NOTHING',
         [correo, hash, nombre, apellido]
       );
     } else if (rol === 'administrador') {
-      await db.execute(
-        'INSERT INTO ADMINISTRADOR (correo, password, nombre, apellido) VALUES (?,?,?,?)',
+      await db.query(
+        'INSERT INTO administrador (correo, password, nombre, apellido) VALUES ($1,$2,$3,$4) ON CONFLICT DO NOTHING',
         [correo, hash, nombre, apellido]
       );
     }
@@ -242,13 +267,13 @@ app.post('/api/login', async (req, res) => {
   }
 
   try {
-    const [rows] = await db.execute('SELECT * FROM usuarios WHERE correo =?', [correo]);
+    const result = await db.query('SELECT * FROM usuarios WHERE correo =$1', [correo]);
 
-    if (rows.length === 0) {
+    if (result.rows.length === 0) {
       return res.status(401).json({ error: 'Credenciales inválidas' });
     }
 
-    const user = rows[0];
+    const user = result.rows[0];
     const validPassword = await bcrypt.compare(contraseña, user.contraseña);
 
     if (!validPassword) {
@@ -293,6 +318,7 @@ app.get('/', (req, res) => {
       'PUT /api/dudas/:id',
       'POST /api/registro',
       'POST /api/login',
+      'POST /api/progreso/actualizar',
       'POST /api/alumno/registrar',
       'POST /api/alumno/progreso',
       'POST /api/alumno/progreso/actualizar',
@@ -314,6 +340,6 @@ conectarDB().then(() => {
     console.log(`📡 Webhook: http://localhost:${PORT}/webhook`);
     console.log(`📊 API Dudas: http://localhost:${PORT}/api/dudas`);
     console.log(`✅ API Registro: http://localhost:${PORT}/api/registro`);
-    console.log(`📈 API Progreso: http://localhost:${PORT}/api/alumno/progreso\n`);
+    console.log(`📈 API Progreso: http://localhost:${PORT}/api/progreso/actualizar\n`);
   });
 });

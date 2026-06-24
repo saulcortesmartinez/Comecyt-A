@@ -1,32 +1,33 @@
-// src/pages/contenido/modulo_1_contenido_11.jsx
+// src/pages/contenido/modulo_2_contenido_3.jsx
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import "../../Css/modulo_2_contenido_3.css";
 
+import gruposImg from "../../assets/grupos_fb.png";
+import paginasImg from "../../assets/paginas_fb.png";
+import eventosImg from "../../assets/eventos_fb.png";
 
 const API_URL = "http://localhost:4000";
-const MODULO_ID = 2; // ✅ CORREGIDO: era 2
+const MODULO_ID = 2;
 const NUM_CONTENIDO = 3;
 
 export default function ModuloFacebookGruposPaginasEventos() {
-  // 🔔 Notificaciones tipo toast
   const [toast, setToast] = useState({
     visible: false,
     message: "",
     type: "info",
   });
 
-  // ⏱️ control de avance
   const [tiempoRestante, setTiempoRestante] = useState(120);
   const [timerTerminado, setTimerTerminado] = useState(false);
   const [scrolledBottom, setScrolledBottom] = useState(false);
   const [gated, setGated] = useState(true);
   const [progreso, setProgreso] = useState(0);
 
-  // ✅ STATES AGREGADOS PARA FIX
   const [guardando, setGuardando] = useState(false);
   const [progresoCargado, setProgresoCargado] = useState(false);
+  const [totalContenidos, setTotalContenidos] = useState(8);
 
   const navigate = useNavigate();
 
@@ -37,41 +38,45 @@ export default function ModuloFacebookGruposPaginasEventos() {
     }, 2500);
   };
 
-  // 👉 cargar progreso para saber si aplicar bloqueo
+  useEffect(() => {
+    console.log("🔥 SÍ ENTRA AL COMPONENTE Contenido", NUM_CONTENIDO);
+  }, []);
+
   useEffect(() => {
     const fetchProgreso = async () => {
       try {
         const correo = localStorage.getItem("correo");
         const token = localStorage.getItem("token");
-        if (!correo || !token) return;
+        if (!correo) {
+          setProgresoCargado(true);
+          return;
+        }
 
         const resp = await axios.post(
           `${API_URL}/api/alumno/progreso`,
           { correo },
-          { headers: { Authorization: `Bearer ${token}` } }
+          token ? { headers: { Authorization: `Bearer ${token}` } } : {}
         );
 
-        const modulo1 = resp.data.modulos.find(
+        const moduloActual = resp.data.modulos.find(
           (m) => m.modulo_id === MODULO_ID
         );
 
-        const p = Number(modulo1?.progreso_actual ?? 0);
+        const p = Number(moduloActual?.progreso_actual ?? 0);
         setProgreso(p);
-        setProgresoCargado(true);
+        setTotalContenidos(moduloActual?.total_contenidos ?? 8);
 
-        if (p > NUM_CONTENIDO) {
+        if (p >= NUM_CONTENIDO) {
           setGated(false);
           setTimerTerminado(true);
           setScrolledBottom(true);
-        } else if (p === NUM_CONTENIDO) {
-          setGated(true);
         } else {
-          setGated(false);
-          setTimerTerminado(true);
-          setScrolledBottom(true);
+          setGated(true);
         }
       } catch (err) {
         console.error("Error obteniendo progreso:", err);
+        showToast("No se pudo obtener tu progreso, pero puedes seguir leyendo.", "error");
+      } finally {
         setProgresoCargado(true);
       }
     };
@@ -80,12 +85,18 @@ export default function ModuloFacebookGruposPaginasEventos() {
     fetchProgreso();
   }, []);
 
-  // ⏱️ Timer de 2 minutos SOLO si gated = true
   useEffect(() => {
-    if (!gated) return;
+    if (!progresoCargado) return;
 
-    setTiempoRestante(120);
-    setTimerTerminado(false);
+    if (gated) {
+      setTiempoRestante(120);
+      setTimerTerminado(false);
+    } else {
+      setTiempoRestante(0);
+      setTimerTerminado(true);
+      setScrolledBottom(true);
+      return;
+    }
 
     const interval = setInterval(() => {
       setTiempoRestante((prev) => {
@@ -99,9 +110,8 @@ export default function ModuloFacebookGruposPaginasEventos() {
     }, 1000);
 
     return () => clearInterval(interval);
-  }, [gated]);
+  }, [gated, progresoCargado]);
 
-  // 📜 detectar scroll al final SOLO si gated = true
   useEffect(() => {
     if (!gated) return;
 
@@ -126,13 +136,11 @@ export default function ModuloFacebookGruposPaginasEventos() {
     return `${m}:${s.toString().padStart(2, "0")}`;
   };
 
-  // 🔙 Anterior
   const irAnterior = () => {
     window.scrollTo({ top: 0, left: 0, behavior: "instant" });
-    navigate("/contenidos/mod1_10");
+    navigate(`/modulo/${MODULO_ID}/contenido/${NUM_CONTENIDO - 1}`);
   };
 
-  // ✅ FUNCIÓN CORREGIDA - Ahora sí avanza al contenido 12
   const finalizarContenido = async () => {
     if (!puedeAvanzar) return;
     setGuardando(true);
@@ -148,33 +156,45 @@ export default function ModuloFacebookGruposPaginasEventos() {
 
       if (response.data?.success) {
         window.scrollTo(0, 0);
-        // si es el último contenido, vuelve al inicio
         if (NUM_CONTENIDO >= totalContenidos) {
           navigate("/inicio");
         } else {
           navigate(`/modulo/${MODULO_ID}/contenido/${NUM_CONTENIDO + 1}`);
         }
       } else {
-        setToast('Error al guardar progreso. Intenta de nuevo.');
-        setTimeout(() => setToast(""), 3000);
+        showToast('Error al guardar progreso. Intenta de nuevo.', 'error');
       }
     } catch (err) {
       console.error("❌ Error al guardar:", err.response?.data || err);
-      setToast('Error de conexión al guardar progreso');
-      setTimeout(() => setToast(""), 3000);
+      showToast('Error de conexión al guardar progreso', 'error');
     } finally {
       setGuardando(false);
     }
   };
 
+  if (!progresoCargado) {
+    return (
+      <div className="fb-func-container">
+        <div style={{
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          height: '100vh',
+          fontSize: '1.2rem',
+          color: '#6a0f3c'
+        }}>
+          <p>Cargando contenido...</p>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="fb-func-container">
-      {/* 🔔 TOAST GLOBAL */}
       {toast.visible && (
         <div className={`toast toast-${toast.type}`}>{toast.message}</div>
       )}
 
-      {/* ===== ENCABEZADO ===== */}
       <header className="fb-func-header">
         <div className="fb-func-header-inner">
           <h1>Grupos, páginas y eventos en Facebook</h1>
@@ -185,10 +205,8 @@ export default function ModuloFacebookGruposPaginasEventos() {
         </div>
       </header>
 
-      {/* ===== CONTENIDO PRINCIPAL ===== */}
       <main>
         <section className="content-grid">
-          {/* 3.1 Grupos y comunidades */}
           <article className="card">
             <header className="card-head">
               <h2 className="section-title inline">
@@ -243,7 +261,12 @@ export default function ModuloFacebookGruposPaginasEventos() {
                 </div>
 
                 <figure className="media-side">
-                  <img src={gruposImg} className="side-image" alt="Grupos en Facebook" />
+                  <img
+                    src={gruposImg}
+                    alt="Ejemplo de grupos en Facebook"
+                    className="side-image"
+                  />
+                  <figcaption>Ejemplo de grupos en Facebook</figcaption>
                 </figure>
               </div>
               <h4>Interacción dentro de los grupos</h4>
@@ -256,7 +279,6 @@ export default function ModuloFacebookGruposPaginasEventos() {
             </div>
           </article>
 
-          {/* 3.2 Páginas de Facebook */}
           <article className="card">
             <header className="card-head">
               <h2 className="section-title inline">
@@ -335,7 +357,6 @@ export default function ModuloFacebookGruposPaginasEventos() {
             </div>
           </article>
 
-          {/* 3.3 Eventos */}
           <article className="card">
             <header className="card-head">
               <h2 className="section-title inline">
@@ -408,7 +429,6 @@ export default function ModuloFacebookGruposPaginasEventos() {
           </article>
         </section>
 
-        {/* ACTIVIDAD PRÁCTICA */}
         <section className="activities">
           <h2 className="section-title inline">
             Actividad práctica del módulo
@@ -434,7 +454,6 @@ export default function ModuloFacebookGruposPaginasEventos() {
         </section>
       </main>
 
-      {/* ===== FOOTER AVANCE ===== */}
       <footer className="contenido-footer">
         <div className="avance-mensaje">
           {gated && !timerTerminado && (

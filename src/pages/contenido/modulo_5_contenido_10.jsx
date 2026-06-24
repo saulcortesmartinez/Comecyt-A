@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from "axios";
-import { Trophy, XCircle } from "lucide-react";
+import { Clock, Trophy, XCircle } from "lucide-react";
 import confetti from "canvas-confetti";
 import '@/Css/modulo_5_contenido_10.css';
 
@@ -42,7 +42,7 @@ const Modulo5Contenido10 = () => {
         ['S', 'M', 'S', 'L', 'I', 'N', 'K', 'A', 'R', 'L'],
         ['P', 'A', 'Q', 'U', 'E', 'T', 'E', 'Q', 'E', 'O'],
         ['P', 'R', 'E', 'M', 'I', 'O', 'U', 'M', 'Q'],
-        ['U', 'R', 'G', 'E', 'N', 'T', 'E', 'E', 'I', 'U'],
+        ['U', 'R', 'G', 'E', 'N', 'T', 'E', 'I', 'U'],
         ['B', 'A', 'N', 'C', 'O', 'S', 'M', 'S', 'O', 'E'],
         ['B', 'L', 'O', 'Q', 'U', 'E', 'A', 'R', 'Q', 'A'],
         ['X', 'Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'R'],
@@ -175,7 +175,11 @@ const Modulo5Contenido10 = () => {
     const isCellFound = (r, c) => foundWords.some(w => wordPositions[w]?.some(([rr, cc]) => rr === r && cc === c));
 
     const aprobo = foundWords.length >= CALIFICACION_MINIMA;
-    const puedeAvanzar = modoLibre || (showResult && aprobo && scrolledBottom);
+
+    // ✅ CAMBIO: Ahora siempre está en true para habilitar el botón
+    const puedeAvanzar = true;
+
+    const juegoBloqueado = showResult || (timeLeft === 0 && !modoLibre);
 
     if (!progresoCargado) return <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh', color: '#06b6d4' }}>Cargando reto...</div>;
 
@@ -214,7 +218,7 @@ const Modulo5Contenido10 = () => {
                                             <button
                                                 key={colIdx}
                                                 onClick={() => handleCellClick(rowIdx, colIdx)}
-                                                disabled={showResult || (timeLeft === 0 && !modoLibre)}
+                                                disabled={juegoBloqueado}
                                                 className={`grid-cell ${isCellFound(rowIdx, colIdx) ? 'found' : isCellSelected(rowIdx, colIdx) ? 'selected' : ''}`}
                                             >
                                                 {letter}
@@ -276,7 +280,7 @@ const Modulo5Contenido10 = () => {
                             <button className="btn-anterior" onClick={() => navigate(-1)}>Anterior</button>
                             <button className={`btn-siguiente ${!puedeAvanzar || guardando ? "btn-disabled" : ""}`}
                                 onClick={handleSiguiente} disabled={guardando || !puedeAvanzar}>
-                                {guardando ? "Guardando..." : puedeAvanzar ? "SIGUIENTE CONTENIDO →" : "Contenido Bloqueado 🔒"}
+                                {guardando ? "Guardando..." : "SIGUIENTE CONTENIDO →"}
                             </button>
                         </div>
                     </footer>

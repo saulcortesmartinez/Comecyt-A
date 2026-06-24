@@ -1,4 +1,4 @@
-// src/pages/contenido/modulo_1_contenido_26.jsx
+// src/pages/contenido/modulo_4_contenido_5.jsx
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
@@ -14,7 +14,7 @@ import igInteraccionPaso1 from "../../assets/igInteraccionPaso1.png";
 import igInteraccionPaso2 from "../../assets/igInteraccionPaso2.png";
 
 const API_URL = "http://localhost:4000";
-const MODULO_ID = 4; // ✅ Es módulo 4
+const MODULO_ID = 4;
 const NUM_CONTENIDO = 5;
 const TOTAL_PREGUNTAS = 6;
 
@@ -36,8 +36,7 @@ export default function ContenidoInstagramBusquedaDescubrimiento() {
   const [gated, setGated] = useState(true);
   const [progreso, setProgreso] = useState(0);
 
-  // ✅ CAMBIO 1: States nuevos para el fix
-  const [totalContenidos, setTotalContenidos] = useState(26);
+  const [totalContenidos, setTotalContenidos] = useState(8);
   const [modulos, setModulos] = useState([]);
 
   const navigate = useNavigate();
@@ -45,7 +44,7 @@ export default function ContenidoInstagramBusquedaDescubrimiento() {
   const [guardando, setGuardando] = useState(false);
 
   useEffect(() => {
-    console.log("🔥 SÍ ENTRA AL COMPONENTE Contenido26");
+    console.log("🔥 SÍ ENTRA AL COMPONENTE Contenido 5 - Módulo 4");
   }, []);
 
   const showToast = (message, type = "info") => {
@@ -62,7 +61,6 @@ export default function ContenidoInstagramBusquedaDescubrimiento() {
     q6: "comentarioResp",
   };
 
-  // ✅ CAMBIO 2: useEffect modificado con setModulos y setTotalContenidos
   useEffect(() => {
     const fetchProgreso = async () => {
       try {
@@ -77,11 +75,11 @@ export default function ContenidoInstagramBusquedaDescubrimiento() {
           { correo }
         );
         const modulosData = resp.data.modulos || [];
-        setModulos(modulosData); // 👈 NUEVO
+        setModulos(modulosData);
 
         const modulo = modulosData.find((m) => m.modulo_id === MODULO_ID);
         if (modulo) {
-          setTotalContenidos(modulo.total_contenidos); // 👈 NUEVO
+          setTotalContenidos(modulo.total_contenidos);
           const p = Number(modulo?.progreso_actual ?? 0);
           setProgreso(p);
 
@@ -188,13 +186,11 @@ export default function ContenidoInstagramBusquedaDescubrimiento() {
     );
   };
 
-  // 🔙 Anterior
   const irAnterior = () => {
     window.scrollTo({ top: 0, left: 0, behavior: "instant" });
-    navigate("/modulo/1/contenido/25"); // ✅ Va al contenido 25
+    navigate(`/modulo/${MODULO_ID}/contenido/${NUM_CONTENIDO - 1}`);
   };
 
-  // ✅ CAMBIO 3: irSiguiente con fix para último contenido
   if (!progresoCargado) {
     return (
       <div className="ig5-container">
@@ -212,8 +208,6 @@ export default function ContenidoInstagramBusquedaDescubrimiento() {
     );
   }
 
-
-
   const finalizarContenido = async () => {
     if (!puedeAvanzar) return;
     setGuardando(true);
@@ -227,22 +221,19 @@ export default function ContenidoInstagramBusquedaDescubrimiento() {
         token ? { headers: { Authorization: `Bearer ${token}` } } : {}
       );
 
-      if (response.data?.success) {
+      if (response.data?.success !== false) {
         window.scrollTo(0, 0);
-        // si es el último contenido, vuelve al inicio
         if (NUM_CONTENIDO >= totalContenidos) {
           navigate("/inicio");
         } else {
           navigate(`/modulo/${MODULO_ID}/contenido/${NUM_CONTENIDO + 1}`);
         }
       } else {
-        setToast('Error al guardar progreso. Intenta de nuevo.');
-        setTimeout(() => setToast(""), 3000);
+        showToast('Error al guardar progreso. Intenta de nuevo.', 'error');
       }
     } catch (err) {
       console.error("❌ Error al guardar:", err.response?.data || err);
-      setToast('Error de conexión al guardar progreso');
-      setTimeout(() => setToast(""), 3000);
+      showToast('Error de conexión al guardar progreso', 'error');
     } finally {
       setGuardando(false);
     }
@@ -565,7 +556,7 @@ export default function ContenidoInstagramBusquedaDescubrimiento() {
               <span className="question-text">
                 1) ¿Para qué sirve la barra de búsqueda?
               </span>
-              <select name="q1" required onChange={handleChange}>
+              <select name="q1" required onChange={handleChange} value={answers.q1 || ""}>
                 <option value="">Selecciona…</option>
                 <option value="barraBuscar">
                   Para encontrar personas, hashtags y lugares.
@@ -588,7 +579,7 @@ export default function ContenidoInstagramBusquedaDescubrimiento() {
               <span className="question-text">
                 2) ¿Qué es un hashtag?
               </span>
-              <select name="q2" required onChange={handleChange}>
+              <select name="q2" required onChange={handleChange} value={answers.q2 || ""}>
                 <option value="">Selecciona…</option>
                 <option value="hashtags">
                   Una etiqueta (#) para agrupar publicaciones por tema.
@@ -611,7 +602,7 @@ export default function ContenidoInstagramBusquedaDescubrimiento() {
               <span className="question-text">
                 3) ¿Para qué sirve buscar por lugares?
               </span>
-              <select name="q3" required onChange={handleChange}>
+              <select name="q3" required onChange={handleChange} value={answers.q3 || ""}>
                 <option value="">Selecciona…</option>
                 <option value="lugares">
                   Para ver contenido relacionado con una zona o negocio.
@@ -634,7 +625,7 @@ export default function ContenidoInstagramBusquedaDescubrimiento() {
               <span className="question-text">
                 4) ¿En qué se basan las recomendaciones de Instagram?
               </span>
-              <select name="q4" required onChange={handleChange}>
+              <select name="q4" required onChange={handleChange} value={answers.q4 || ""}>
                 <option value="">Selecciona…</option>
                 <option value="recomendaciones">
                   En lo que ves, buscas, guardas, comentas y sigues.
@@ -657,7 +648,7 @@ export default function ContenidoInstagramBusquedaDescubrimiento() {
               <span className="question-text">
                 5) ¿Qué acción te ayuda a guardar contenido para ver después?
               </span>
-              <select name="q5" required onChange={handleChange}>
+              <select name="q5" required onChange={handleChange} value={answers.q5 || ""}>
                 <option value="">Selecciona…</option>
                 <option value="guardar">Usar “Guardar” (icono de marcador).</option>
                 <option value="apagar">Apagar el celular.</option>
@@ -678,7 +669,7 @@ export default function ContenidoInstagramBusquedaDescubrimiento() {
               <span className="question-text">
                 6) ¿Cuál es una buena práctica al comentar?
               </span>
-              <select name="q6" required onChange={handleChange}>
+              <select name="q6" required onChange={handleChange} value={answers.q6 || ""}>
                 <option value="">Selecciona…</option>
                 <option value="comentarioResp">
                   Comentar con respeto y no compartir información falsa.

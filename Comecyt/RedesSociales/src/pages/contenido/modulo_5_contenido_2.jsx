@@ -1,155 +1,222 @@
-// src/pages/contenido/modulo_5_contenido_2.jsx
-import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+// src/pages/contenido/modulo_1_contenido_23.jsx
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import { Clock, FileText, Trophy, XCircle, CheckCircle } from "lucide-react";
-import confetti from "canvas-confetti";
-import '@/Css/modulo_5_contenido_2.css';
+import "../../Css/modulo_4_contenido_2.css";
 
-const API_URL = import.meta.env.VITE_API_URL || "http://localhost:4000";
-const MODULO_ID = 5;
+import igPaso1Img from "../../assets/igPaso1.png";
+import igPaso2Img from "../../assets/igPaso2.png";
+import igPaso3Img from "../../assets/igPaso3.png";
+import igPaso4Img from "../../assets/igPaso4.png";
+import igPaso5Img from "../../assets/igPaso5.png";
+import igPaso6Img from "../../assets/igPaso6.png";
+import igUsuarioBioImg from "../../assets/igUsuarioBio.png";
+import igFotoPerfilImg from "../../assets/igFotoPerfil.png";
+import igEnlacesContactoImg from "../../assets/igEnlacesContacto.png";
+import igPrivacidadImg from "../../assets/igPrivacidad.png";
+
+const API_URL = "http://localhost:4000";
+const MODULO_ID = 4; // ✅ Es módulo 4
 const NUM_CONTENIDO = 2;
-const TIEMPO_JUEGO = 120;
-const CALIFICACION_MINIMA = 2;
+const TOTAL_PREGUNTAS = 6;
 
-const Modulo5Contenido2 = () => {
-    const navigate = useNavigate();
-
-    const [timeLeft, setTimeLeft] = useState(TIEMPO_JUEGO);
-    const [timerActive, setTimerActive] = useState(true);
-    const [scrolledBottom, setScrolledBottom] = useState(false);
+export default function ContenidoInstagramConfiguracionInicial() {
     const [answers, setAnswers] = useState({});
-    const [showResult, setShowResult] = useState(false);
-    const [score, setScore] = useState(0);
-    const [modoLibre, setModoLibre] = useState(false);
-    const [totalContenidos, setTotalContenidos] = useState(4);
+    const [feedback, setFeedback] = useState({});
+    const [quizScore, setQuizScore] = useState(0);
+    const [quizAnswered, setQuizAnswered] = useState(false);
+
+    const [toast, setToast] = useState({
+        visible: false,
+        message: "",
+        type: "info",
+    });
+
+    const [tiempoRestante, setTiempoRestante] = useState(120);
+    const [timerTerminado, setTimerTerminado] = useState(false);
+    const [scrolledBottom, setScrolledBottom] = useState(false);
+    const [gated, setGated] = useState(true);
+    const [progreso, setProgreso] = useState(0);
+
+    // ✅ CAMBIO 1: States nuevos para el fix
+    const [totalContenidos, setTotalContenidos] = useState(23);
+    const [modulos, setModulos] = useState([]);
+
+    const navigate = useNavigate();
     const [progresoCargado, setProgresoCargado] = useState(false);
     const [guardando, setGuardando] = useState(false);
 
-    const questions = [
-        {
-            id: 1,
-            question: "Recibes un correo que dice: 'BANCO - Urgente actualizar datos'. No esperabas nada del banco y el correo viene de 'banco-seguridad@gmail.com'. El link dice 'www.banco-seguro.tk/actualizar'. ¿Qué haces?",
-            options: [
-                "A) Le doy click porque es urgente y no quiero que bloqueen mi cuenta",
-                "B) Lo borro sin abrir y marco directo al número oficial del banco que viene en mi tarjeta",
-                "C) Le contesto al correo pidiendo más información para confirmar si es real",
-                "D) Reenvío el correo a mi familia para preguntarles si ellos saben qué hacer"
-            ],
-            correct: 1
-        },
-        {
-            id: 2,
-            question: "Te llega un correo de 'CFE' diciendo que tienes un adeudo de $3,450 y que si no pagas hoy te cortan la luz. Incluye un PDF adjunto llamado 'Factura_Urgente.pdf' y un link para pagar. ¿Cuál es la señal más clara de que es fraude?",
-            options: [
-                "A) Que el monto es muy alto y yo siempre pago puntual",
-                "B) Que CFE nunca manda correos, siempre son cartas físicas",
-                "C) Que el correo viene de un dominio raro como @cfe-mexico.net y pide abrir un PDF sospechoso",
-                "D) Que me dan solo 1 día para pagar, eso no es normal"
-            ],
-            correct: 2
-        },
-        {
-            id: 3,
-            question: "Abres un correo de 'Amazon' que dice que ganaste un iPhone 15. Solo tienes que 'confirmar tu dirección y pagar $99 de envío' en un link. El correo tiene el logo de Amazon pero la dirección es 'ofertas-amazon2024@hotmail.com'. ¿Qué haces?",
-            options: [
-                "A) Pago los $99 rápido, es una ganga y Amazon es empresa seria",
-                "B) Busco en Google 'Amazon ganó iPhone' para ver si es promoción real",
-                "C) Lo reporto como phishing y lo borro, Amazon no regala iPhones por correo",
-                "D) Le pregunto a mi hijo si él cree que es real antes de pagar"
-            ],
-            correct: 2
-        }
-    ];
+    useEffect(() => {
+        console.log("🔥 SÍ ENTRA AL COMPONENTE Contenido23");
+    }, []);
 
-    const lanzarConfeti = () => {
-        const duration = 3000;
-        const end = Date.now() + duration;
-        (function frame() {
-            confetti({ particleCount: 5, angle: 60, spread: 55, origin: { x: 0 }, colors: ['#28a745', '#007bff', '#ffc107'] });
-            confetti({ particleCount: 5, angle: 120, spread: 55, origin: { x: 1 }, colors: ['#28a745', '#007bff', '#ffc107'] });
-            if (Date.now() < end) requestAnimationFrame(frame);
-        })();
+    const showToast = (message, type = "info") => {
+        setToast({ visible: true, message, type });
+        setTimeout(() => setToast((t) => ({ ...t, visible: false })), 2500);
     };
 
-    useEffect(() => {
-        const correo = localStorage.getItem("correo");
-        const token = localStorage.getItem("token");
-        if (!correo) {
-            setProgresoCargado(true);
-            return;
-        }
+    const correctAnswers = {
+        q1: "registro",
+        q2: "usuario",
+        q3: "bio",
+        q4: "foto",
+        q5: "contacto",
+        q6: "privacidad",
+    };
 
-        const cargarProgreso = async () => {
+    // ✅ CAMBIO 2: useEffect modificado con setModulos y setTotalContenidos
+    useEffect(() => {
+        const fetchProgreso = async () => {
             try {
-                const res = await axios.post(
+                const correo = localStorage.getItem("correo");
+                if (!correo) {
+                    setProgresoCargado(true);
+                    return;
+                }
+
+                const resp = await axios.post(
                     `${API_URL}/api/alumno/progreso`,
-                    { correo },
-                    token ? { headers: { Authorization: `Bearer ${token}` } } : {}
+                    { correo }
                 );
-                const modulosData = res.data.modulos || [];
-                const moduloActual = modulosData.find((m) => m.modulo_id === MODULO_ID);
-                if (moduloActual) {
-                    setTotalContenidos(moduloActual.total_contenidos);
-                    if (moduloActual.progreso_actual >= NUM_CONTENIDO) setModoLibre(true);
+                const modulosData = resp.data.modulos || [];
+                setModulos(modulosData); // 👈 NUEVO
+
+                const modulo = modulosData.find((m) => m.modulo_id === MODULO_ID);
+                if (modulo) {
+                    setTotalContenidos(modulo.total_contenidos); // 👈 NUEVO
+                    const p = Number(modulo?.progreso_actual ?? 0);
+                    setProgreso(p);
+
+                    if (p >= NUM_CONTENIDO) {
+                        setGated(false);
+                        setTimerTerminado(true);
+                        setScrolledBottom(true);
+                    } else {
+                        setGated(true);
+                    }
                 }
             } catch (err) {
-                console.error("Error al cargar progreso:", err);
-                const progresoLocal = parseInt(localStorage.getItem("progresoUsuario")) || 0;
-                if (progresoLocal >= NUM_CONTENIDO) setModoLibre(true);
+                console.error("Error obteniendo progreso:", err);
+                showToast(
+                    "No se pudo obtener tu progreso, pero puedes seguir leyendo.",
+                    "error"
+                );
             } finally {
                 setProgresoCargado(true);
             }
         };
-        cargarProgreso();
+
+        window.scrollTo({ top: 0, left: 0, behavior: "instant" });
+        fetchProgreso();
     }, []);
 
     useEffect(() => {
         if (!progresoCargado) return;
-        if (modoLibre) {
-            setTimeLeft(0);
-            setTimerActive(false);
+
+        if (gated) {
+            setTiempoRestante(120);
+            setTimerTerminado(false);
+        } else {
+            setTiempoRestante(0);
+            setTimerTerminado(true);
             setScrolledBottom(true);
             return;
         }
-        if (timerActive && timeLeft > 0 && !showResult) {
-            const timer = setTimeout(() => setTimeLeft(timeLeft - 1), 1000);
-            return () => clearTimeout(timer);
-        } else if (timeLeft === 0) {
-            setTimerActive(false);
-        }
-    }, [timeLeft, timerActive, showResult, modoLibre, progresoCargado]);
+
+        const interval = setInterval(() => {
+            setTiempoRestante((prev) => {
+                if (prev <= 1) {
+                    clearInterval(interval);
+                    setTimerTerminado(true);
+                    return 0;
+                }
+                return prev - 1;
+            });
+        }, 1000);
+
+        return () => clearInterval(interval);
+    }, [gated, progresoCargado]);
 
     useEffect(() => {
+        if (!gated) return;
+
         const handleScroll = () => {
             const scrollPosition = window.innerHeight + window.scrollY;
             const pageHeight = document.documentElement.offsetHeight;
-            if (scrollPosition >= pageHeight - 50) setScrolledBottom(true);
+            if (scrollPosition >= pageHeight - 80) setScrolledBottom(true);
         };
+
         window.addEventListener("scroll", handleScroll);
+        handleScroll();
         return () => window.removeEventListener("scroll", handleScroll);
-    }, []);
+    }, [gated]);
 
-    const handleAnswer = (questionIdx, optionIdx) => {
-        if ((timeLeft === 0 && !modoLibre) || showResult) return;
-        setAnswers({ ...answers, [questionIdx]: optionIdx });
+    const puedeAvanzar = !gated || (timerTerminado && scrolledBottom);
+
+    const formatearTiempo = (segundos) => {
+        const m = Math.floor(segundos / 60);
+        const s = segundos % 60;
+        return `${m}:${s.toString().padStart(2, "0")}`;
     };
 
-    const handleFinish = () => {
-        let newScore = 0;
-        questions.forEach((q, idx) => {
-            if (answers[idx] === q.correct) newScore++;
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        setAnswers((prev) => ({ ...prev, [name]: value }));
+        setQuizAnswered(false);
+    };
+
+    const handleQuizSubmit = (e) => {
+        e.preventDefault();
+
+        let score = 0;
+        const newFeedback = {};
+
+        Object.keys(correctAnswers).forEach((key) => {
+            if (answers[key] === correctAnswers[key]) {
+                score++;
+                newFeedback[key] = "correct";
+            } else {
+                newFeedback[key] = "incorrect";
+            }
         });
-        setScore(newScore);
-        setShowResult(true);
-        setTimerActive(false);
 
-        if (newScore >= CALIFICACION_MINIMA) {
-            lanzarConfeti();
-        }
+        setFeedback(newFeedback);
+        setQuizScore(score);
+        setQuizAnswered(true);
+
+        showToast(
+            `Obtuviste ${score} de ${TOTAL_PREGUNTAS} respuestas correctas.`,
+            score >= 5 ? "success" : "info"
+        );
     };
 
-    const handleSiguiente = async () => {
+    // 🔙 Anterior
+    const irAnterior = () => {
+        window.scrollTo({ top: 0, left: 0, behavior: "instant" });
+        navigate("/modulo/1/contenido/22"); // ✅ Va al contenido 22
+    };
+
+    // ✅ CAMBIO 3: irSiguiente con fix para último contenido
+    if (!progresoCargado) {
+        return (
+            <div className="ig2-container">
+                <div style={{
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    height: '100vh',
+                    fontSize: '1.2rem',
+                    color: '#833ab4'
+                }}>
+                    <p>Cargando contenido...</p>
+                </div>
+            </div>
+        );
+    }
+
+
+
+    const finalizarContenido = async () => {
         if (!puedeAvanzar) return;
         setGuardando(true);
         const correo = localStorage.getItem("correo");
@@ -164,203 +231,599 @@ const Modulo5Contenido2 = () => {
 
             if (response.data?.success) {
                 window.scrollTo(0, 0);
+                // si es el último contenido, vuelve al inicio
                 if (NUM_CONTENIDO >= totalContenidos) {
                     navigate("/inicio");
                 } else {
                     navigate(`/modulo/${MODULO_ID}/contenido/${NUM_CONTENIDO + 1}`);
                 }
             } else {
-                alert('Error al guardar progreso. Intenta de nuevo.');
+                setToast('Error al guardar progreso. Intenta de nuevo.');
+                setTimeout(() => setToast(""), 3000);
             }
         } catch (err) {
-            console.error("Error al avanzar:", err.response?.data || err);
-            alert('Error de conexión al guardar progreso');
+            console.error("❌ Error al guardar:", err.response?.data || err);
+            setToast('Error de conexión al guardar progreso');
+            setTimeout(() => setToast(""), 3000);
         } finally {
             setGuardando(false);
         }
     };
 
-    const reintentar = () => {
-        setAnswers({});
-        setShowResult(false);
-        setScore(0);
-        setTimeLeft(TIEMPO_JUEGO);
-        setTimerActive(true);
-        setScrolledBottom(false);
-    };
-
-    const formatTime = (seconds) => {
-        if (modoLibre) return "Modo Repaso 🔄";
-        const mins = Math.floor(seconds / 60);
-        const secs = seconds % 60;
-        return `${mins}:${secs < 10 ? '0' : ''}${secs}`;
-    };
-
-    const allAnswered = Object.keys(answers).length === 3;
-    const aprobo = score >= CALIFICACION_MINIMA;
-    const puedeAvanzar = modoLibre || (showResult && aprobo && scrolledBottom);
-    const juegoBloqueado = (timeLeft === 0 && !modoLibre) || showResult;
-
-    if (!progresoCargado) {
-        return (
-            <div className="bg-gradient-to-br from-slate-900 to-slate-800 min-h-screen p-4 md:p-8">
-                <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh', fontSize: '1.2rem', color: '#00d9ff' }}>
-                    <p>Cargando reto...</p>
-                </div>
-            </div>
-        );
-    }
-
     return (
-        <div className="bg-gradient-to-br from-slate-900 to-slate-800 min-h-screen p-4 md:p-8">
-            <div className="max-w-5xl mx-auto">
-                <div className="game-card">
-                    <div className="game-header">
-                        <h2 className="!text-white">
-                            <span>📧</span>
-                            Reto 2: Correo Electrónico Seguro
+        <div className="ig2-container">
+            {toast.visible && (
+                <div className={`toast toast-${toast.type}`}>{toast.message}</div>
+            )}
+
+            <header className="ig2-header">
+                <div className="ig2-header-inner">
+                    <h1>Instagram: Configuración inicial de la cuenta</h1>
+                    <p className="sub">
+                        Aprende a registrarte, personalizar tu perfil, agregar contacto y
+                        definir tu privacidad para usar Instagram de forma segura y completa.
+                    </p>
+                </div>
+            </header>
+
+            <main className="content-grid">
+                <article className="card">
+                    <header className="card-head">
+                        <h2 className="section-title inline">
+                            <span className="section-number">2.0</span>
+                            ¿Qué veremos en Instagram?
                         </h2>
-                        <p className="!text-slate-300">
-                            Analiza estos 3 casos reales de correos fraudulentos. Tienes <strong>2 minutos</strong> para responder.
+                    </header>
+
+                    <div className="card-body">
+                        <p>
+                            <strong>Instagram</strong> es una red social enfocada en contenido{" "}
+                            <strong>visual</strong>, donde puedes compartir <strong>fotos</strong>,{" "}
+                            <strong>videos</strong> y contenido corto como <strong>historias</strong>{" "}
+                            y <strong>reels</strong>. En este módulo aprenderás lo básico para usarla
+                            con confianza, ya sea para uso personal o para un proyecto/negocio.
                         </p>
                     </div>
+                </article>
 
-                    <div className="mb-6 text-center">
-                        <div className={`inline-block px-6 py-3 rounded-xl ${(timeLeft < 30 && !modoLibre) ? 'bg-red-500/20 border-red-400' : 'bg-cyan-500/20 border-cyan-400'} border-2`}>
-                            <p className="!text-white text-2xl font-bold" style={{ textShadow: '0 0 10px rgba(0, 217, 255, 0.5)' }}>
-                                ⏰ {formatTime(timeLeft)}
-                            </p>
+                <article className="card">
+                    <header className="card-head">
+                        <h2 className="section-title inline">
+                            <span className="section-number">2.1</span>
+                            Registro e inicio de sesión
+                        </h2>
+                    </header>
+
+                    <div className="card-body">
+                        <p className="pasos-intro">
+                            Sigue cada paso con calma: primero lees el texto y luego miras la imagen
+                            de ejemplo.
+                        </p>
+
+                        <ul className="lista-pasos-img">
+                            <li className="paso-bloque">
+                                <p className="paso-titulo">
+                                    <strong>Paso 1:</strong>
+                                </p>
+                                <p className="paso-texto">
+                                    Abre la tienda de aplicaciones en tu teléfono. En Android entra a{" "}
+                                    <strong>Play Store</strong>.
+                                    Escribe <strong>&quot;Instagram&quot;</strong> en el buscador y
+                                    verifica que sea la app oficial de (<strong>Instagram</strong> /{" "}
+                                    <strong>Meta</strong>) y da clic en el boton <strong>instalar</strong>.
+                                </p>
+
+                                <figure className="paso-figure">
+                                    <img
+                                        src={igPaso1Img}
+                                        alt="Búsqueda de Instagram en la tienda"
+                                        className="paso-img" />
+                                </figure>
+                            </li>
+
+                            <li className="paso-bloque">
+                                <p className="paso-titulo">
+                                    <strong>Paso 2:</strong>
+                                </p>
+                                <p className="paso-texto">
+                                    Pulsa en <strong>Instalar</strong> y espera a que termine la descarga y luego toca{" "}
+                                    <strong>Abrir</strong>.
+                                </p>
+                                <figure className="paso-figure">
+                                    <img
+                                        src={igPaso2Img}
+                                        alt="Instalación de Instagram"
+                                        className="paso-img"
+                                    />
+                                </figure>
+                            </li>
+
+                            <li className="paso-bloque">
+                                <p className="paso-titulo">
+                                    <strong>Paso 3:</strong>
+                                </p>
+                                <p className="paso-texto">
+                                    En la pantalla principal, selecciona <strong>Crear cuenta</strong> o{" "}
+                                    <strong>Registrarte</strong>. Elige si deseas iniciar sesión con{" "}
+                                    <strong>Facebook</strong>.
+                                </p>
+                                <figure className="paso-figure">
+                                    <img
+                                        src={igPaso3Img}
+                                        alt="Pantalla para crear cuenta en Instagram"
+                                        className="paso-img"
+                                    />
+                                </figure>
+                            </li>
+
+                            <li className="paso-bloque">
+                                <p className="paso-titulo">
+                                    <strong>Paso 4:</strong>
+                                </p>
+                                <p className="paso-texto">
+                                    Elige registrarte con tu número de teléfono o email, ingresa tus datos.
+                                    Crea una <strong>contraseña segura</strong> (mezcla letras y números),
+                                    ingresa un nombre de usuario.
+                                    Si Instagram envía un <strong>código de verificación</strong> por SMS
+                                    o correo, escríbelo para confirmar tu cuenta.
+                                </p>
+                                <figure className="paso-figure">
+                                    <img
+                                        src={igPaso4Img}
+                                        alt="Código de verificación y contraseña"
+                                        className="paso-img"
+                                    />
+                                </figure>
+                            </li>
+
+                            <li className="paso-bloque">
+                                <p className="paso-titulo">
+                                    <strong>Paso 5:</strong>
+                                </p>
+                                <p className="paso-texto">
+                                    Elige iniciar sesión con Facebook, selecciona <strong>"Continuar con Facebook"</strong>{" "}
+                                    la app te pedirá continuar con tu cuenta de Facebook y te guiará para crear una cuenta nueva
+                                    o enlazar con una existente.
+                                </p>
+                                <figure className="paso-figure">
+                                    <img
+                                        src={igPaso5Img}
+                                        alt="Código de verificación y contraseña"
+                                        className="paso-img"
+                                    />
+                                </figure>
+
+                            </li>
+
+                            <li className="paso-bloque">
+                                <p className="paso-titulo">
+                                    <strong>Paso 6:</strong>
+                                </p>
+                                <p className="paso-texto">
+                                    Para <strong>iniciar sesión</strong> después, abre Instagram y escribe
+                                    tu <strong>usuario o correo</strong> y tu <strong>contraseña</strong>.
+                                    Si activas la <strong>verificación en dos pasos</strong>, también te
+                                    pedirá un código adicional.
+                                </p>
+                                <figure className="paso-figure">
+                                    <img
+                                        src={igPaso6Img}
+                                        alt="Pantalla de inicio de sesión en Instagram"
+                                        className="paso-img"
+                                    />
+                                </figure>
+
+                            </li>
+                        </ul>
+
+                        <p className="hint">
+                            Tip: usa una contraseña que no uses en otras apps y activa verificación en
+                            dos pasos si la tienes disponible.
+                        </p>
+                    </div>
+                </article>
+
+                <article className="card">
+                    <header className="card-head">
+                        <h2 className="section-title inline">
+                            <span className="section-number">2.2</span>
+                            Nombre de usuario y biografía
+                        </h2>
+                    </header>
+
+                    <div className="card-body">
+                        <div className="two-col">
+                            <div>
+                                <p>
+                                    Tu <strong>nombre de usuario</strong> (por ejemplo:{" "}
+                                    <em>@mi_tienda</em>) es como te encuentran en Instagram. La{" "}
+                                    <strong>biografía</strong> es una descripción corta que explica
+                                    quién eres o qué ofreces.
+                                </p>
+
+                                <h3>Buenas prácticas</h3>
+                                <ul className="lista-simple">
+                                    <li>Que sea fácil de escribir y recordar.</li>
+                                    <li>Evita demasiados números o símbolos raros.</li>
+                                    <li>En la bio escribe: qué haces + ubicación + cómo contactarte.</li>
+                                </ul>
+                            </div>
+                            <figure className="media-side">
+                                <img src={igUsuarioBioImg} alt="Nombre de usuario y biografía" className="side-image" />
+                            </figure>
+
                         </div>
                     </div>
+                </article>
 
-                    <div className="space-y-6 mb-8">
-                        {questions.map((q, qIdx) => (
-                            <div key={q.id} className="bg-slate-800/90 p-6 rounded-xl border border-cyan-500/40 shadow-inner">
-                                <p className="!text-white text-lg font-semibold mb-4 leading-relaxed">
-                                    <span className="!text-cyan-400 font-bold">{qIdx + 1}.</span> {q.question}
+                <article className="card">
+                    <header className="card-head">
+                        <h2 className="section-title inline">
+                            <span className="section-number">2.3</span>
+                            Foto de perfil
+                        </h2>
+                    </header>
+
+                    <div className="card-body">
+                        <div className="two-col">
+                            <div>
+                                <p>
+                                    La <strong>foto de perfil</strong> es la primera impresión.
+                                    Debe verse clara incluso en tamaño pequeño.
                                 </p>
-                                <div className="space-y-3">
-                                    {q.options.map((opt, oIdx) => {
-                                        const esSeleccionada = answers[qIdx] === oIdx;
-                                        return (
-                                            <button
-                                                key={oIdx}
-                                                onClick={() => handleAnswer(qIdx, oIdx)}
-                                                disabled={juegoBloqueado}
-                                                className={`w-full text-left p-4 rounded-lg border-2 transition-all !opacity-100 ${esSeleccionada
-                                                    ? 'bg-cyan-500/30 border-cyan-400 !text-white shadow-lg shadow-cyan-500/30 font-semibold'
-                                                    : 'bg-slate-700/60 border-slate-600 !text-slate-200 hover:border-cyan-500/50 hover:bg-slate-700'
-                                                    } ${juegoBloqueado ? 'cursor-not-allowed' : 'cursor-pointer'}`}
-                                                style={{ color: esSeleccionada ? '#ffffff' : '#e2e8f0' }}
-                                            >
-                                                {opt}
-                                            </button>
-                                        );
-                                    })}
+
+                                <ul className="lista-simple">
+                                    <li>Si es cuenta personal: una foto nítida del rostro.</li>
+                                    <li>Si es negocio: logotipo simple y con buen contraste.</li>
+                                    <li>Evita fotos borrosas o con demasiado texto.</li>
+                                </ul>
+                                <p className="hint">
+                                    Tip: Usa una imagen cuadrada (1:1) y revisa que se vea bien dentro del círculo.
+                                </p>
+                            </div>
+                            <figure className="media-side">
+                                <img src={igFotoPerfilImg} alt="Cambiar foto de perfil" className="side-image" />
+                            </figure>
+                        </div>
+                    </div>
+                </article>
+
+                <article className="card">
+                    <header className="card-head">
+                        <h2 className="section-title inline">
+                            <span className="section-number">2.4</span>
+                            Enlaces y botones de contacto
+                        </h2>
+                    </header>
+
+                    <div className="card-body">
+                        <div className="two-col">
+                            <div>
+                                <p>
+                                    Los <strong>enlaces</strong> y <strong>botones de contacto</strong>{" "}
+                                    facilitan que las personas te escriban o te encuentren. Esto es
+                                    especialmente útil si usas cuenta de creador o empresa.
+                                </p>
+
+                                <ul className="lista-simple">
+                                    <li>
+                                        Agrega un <strong>enlace</strong> (por ejemplo: catálogo, WhatsApp, web).
+                                    </li>
+                                    <li>
+                                        Configura <strong>correo</strong>, <strong>teléfono</strong> o <strong>ubicación</strong>.
+                                    </li>
+                                    <li>
+                                        Mantén el enlace actualizado (si cambias de número o página).
+                                    </li>
+                                </ul>
+                            </div>
+                            <figure className="media-side">
+                                <img src={igEnlacesContactoImg} alt="Enlaces y botones de contacto" className="side-image" />
+                            </figure>
+                        </div>
+                        <p className="hint">
+                            Tip: Si vendes, tener un enlace directo a WhatsApp o formulario de pedidos
+                            hace el proceso más rápido.
+                        </p>
+                    </div>
+                </article>
+
+                <article className="card">
+                    <header className="card-head">
+                        <h2 className="section-title inline">
+                            <span className="section-number">2.5</span>
+                            Opciones de privacidad (pública o privada)
+                        </h2>
+                    </header>
+
+                    <div className="card-body">
+                        <div className="two-col">
+                            <div>
+                                <p>
+                                    Instagram permite configurar si tu cuenta es{" "}
+                                    <strong>pública</strong> o <strong>privada</strong>. Esta decisión
+                                    cambia quién puede ver tus publicaciones y quién puede seguirte.
+                                </p>
+
+                                <div className="privacy-grid">
+                                    <div className="privacy-item">
+                                        <h3>Cuenta pública</h3>
+                                        <ul className="lista-simple">
+                                            <li>Todos pueden ver tu perfil y publicaciones.</li>
+                                            <li>Ideal para creadores y negocios que quieren alcance.</li>
+                                            <li>Más exposición: debes cuidar lo que publicas.</li>
+                                        </ul>
+                                    </div>
+
+                                    <div className="privacy-item">
+                                        <h3>Cuenta privada</h3>
+                                        <ul className="lista-simple">
+                                            <li>Solo tus seguidores aprobados ven tu contenido.</li>
+                                            <li>Mejor para cuentas personales.</li>
+                                            <li>Más control: tú decides a quién aceptas.</li>
+                                        </ul>
+                                    </div>
                                 </div>
                             </div>
-                        ))}
+                            <figure className="media-side">
+                                <img src={igPrivacidadImg} alt="Opciones de privacidad" className="side-image" />
+                                <p className="hint">
+                                    Tip: Aunque tu cuenta sea pública, evita compartir datos sensibles.
+                                </p>
+                            </figure>
+                        </div>
+                    </div>
+                </article>
+            </main>
+
+            <section className="video-section">
+                <h2 className="section-title inline">
+                    <span className="section-number">2.6</span>
+                    Video: Configurar tu cuenta de Instagram
+                </h2>
+                <p className="video-hint">
+                    Mira un video corto para reforzar cómo editar perfil, poner foto y
+                    ajustar privacidad.
+                </p>
+                <div className="video-wrapper">
+                    <iframe
+                        src="https://www.youtube.com/embed/zxspWqssG78"
+                        title="Configurar Instagram"
+                        frameBorder="0"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                        allowFullScreen
+                    />
+                </div>
+            </section>
+
+            <section className="activities">
+                <h2 className="section-title inline">
+                    <span className="section-number">2.7</span>
+                    Actividad práctica del tema
+                </h2>
+                <ol>
+                    <li>
+                        Crea (o simula) un perfil y escribe:
+                        <ul className="lista-simple">
+                            <li>Nombre de usuario.</li>
+                            <li>Biografía (máximo 3 renglones).</li>
+                            <li>Qué foto usarías y por qué.</li>
+                        </ul>
+                    </li>
+                    <li>
+                        Escribe qué enlace colocarías (WhatsApp, catálogo, sitio web) y por qué.
+                    </li>
+                    <li>
+                        Elige: ¿cuenta pública o privada? Explica tu decisión en 2–3 renglones.
+                    </li>
+                </ol>
+                <p className="hint">
+                    Procura que tu ejemplo sea realista (negocio local o perfil personal).
+                </p>
+            </section>
+
+            <section className="quiz">
+                <h2 className="section-title inline">
+                    <span className="section-number">2.8</span>
+                    Quiz: Configuración inicial de Instagram
+                </h2>
+
+                <form className="quiz-form" onSubmit={handleQuizSubmit}>
+                    <div className={`q ${quizAnswered ? feedback.q1 || "" : ""}`}>
+                        <label>
+                            <span className="question-text">
+                                1) ¿Qué acción corresponde al registro o inicio de sesión?
+                            </span>
+                            <select name="q1" required onChange={handleChange}>
+                                <option value="">Selecciona…</option>
+                                <option value="registro">
+                                    Crear cuenta o ingresar con usuario/correo y contraseña.
+                                </option>
+                                <option value="filtros">Cambiar filtros de fotos.</option>
+                                <option value="borrar">Borrar toda la app.</option>
+                            </select>
+                        </label>
+                        {quizAnswered && feedback.q1 && (
+                            <p className={`answer-feedback ${feedback.q1}`}>
+                                {feedback.q1 === "correct"
+                                    ? "✅ Correcto."
+                                    : "❗ Revisa: registro/inicio de sesión es crear o ingresar con datos."}
+                            </p>
+                        )}
                     </div>
 
-                    {!showResult && (timeLeft === 0 || allAnswered) && (
-                        <button onClick={handleFinish} className="btn-finish-game">
-                            {allAnswered ? '✅ TERMINAR Y VER RESULTADO' : '⏰ SE ACABÓ EL TIEMPO - VER RESULTADO'}
-                        </button>
-                    )}
+                    <div className={`q ${quizAnswered ? feedback.q2 || "" : ""}`}>
+                        <label>
+                            <span className="question-text">
+                                2) ¿Para qué sirve el nombre de usuario?
+                            </span>
+                            <select name="q2" required onChange={handleChange}>
+                                <option value="">Selecciona…</option>
+                                <option value="usuario">
+                                    Para que las personas te encuentren fácilmente (ej: @nombre).
+                                </option>
+                                <option value="soloFoto">Solo para subir fotos.</option>
+                                <option value="wifi">Para conectarte al WiFi.</option>
+                            </select>
+                        </label>
+                        {quizAnswered && feedback.q2 && (
+                            <p className={`answer-feedback ${feedback.q2}`}>
+                                {feedback.q2 === "correct"
+                                    ? "✅ Correcto."
+                                    : "❗ Revisa: el usuario es tu identificador en Instagram."}
+                            </p>
+                        )}
+                    </div>
 
-                    {showResult && (
-                        <div className="victory-message">
-                            <div className="particles">
-                                <div className="particle"></div>
-                                <div className="particle"></div>
-                                <div className="particle"></div>
-                                <div className="particle"></div>
-                                <div className="particle"></div>
-                            </div>
-                            {aprobo ? (
-                                <>
-                                    <Trophy size={80} color="#ffc107" />
-                                    <h3 className="!text-white">¡{score === 3 ? 'PERFECTO' : 'MUY BIEN'}!</h3>
-                                    <p className="!text-slate-100">Obtuviste {score} de 3 respuestas correctas</p>
-                                </>
-                            ) : (
-                                <>
-                                    <XCircle size={80} color="#dc3545" />
-                                    <h3 className="!text-white">SIGUE PRACTICANDO</h3>
-                                    <p className="!text-slate-100">Obtuviste {score} de 3. Necesitas mínimo {CALIFICACION_MINIMA}/3</p>
-                                </>
-                            )}
+                    <div className={`q ${quizAnswered ? feedback.q3 || "" : ""}`}>
+                        <label>
+                            <span className="question-text">
+                                3) ¿Qué debe incluir una buena biografía?
+                            </span>
+                            <select name="q3" required onChange={handleChange}>
+                                <option value="">Selecciona…</option>
+                                <option value="bio">
+                                    Qué haces, ubicación (opcional) y cómo contactarte.
+                                </option>
+                                <option value="contra">Tu contraseña completa.</option>
+                                <option value="tarjeta">Datos bancarios.</option>
+                            </select>
+                        </label>
+                        {quizAnswered && feedback.q3 && (
+                            <p className={`answer-feedback ${feedback.q3}`}>
+                                {feedback.q3 === "correct"
+                                    ? "✅ Correcto."
+                                    : "❗ Revisa: nunca compartas contraseñas o datos sensibles."}
+                            </p>
+                        )}
+                    </div>
 
-                            <div className="mt-6 text-left bg-slate-900/80 p-4 rounded-lg border border-slate-700">
-                                <p className="!text-cyan-400 font-bold mb-3">Respuestas correctas:</p>
-                                {questions.map((q, idx) => (
-                                    <p key={idx} className="!text-slate-300 text-sm mb-2">
-                                        <strong className={answers[idx] === q.correct ? '!text-green-400' : '!text-red-400'}>
-                                            {idx + 1}. {answers[idx] === q.correct ? '✓' : '✗'}
-                                        </strong> {q.options[q.correct]}
-                                    </p>
-                                ))}
-                            </div>
+                    <div className={`q ${quizAnswered ? feedback.q4 || "" : ""}`}>
+                        <label>
+                            <span className="question-text">
+                                4) ¿Qué es lo más recomendable para una foto de perfil?
+                            </span>
+                            <select name="q4" required onChange={handleChange}>
+                                <option value="">Selecciona…</option>
+                                <option value="foto">
+                                    Que sea clara y se vea bien en tamaño pequeño.
+                                </option>
+                                <option value="borrosa">Que sea borrosa para “misterio”.</option>
+                                <option value="muchoTexto">Que tenga demasiado texto.</option>
+                            </select>
+                        </label>
+                        {quizAnswered && feedback.q4 && (
+                            <p className={`answer-feedback ${feedback.q4}`}>
+                                {feedback.q4 === "correct"
+                                    ? "✅ Correcto."
+                                    : "❗ Revisa: debe verse clara dentro del círculo."}
+                            </p>
+                        )}
+                    </div>
 
-                            {!aprobo && (
-                                <button className="btn-reintentar mt-4" onClick={reintentar}>
-                                    Reintentar
-                                </button>
-                            )}
-                        </div>
-                    )}
-                </div>
-            </div>
+                    <div className={`q ${quizAnswered ? feedback.q5 || "" : ""}`}>
+                        <label>
+                            <span className="question-text">
+                                5) ¿Para qué sirven los enlaces y botones de contacto?
+                            </span>
+                            <select name="q5" required onChange={handleChange}>
+                                <option value="">Selecciona…</option>
+                                <option value="contacto">
+                                    Para facilitar que te escriban o encuentren (correo, teléfono, ubicación).
+                                </option>
+                                <option value="juego">Para jugar dentro de Instagram.</option>
+                                <option value="bloquear">Para bloquear a todos.</option>
+                            </select>
+                        </label>
+                        {quizAnswered && feedback.q5 && (
+                            <p className={`answer-feedback ${feedback.q5}`}>
+                                {feedback.q5 === "correct"
+                                    ? "✅ Correcto."
+                                    : "❗ Revisa: sirven para contacto y rapidez (sobre todo en negocio/creador)."}
+                            </p>
+                        )}
+                    </div>
 
-            <footer className="contenido-footer mt-8">
+                    <div className={`q ${quizAnswered ? feedback.q6 || "" : ""}`}>
+                        <label>
+                            <span className="question-text">
+                                6) ¿Qué diferencia principal hay entre cuenta pública y privada?
+                            </span>
+                            <select name="q6" required onChange={handleChange}>
+                                <option value="">Selecciona…</option>
+                                <option value="privacidad">
+                                    Pública: todos ven tu contenido. Privada: solo seguidores aprobados.
+                                </option>
+                                <option value="igual">No hay diferencia.</option>
+                                <option value="soloColor">Solo cambia el color del perfil.</option>
+                            </select>
+                        </label>
+                        {quizAnswered && feedback.q6 && (
+                            <p className={`answer-feedback ${feedback.q6}`}>
+                                {feedback.q6 === "correct"
+                                    ? "✅ Correcto."
+                                    : "❗ Revisa: la privacidad determina quién puede ver tus publicaciones."}
+                            </p>
+                        )}
+                    </div>
+
+                    <button type="submit" className="btn-primary">
+                        Calificar
+                    </button>
+                </form>
+
+                {quizAnswered && (
+                    <div className="quiz-result">
+                        <p>
+                            Puntaje:{" "}
+                            <strong>
+                                {quizScore} / {TOTAL_PREGUNTAS}
+                            </strong>
+                        </p>
+                        <p className={quizScore >= 5 ? "ok" : "warn"}>
+                            {quizScore >= 5
+                                ? "¡Excelente! Ya sabes configurar tu cuenta correctamente. 🎉"
+                                : "Buen intento. Revisa las tarjetas y vuelve a intentar el quiz."}
+                        </p>
+                    </div>
+                )}
+            </section>
+
+            <footer className="contenido-footer">
                 <div className="avance-mensaje">
-                    {timerActive && !showResult && (
-                        <p className="avance-texto toast-info">
-                            <Clock size={16} style={{ marginRight: '8px' }} />
-                            Tienes {formatTime(timeLeft)} para responder las preguntas de opción múltiple.
+                    {gated && !timerTerminado && (
+                        <p>
+                            ⏳ Lee el contenido. El botón <strong>Siguiente</strong> se
+                            habilitará en {formatearTiempo(tiempoRestante)}.
                         </p>
                     )}
-
-                    {!modoLibre && timeLeft === 0 && !showResult && (
-                        <p className="avance-texto toast-warning">
-                            ⏰ El tiempo terminó. Envía tus respuestas para calificar.
+                    {gated && timerTerminado && !scrolledBottom && (
+                        <p>
+                            👇 Desplázate hasta el final de la página para habilitar el botón{" "}
+                            <strong>Siguiente</strong>.
                         </p>
                     )}
-
-                    {showResult && !aprobo && (
-                        <p className="avance-texto toast-error">
-                            ❌ Necesitas mínimo {CALIFICACION_MINIMA}/3 para aprobar este reto. ¡Vuelve a intentarlo!
-                        </p>
+                    {!gated && (
+                        <p>✅ Ya habías llegado a este contenido. Puedes avanzar cuando lo necesites.</p>
                     )}
-
-                    {showResult && aprobo && !scrolledBottom && !modoLibre && (
-                        <p className="avance-texto toast-info">
-                            📜 Desliza hasta el final de la pantalla para habilitar el botón "Siguiente"
-                        </p>
-                    )}
-
-                    {puedeAvanzar && (
-                        <p className="avance-texto toast-success">
-                            ✅ ¡Reto superado con éxito! Ya puedes avanzar al siguiente contenido.
-                        </p>
+                    {(!gated || (timerTerminado && scrolledBottom)) && (
+                        <p>✅ Ya puedes continuar al siguiente contenido.</p>
                     )}
                 </div>
 
                 <div className="botones-nav">
-                    <button className="btn-anterior" onClick={() => navigate(-1)}>
-                        Anterior
+                    <button className="btn-anterior" onClick={irAnterior}>
+                        ← Anterior
                     </button>
                     <button
                         className={`btn-siguiente ${!puedeAvanzar || guardando ? "btn-disabled" : ""}`}
-                        onClick={handleSiguiente}
+                        onClick={finalizarContenido}
                         disabled={guardando || !puedeAvanzar}
                     >
-                        {guardando ? "Guardando..." : puedeAvanzar ? "Siguiente Reto" : "Contenido Bloqueado 🔒"}
+                        {guardando ? "Guardando..." : "Siguiente →"}
                     </button>
                 </div>
             </footer>
         </div>
     );
-};
-
-export default Modulo5Contenido2;
+}

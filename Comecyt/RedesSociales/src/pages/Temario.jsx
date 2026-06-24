@@ -5,7 +5,8 @@ import axios from "axios";
 import { MessageCircle, CheckCircle2, Lock, Circle } from "lucide-react";
 import "../Css/Temario.css";
 
-const API_URL = import.meta.env.VITE_API_URL;
+// ✅ CORRECCIÓN: fallback a localhost si VITE_API_URL no está definido
+const API_URL = import.meta.env.VITE_API_URL || "http://localhost:4000";
 
 function Temario() {
   const navigate = useNavigate();
@@ -21,19 +22,28 @@ function Temario() {
       }
 
       try {
-        // Este endpoint debe devolver todos los contenidos completados del usuario
-        const res = await axios.get(`${API_URL}/progreso/contenidos-completados/${correo}`);
+        // ✅ CORRECCIÓN: usamos POST como en tus otros archivos, no GET
+        // Este endpoint SÍ existe en tu backend
+        const res = await axios.post(`${API_URL}/api/alumno/progreso`, { correo });
 
-        // Agrupamos por modulo_id: {1: [1,2,3], 2: [1,2],...}
+        // ✅ CORRECCIÓN: construimos los completados desde progreso_actual
+        // Tu backend devuelve: { modulos: [{modulo_id:1, progreso_actual:3,...}] }
         const agrupados = {};
-        res.data.forEach(item => {
-          if (!agrupados[item.modulo_id]) agrupados[item.modulo_id] = [];
-          agrupados[item.modulo_id].push(item.num_contenido);
+        const modulos = res.data?.modulos || [];
+
+        modulos.forEach(modulo => {
+          const progreso = Number(modulo.progreso_actual || 0);
+          if (progreso > 0) {
+            // Creamos array [1,2,3...] hasta el progreso actual
+            agrupados[modulo.modulo_id] = Array.from({ length: progreso }, (_, i) => i + 1);
+          }
         });
 
         setCompletados(agrupados);
       } catch (error) {
         console.error("Error cargando progreso:", error);
+        // Si falla, dejamos completados vacío pero no rompemos la app
+        setCompletados({});
       } finally {
         setLoading(false);
       }

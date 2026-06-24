@@ -122,7 +122,9 @@ function RetoFormularioModulo5_1() {
 
     const todasContestadas = Object.values(respuestas).every(r => r !== "");
     const aprobo = calificacion >= CALIFICACION_MINIMA;
-    const puedeAvanzar = modoLibre || (timerTerminado && scrolledBottom && formularioEnviado && aprobo);
+
+    // ✅ CAMBIO: Ahora siempre está en true para habilitar el botón
+    const puedeAvanzar = true;
 
     const formatearTiempo = (segundos) => {
         const m = Math.floor(segundos / 60);
@@ -425,7 +427,7 @@ function RetoFormularioModulo5_1() {
                         onClick={finalizarReto}
                         disabled={guardando || !puedeAvanzar}
                     >
-                        {guardando ? "Guardando..." : puedeAvanzar ? "Siguiente Reto" : "Contenido Bloqueado 🔒"}
+                        {guardando ? "Guardando..." : "Siguiente Reto"}
                     </button>
                 </div>
             </footer>

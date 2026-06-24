@@ -71,12 +71,12 @@ export default function ContenidoCrearCorreoGmail() {
       try {
         const res = await axios.post(`${API_URL}/api/alumno/progreso`, { correo });
         const modulosData = res.data.modulos || [];
-        setModulos(modulosData); // 👈 NUEVO
+        setModulos(modulosData);
 
         const modulo1 = modulosData.find((m) => m.modulo_id === MODULO_ID);
 
         if (modulo1) {
-          setTotalContenidos(modulo1.total_contenidos); // 👈 NUEVO
+          setTotalContenidos(modulo1.total_contenidos);
           if (modulo1.progreso_actual >= NUM_CONTENIDO) {
             setModoLibre(true);
           }
@@ -200,8 +200,6 @@ export default function ContenidoCrearCorreoGmail() {
       </div>
     );
   }
-
-
 
   const finalizarContenido = async () => {
     if (!puedeAvanzar) return;

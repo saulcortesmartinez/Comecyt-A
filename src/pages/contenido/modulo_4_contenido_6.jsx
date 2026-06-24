@@ -1,12 +1,17 @@
-// src/pages/contenido/modulo_1_contenido_27.jsx
+// src/pages/contenido/modulo_4_contenido_6.jsx
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import "../../Css/modulo_4_contenido_6.css";
 
+import igProfesionalPaso1 from "../../assets/igProfesionalPaso1.png";
+import igProfesionalPaso2 from "../../assets/igProfesionalPaso2.png";
+import igProfesionalPaso3 from "../../assets/igProfesionalPaso3.png";
+import igShoppingPaso1 from "../../assets/igShoppingPaso1.png";
+import igShoppingPaso2 from "../../assets/igShoppingPaso2.png";
 
 const API_URL = "http://localhost:4000";
-const MODULO_ID = 4; // ✅ Es módulo 4
+const MODULO_ID = 4;
 const NUM_CONTENIDO = 6;
 const TOTAL_PREGUNTAS = 6;
 
@@ -28,8 +33,7 @@ export default function ContenidoInstagramNegociosCreadores() {
   const [gated, setGated] = useState(true);
   const [progreso, setProgreso] = useState(0);
 
-  // ✅ CAMBIO 1: States nuevos para el fix
-  const [totalContenidos, setTotalContenidos] = useState(27);
+  const [totalContenidos, setTotalContenidos] = useState(8);
   const [modulos, setModulos] = useState([]);
 
   const navigate = useNavigate();
@@ -37,7 +41,7 @@ export default function ContenidoInstagramNegociosCreadores() {
   const [guardando, setGuardando] = useState(false);
 
   useEffect(() => {
-    console.log("🔥 SÍ ENTRA AL COMPONENTE Contenido27");
+    console.log("🔥 SÍ ENTRA AL COMPONENTE Contenido 6 - Módulo 4");
   }, []);
 
   const showToast = (message, type = "info") => {
@@ -54,7 +58,6 @@ export default function ContenidoInstagramNegociosCreadores() {
     q6: "shopping",
   };
 
-  // ✅ CAMBIO 2: useEffect modificado con setModulos y setTotalContenidos
   useEffect(() => {
     const fetchProgreso = async () => {
       try {
@@ -69,11 +72,11 @@ export default function ContenidoInstagramNegociosCreadores() {
           { correo }
         );
         const modulosData = resp.data.modulos || [];
-        setModulos(modulosData); // 👈 NUEVO
+        setModulos(modulosData);
 
         const modulo = modulosData.find((m) => m.modulo_id === MODULO_ID);
         if (modulo) {
-          setTotalContenidos(modulo.total_contenidos); // 👈 NUEVO
+          setTotalContenidos(modulo.total_contenidos);
           const p = Number(modulo?.progreso_actual ?? 0);
           setProgreso(p);
 
@@ -180,13 +183,11 @@ export default function ContenidoInstagramNegociosCreadores() {
     );
   };
 
-  // 🔙 Anterior
   const irAnterior = () => {
     window.scrollTo({ top: 0, left: 0, behavior: "instant" });
-    navigate("/modulo/1/contenido/26"); // ✅ Va al contenido 26
+    navigate(`/modulo/${MODULO_ID}/contenido/${NUM_CONTENIDO - 1}`);
   };
 
-  // ✅ CAMBIO 3: irSiguiente con fix para último contenido
   if (!progresoCargado) {
     return (
       <div className="ig6-container">
@@ -204,8 +205,6 @@ export default function ContenidoInstagramNegociosCreadores() {
     );
   }
 
-
-
   const finalizarContenido = async () => {
     if (!puedeAvanzar) return;
     setGuardando(true);
@@ -219,22 +218,19 @@ export default function ContenidoInstagramNegociosCreadores() {
         token ? { headers: { Authorization: `Bearer ${token}` } } : {}
       );
 
-      if (response.data?.success) {
+      if (response.data?.success !== false) {
         window.scrollTo(0, 0);
-        // si es el último contenido, vuelve al inicio
         if (NUM_CONTENIDO >= totalContenidos) {
           navigate("/inicio");
         } else {
           navigate(`/modulo/${MODULO_ID}/contenido/${NUM_CONTENIDO + 1}`);
         }
       } else {
-        setToast('Error al guardar progreso. Intenta de nuevo.');
-        setTimeout(() => setToast(""), 3000);
+        showToast('Error al guardar progreso. Intenta de nuevo.', 'error');
       }
     } catch (err) {
       console.error("❌ Error al guardar:", err.response?.data || err);
-      setToast('Error de conexión al guardar progreso');
-      setTimeout(() => setToast(""), 3000);
+      showToast('Error de conexión al guardar progreso', 'error');
     } finally {
       setGuardando(false);
     }
@@ -542,7 +538,7 @@ export default function ContenidoInstagramNegociosCreadores() {
               <span className="question-text">
                 1) ¿Qué ventaja principal tiene una cuenta profesional?
               </span>
-              <select name="q1" required onChange={handleChange}>
+              <select name="q1" required onChange={handleChange} value={answers.q1 || ""}>
                 <option value="">Selecciona…</option>
                 <option value="profesional">
                   Acceso a herramientas como estadísticas, contacto y promoción.
@@ -565,7 +561,7 @@ export default function ContenidoInstagramNegociosCreadores() {
               <span className="question-text">
                 2) ¿Qué cuenta es más ideal para un creador de contenido?
               </span>
-              <select name="q2" required onChange={handleChange}>
+              <select name="q2" required onChange={handleChange} value={answers.q2 || ""}>
                 <option value="">Selecciona…</option>
                 <option value="creador">Cuenta de creador (Creator).</option>
                 <option value="solo">Solo cuenta privada siempre.</option>
@@ -586,7 +582,7 @@ export default function ContenidoInstagramNegociosCreadores() {
               <span className="question-text">
                 3) ¿Qué cuenta suele convenir más para un negocio local?
               </span>
-              <select name="q3" required onChange={handleChange}>
+              <select name="q3" required onChange={handleChange} value={answers.q3 || ""}>
                 <option value="">Selecciona…</option>
                 <option value="empresa">Cuenta de empresa (Business).</option>
                 <option value="juego">Cuenta para jugar.</option>
@@ -607,7 +603,7 @@ export default function ContenidoInstagramNegociosCreadores() {
               <span className="question-text">
                 4) ¿Para qué sirven los Insights?
               </span>
-              <select name="q4" required onChange={handleChange}>
+              <select name="q4" required onChange={handleChange} value={answers.q4 || ""}>
                 <option value="">Selecciona…</option>
                 <option value="insights">
                   Para ver estadísticas de alcance, interacciones y audiencia.
@@ -630,7 +626,7 @@ export default function ContenidoInstagramNegociosCreadores() {
               <span className="question-text">
                 5) ¿Qué hacen los botones de contacto?
               </span>
-              <select name="q5" required onChange={handleChange}>
+              <select name="q5" required onChange={handleChange} value={answers.q5 || ""}>
                 <option value="">Selecciona…</option>
                 <option value="contacto">
                   Facilitan que te llamen, te escriban o te encuentren.
@@ -653,7 +649,7 @@ export default function ContenidoInstagramNegociosCreadores() {
               <span className="question-text">
                 6) ¿Qué es Instagram Shopping?
               </span>
-              <select name="q6" required onChange={handleChange}>
+              <select name="q6" required onChange={handleChange} value={answers.q6 || ""}>
                 <option value="">Selecciona…</option>
                 <option value="shopping">
                   Una función para mostrar/etiquetar productos (si está disponible).
@@ -694,8 +690,7 @@ export default function ContenidoInstagramNegociosCreadores() {
         <div className="avance-mensaje">
           {gated && !timerTerminado && (
             <p>
-              ⏳ Lee el contenido. El botón <strong>Siguiente</strong> se habilitará
-              en {formatearTiempo(tiempoRestante)}.
+              ⏳ Lee el contenido. El botón <strong>Siguiente</strong> se habilitará en {formatearTiempo(tiempoRestante)}.
             </p>
           )}
           {gated && timerTerminado && !scrolledBottom && (

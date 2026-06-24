@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import "../../Css/modulo_2_contenido_3.css";
 
-// import gruposImg from "../../assets/Grupos_fb.png"; // QUITADO - rompe el build
+import gruposImg from "../../assets/grupos_fb.png";
 import paginasImg from "../../assets/paginas_fb.png";
 import eventosImg from "../../assets/eventos_fb.png";
 
@@ -13,41 +13,41 @@ const MODULO_ID = 2;
 const NUM_CONTENIDO = 3;
 
 export default function ModuloFacebookGruposPaginasEventos() {
-  // 🔔 Notificaciones tipo toast
   const [toast, setToast] = useState({
     visible: false,
     message: "",
     type: "info",
   });
 
-  // ⏱️ control de avance
   const [tiempoRestante, setTiempoRestante] = useState(120);
   const [timerTerminado, setTimerTerminado] = useState(false);
   const [scrolledBottom, setScrolledBottom] = useState(false);
   const [gated, setGated] = useState(true);
   const [progreso, setProgreso] = useState(0);
 
-  // ✅ STATES FIX
   const [guardando, setGuardando] = useState(false);
   const [progresoCargado, setProgresoCargado] = useState(false);
-  const [totalContenidos, setTotalContenidos] = useState(8); // <-- FALTABA
+  const [totalContenidos, setTotalContenidos] = useState(8);
 
   const navigate = useNavigate();
 
   const showToast = (message, type = "info") => {
     setToast({ visible: true, message, type });
     setTimeout(() => {
-      setToast((t) => ({...t, visible: false }));
+      setToast((t) => ({ ...t, visible: false }));
     }, 2500);
   };
 
-  // 👉 cargar progreso para saber si aplicar bloqueo
+  useEffect(() => {
+    console.log("🔥 SÍ ENTRA AL COMPONENTE Contenido", NUM_CONTENIDO);
+  }, []);
+
   useEffect(() => {
     const fetchProgreso = async () => {
       try {
         const correo = localStorage.getItem("correo");
         const token = localStorage.getItem("token");
-        if (!correo ||!token) {
+        if (!correo) {
           setProgresoCargado(true);
           return;
         }
@@ -55,31 +55,28 @@ export default function ModuloFacebookGruposPaginasEventos() {
         const resp = await axios.post(
           `${API_URL}/api/alumno/progreso`,
           { correo },
-          { headers: { Authorization: `Bearer ${token}` } }
+          token ? { headers: { Authorization: `Bearer ${token}` } } : {}
         );
 
         const moduloActual = resp.data.modulos.find(
           (m) => m.modulo_id === MODULO_ID
         );
 
-        const p = Number(moduloActual?.progreso_actual?? 0);
+        const p = Number(moduloActual?.progreso_actual ?? 0);
         setProgreso(p);
-        setTotalContenidos(moduloActual?.total_contenidos?? 8); // <-- NUEVO
-        setProgresoCargado(true);
+        setTotalContenidos(moduloActual?.total_contenidos ?? 8);
 
-        if (p > NUM_CONTENIDO) {
+        if (p >= NUM_CONTENIDO) {
           setGated(false);
           setTimerTerminado(true);
           setScrolledBottom(true);
-        } else if (p === NUM_CONTENIDO) {
-          setGated(true);
         } else {
-          setGated(false);
-          setTimerTerminado(true);
-          setScrolledBottom(true);
+          setGated(true);
         }
       } catch (err) {
         console.error("Error obteniendo progreso:", err);
+        showToast("No se pudo obtener tu progreso, pero puedes seguir leyendo.", "error");
+      } finally {
         setProgresoCargado(true);
       }
     };
@@ -88,12 +85,18 @@ export default function ModuloFacebookGruposPaginasEventos() {
     fetchProgreso();
   }, []);
 
-  // ⏱️ Timer de 2 minutos SOLO si gated = true
   useEffect(() => {
-    if (!gated) return;
+    if (!progresoCargado) return;
 
-    setTiempoRestante(120);
-    setTimerTerminado(false);
+    if (gated) {
+      setTiempoRestante(120);
+      setTimerTerminado(false);
+    } else {
+      setTiempoRestante(0);
+      setTimerTerminado(true);
+      setScrolledBottom(true);
+      return;
+    }
 
     const interval = setInterval(() => {
       setTiempoRestante((prev) => {
@@ -107,9 +110,8 @@ export default function ModuloFacebookGruposPaginasEventos() {
     }, 1000);
 
     return () => clearInterval(interval);
-  }, [gated]);
+  }, [gated, progresoCargado]);
 
-  // 📜 detectar scroll al final SOLO si gated = true
   useEffect(() => {
     if (!gated) return;
 
@@ -126,7 +128,7 @@ export default function ModuloFacebookGruposPaginasEventos() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, [gated]);
 
-  const puedeAvanzar =!gated || (timerTerminado && scrolledBottom);
+  const puedeAvanzar = !gated || (timerTerminado && scrolledBottom);
 
   const formatearTiempo = (segundos) => {
     const m = Math.floor(segundos / 60);
@@ -134,13 +136,11 @@ export default function ModuloFacebookGruposPaginasEventos() {
     return `${m}:${s.toString().padStart(2, "0")}`;
   };
 
-  // 🔙 Anterior
   const irAnterior = () => {
     window.scrollTo({ top: 0, left: 0, behavior: "instant" });
-    navigate("/contenidos/mod1_10");
+    navigate(`/modulo/${MODULO_ID}/contenido/${NUM_CONTENIDO - 1}`);
   };
 
-  // ✅ FUNCIÓN CORREGIDA
   const finalizarContenido = async () => {
     if (!puedeAvanzar) return;
     setGuardando(true);
@@ -150,8 +150,8 @@ export default function ModuloFacebookGruposPaginasEventos() {
     try {
       const response = await axios.post(
         `${API_URL}/api/alumno/progreso/actualizar`,
-        { correo, modulo_id: MODULO_ID, contenido_id: NUM_CONTENIDO }, // <-- FIX: era progreso_actual
-        token? { headers: { Authorization: `Bearer ${token}` } } : {}
+        { correo, modulo_id: MODULO_ID, progreso_actual: NUM_CONTENIDO },
+        token ? { headers: { Authorization: `Bearer ${token}` } } : {}
       );
 
       if (response.data?.success) {
@@ -191,12 +191,10 @@ export default function ModuloFacebookGruposPaginasEventos() {
 
   return (
     <div className="fb-func-container">
-      {/* 🔔 TOAST GLOBAL */}
       {toast.visible && (
         <div className={`toast toast-${toast.type}`}>{toast.message}</div>
       )}
 
-      {/* ===== ENCABEZADO ===== */}
       <header className="fb-func-header">
         <div className="fb-func-header-inner">
           <h1>Grupos, páginas y eventos en Facebook</h1>
@@ -207,10 +205,8 @@ export default function ModuloFacebookGruposPaginasEventos() {
         </div>
       </header>
 
-      {/* ===== CONTENIDO PRINCIPAL ===== */}
       <main>
         <section className="content-grid">
-          {/* 3.1 Grupos y comunidades */}
           <article className="card">
             <header className="card-head">
               <h2 className="section-title inline">
@@ -264,11 +260,12 @@ export default function ModuloFacebookGruposPaginasEventos() {
                   </ul>
                 </div>
 
-                {/* PLACEHOLDER: quitamos la img rota */}
                 <figure className="media-side">
-                  <div className="image-mock" style={{height: '200px', background: '#f0f0f0', display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
-                    Imagen de Grupos FB
-                  </div>
+                  <img
+                    src={gruposImg}
+                    alt="Ejemplo de grupos en Facebook"
+                    className="side-image"
+                  />
                   <figcaption>Ejemplo de grupos en Facebook</figcaption>
                 </figure>
               </div>
@@ -282,7 +279,6 @@ export default function ModuloFacebookGruposPaginasEventos() {
             </div>
           </article>
 
-          {/* 3.2 Páginas de Facebook */}
           <article className="card">
             <header className="card-head">
               <h2 className="section-title inline">
@@ -361,7 +357,6 @@ export default function ModuloFacebookGruposPaginasEventos() {
             </div>
           </article>
 
-          {/* 3.3 Eventos */}
           <article className="card">
             <header className="card-head">
               <h2 className="section-title inline">
@@ -434,7 +429,6 @@ export default function ModuloFacebookGruposPaginasEventos() {
           </article>
         </section>
 
-        {/* ACTIVIDAD PRÁCTICA */}
         <section className="activities">
           <h2 className="section-title inline">
             Actividad práctica del módulo
@@ -460,16 +454,15 @@ export default function ModuloFacebookGruposPaginasEventos() {
         </section>
       </main>
 
-      {/* ===== FOOTER AVANCE ===== */}
       <footer className="contenido-footer">
         <div className="avance-mensaje">
-          {gated &&!timerTerminado && (
+          {gated && !timerTerminado && (
             <p>
               ⏳ Lee el contenido. El botón <strong>Siguiente</strong> se
               habilitará en {formatearTiempo(tiempoRestante)}.
             </p>
           )}
-          {gated && timerTerminado &&!scrolledBottom && (
+          {gated && timerTerminado && !scrolledBottom && (
             <p>
               👇 Desplázate hasta el final para habilitar <strong>Siguiente</strong>.
             </p>
@@ -489,11 +482,11 @@ export default function ModuloFacebookGruposPaginasEventos() {
             ← Anterior
           </button>
           <button
-            className={`btn-siguiente ${!puedeAvanzar? "btn-siguiente-locked" : ""}`}
+            className={`btn-siguiente ${!puedeAvanzar ? "btn-siguiente-locked" : ""}`}
             onClick={finalizarContenido}
             disabled={!puedeAvanzar || guardando}
           >
-            {guardando? "Guardando..." : puedeAvanzar? "Siguiente →" : "Siguiente 🔒"}
+            {guardando ? "Guardando..." : puedeAvanzar ? "Siguiente →" : "Siguiente 🔒"}
           </button>
         </div>
       </footer>

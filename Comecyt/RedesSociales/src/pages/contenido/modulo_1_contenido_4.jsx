@@ -1,11 +1,10 @@
-// src/components/contenidos/modulo_1_contenido_4.jsx
+// src/pages/contenido/modulo_1_contenido_4.jsx
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import "../../Css/modulo_1_contenido_4.css";
 import formatoImg from "../../assets/formato.jpg";
 import redactarImg from "../../assets/redactar.jpg";
-
 const MODULO_ID = 1;
 const NUM_CONTENIDO = 4;
 const API_URL = "http://localhost:4000";
@@ -58,12 +57,12 @@ export default function ContenidoGmailPanelYRedaccion() {
       try {
         const res = await axios.post(`${API_URL}/api/alumno/progreso`, { correo });
         const modulosData = res.data.modulos || [];
-        setModulos(modulosData); // 👈 NUEVO
+        setModulos(modulosData);
 
         const mod1 = modulosData.find((m) => m.modulo_id === MODULO_ID);
 
         if (mod1) {
-          setTotalContenidos(mod1.total_contenidos); // 👈 NUEVO
+          setTotalContenidos(mod1.total_contenidos);
           if (mod1.progreso_actual >= NUM_CONTENIDO) {
             setSaltarseRestricciones(true);
             setTimerTerminado(true);
@@ -173,7 +172,6 @@ export default function ContenidoGmailPanelYRedaccion() {
   }
 
   // ================== JSX ==================
-
 
   const finalizarContenido = async () => {
     if (!puedeAvanzar) return;

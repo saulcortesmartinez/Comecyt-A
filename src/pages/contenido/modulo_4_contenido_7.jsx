@@ -1,11 +1,11 @@
-// src/pages/contenido/modulo_1_contenido_28.jsx
+// src/pages/contenido/modulo_4_contenido_7.jsx
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import "../../Css/modulo_4_contenido_7.css";
 
 const API_URL = "http://localhost:4000";
-const MODULO_ID = 4; // ✅ Es módulo 4
+const MODULO_ID = 4;
 const NUM_CONTENIDO = 7;
 const TOTAL_PREGUNTAS = 6;
 
@@ -27,8 +27,7 @@ export default function ContenidoInstagramSeguridadPrivacidad() {
   const [gated, setGated] = useState(true);
   const [progreso, setProgreso] = useState(0);
 
-  // ✅ CAMBIO 1: States nuevos para el fix
-  const [totalContenidos, setTotalContenidos] = useState(28);
+  const [totalContenidos, setTotalContenidos] = useState(8);
   const [modulos, setModulos] = useState([]);
 
   const navigate = useNavigate();
@@ -36,7 +35,7 @@ export default function ContenidoInstagramSeguridadPrivacidad() {
   const [guardando, setGuardando] = useState(false);
 
   useEffect(() => {
-    console.log("🔥 SÍ ENTRA AL COMPONENTE Contenido28");
+    console.log("🔥 SÍ ENTRA AL COMPONENTE Contenido 7 - Módulo 4");
   }, []);
 
   const showToast = (message, type = "info") => {
@@ -53,7 +52,6 @@ export default function ContenidoInstagramSeguridadPrivacidad() {
     q6: "bloquear",
   };
 
-  // ✅ CAMBIO 2: useEffect modificado con setModulos y setTotalContenidos
   useEffect(() => {
     const fetchProgreso = async () => {
       try {
@@ -68,11 +66,11 @@ export default function ContenidoInstagramSeguridadPrivacidad() {
           { correo }
         );
         const modulosData = resp.data.modulos || [];
-        setModulos(modulosData); // 👈 NUEVO
+        setModulos(modulosData);
 
         const modulo = modulosData.find((m) => m.modulo_id === MODULO_ID);
         if (modulo) {
-          setTotalContenidos(modulo.total_contenidos); // 👈 NUEVO
+          setTotalContenidos(modulo.total_contenidos);
           const p = Number(modulo?.progreso_actual ?? 0);
           setProgreso(p);
 
@@ -179,13 +177,11 @@ export default function ContenidoInstagramSeguridadPrivacidad() {
     );
   };
 
-  // 🔙 Anterior
   const irAnterior = () => {
     window.scrollTo({ top: 0, left: 0, behavior: "instant" });
-    navigate("/modulo/1/contenido/27"); // ✅ Va al contenido 27
+    navigate(`/modulo/${MODULO_ID}/contenido/${NUM_CONTENIDO - 1}`);
   };
 
-  // ✅ CAMBIO 3: irSiguiente con fix para último contenido
   if (!progresoCargado) {
     return (
       <div className="ig7-container">
@@ -203,8 +199,6 @@ export default function ContenidoInstagramSeguridadPrivacidad() {
     );
   }
 
-
-
   const finalizarContenido = async () => {
     if (!puedeAvanzar) return;
     setGuardando(true);
@@ -218,22 +212,19 @@ export default function ContenidoInstagramSeguridadPrivacidad() {
         token ? { headers: { Authorization: `Bearer ${token}` } } : {}
       );
 
-      if (response.data?.success) {
+      if (response.data?.success !== false) {
         window.scrollTo(0, 0);
-        // si es el último contenido, vuelve al inicio
         if (NUM_CONTENIDO >= totalContenidos) {
           navigate("/inicio");
         } else {
           navigate(`/modulo/${MODULO_ID}/contenido/${NUM_CONTENIDO + 1}`);
         }
       } else {
-        setToast('Error al guardar progreso. Intenta de nuevo.');
-        setTimeout(() => setToast(""), 3000);
+        showToast('Error al guardar progreso. Intenta de nuevo.', 'error');
       }
     } catch (err) {
       console.error("❌ Error al guardar:", err.response?.data || err);
-      setToast('Error de conexión al guardar progreso');
-      setTimeout(() => setToast(""), 3000);
+      showToast('Error de conexión al guardar progreso', 'error');
     } finally {
       setGuardando(false);
     }
@@ -720,7 +711,7 @@ export default function ContenidoInstagramSeguridadPrivacidad() {
               <span className="question-text">
                 1) ¿Qué opción ayuda a ocultar comentarios ofensivos o de spam automáticamente?
               </span>
-              <select name="q1" required onChange={handleChange}>
+              <select name="q1" required onChange={handleChange} value={answers.q1 || ""}>
                 <option value="">Selecciona…</option>
                 <option value="filtros">Filtros automáticos / palabras ocultas</option>
                 <option value="reels">Reels</option>
@@ -741,7 +732,7 @@ export default function ContenidoInstagramSeguridadPrivacidad() {
               <span className="question-text">
                 2) ¿Qué opción es discreta y manda mensajes/comentarios a control sin “pelea”?
               </span>
-              <select name="q2" required onChange={handleChange}>
+              <select name="q2" required onChange={handleChange} value={answers.q2 || ""}>
                 <option value="">Selecciona…</option>
                 <option value="restringir">Restringir</option>
                 <option value="publicar">Publicar</option>
@@ -762,7 +753,7 @@ export default function ContenidoInstagramSeguridadPrivacidad() {
               <span className="question-text">
                 3) ¿Para qué sirve la autenticación en dos pasos?
               </span>
-              <select name="q3" required onChange={handleChange}>
+              <select name="q3" required onChange={handleChange} value={answers.q3 || ""}>
                 <option value="">Selecciona…</option>
                 <option value="2fa">Pedir un código extra además de la contraseña</option>
                 <option value="likes">Tener más likes</option>
@@ -783,7 +774,7 @@ export default function ContenidoInstagramSeguridadPrivacidad() {
               <span className="question-text">
                 4) ¿Qué acción corresponde a avisar a Instagram sobre acoso, spam o suplantación?
               </span>
-              <select name="q4" required onChange={handleChange}>
+              <select name="q4" required onChange={handleChange} value={answers.q4 || ""}>
                 <option value="">Selecciona…</option>
                 <option value="reportar">Reportar</option>
                 <option value="guardar">Guardar</option>
@@ -804,7 +795,7 @@ export default function ContenidoInstagramSeguridadPrivacidad() {
               <span className="question-text">
                 5) ¿Dónde suelen caer los mensajes de personas que no te siguen?
               </span>
-              <select name="q5" required onChange={handleChange}>
+              <select name="q5" required onChange={handleChange} value={answers.q5 || ""}>
                 <option value="">Selecciona…</option>
                 <option value="solicitudes">Solicitudes de mensajes</option>
                 <option value="feed">En el feed</option>
@@ -825,7 +816,7 @@ export default function ContenidoInstagramSeguridadPrivacidad() {
               <span className="question-text">
                 6) Si alguien te amenaza o te pide códigos/contraseñas, ¿qué es lo más recomendable?
               </span>
-              <select name="q6" required onChange={handleChange}>
+              <select name="q6" required onChange={handleChange} value={answers.q6 || ""}>
                 <option value="">Selecciona…</option>
                 <option value="bloquear">Bloquear (y reportar si es necesario)</option>
                 <option value="seguir">Seguir hablando</option>
@@ -862,8 +853,7 @@ export default function ContenidoInstagramSeguridadPrivacidad() {
         <div className="avance-mensaje">
           {gated && !timerTerminado && (
             <p>
-              ⏳ Lee el contenido. El botón <strong>Siguiente</strong> se habilitará
-              en {formatearTiempo(tiempoRestante)}.
+              ⏳ Lee el contenido. El botón <strong>Siguiente</strong> se habilitará en {formatearTiempo(tiempoRestante)}.
             </p>
           )}
           {gated && timerTerminado && !scrolledBottom && (
@@ -881,7 +871,9 @@ export default function ContenidoInstagramSeguridadPrivacidad() {
         </div>
 
         <div className="botones-nav">
-          <button className="btn-anterior" onClick={irAnterior}>← Anterior</button>
+          <button className="btn-anterior" onClick={irAnterior}>
+            ← Anterior
+          </button>
           <button
             className={`btn-siguiente ${!puedeAvanzar || guardando ? "btn-disabled" : ""}`}
             onClick={finalizarContenido}

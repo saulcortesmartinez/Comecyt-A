@@ -198,7 +198,10 @@ const Modulo5Contenido2 = () => {
 
     const allAnswered = Object.keys(answers).length === 3;
     const aprobo = score >= CALIFICACION_MINIMA;
-    const puedeAvanzar = modoLibre || (showResult && aprobo && scrolledBottom);
+
+    // ✅ CAMBIO: Ahora siempre está en true para habilitar el botón
+    const puedeAvanzar = true;
+
     const juegoBloqueado = (timeLeft === 0 && !modoLibre) || showResult;
 
     if (!progresoCargado) {
@@ -355,7 +358,7 @@ const Modulo5Contenido2 = () => {
                         onClick={handleSiguiente}
                         disabled={guardando || !puedeAvanzar}
                     >
-                        {guardando ? "Guardando..." : puedeAvanzar ? "Siguiente Reto" : "Contenido Bloqueado 🔒"}
+                        {guardando ? "Guardando..." : "Siguiente Reto"}
                     </button>
                 </div>
             </footer>
