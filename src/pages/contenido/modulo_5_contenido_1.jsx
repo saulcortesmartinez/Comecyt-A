@@ -3,7 +3,6 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { Clock, FileText, Trophy, XCircle, CheckCircle } from "lucide-react";
-import confetti from "canvas-confetti";
 import { useCourseProgress } from "@/hooks/useGuardarProgreso";
 import "@/Css/modulo_5_contenido_1.css"; // Reutiliza el mismo CSS
 
