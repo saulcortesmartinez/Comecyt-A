@@ -29,7 +29,7 @@ const PHONE_NUMBER_ID = process.env.WHATSAPP_PHONE_NUMBER_ID;
 // Configuración OpenAI
 //const openai = new OpenAI({
   //apiKey: process.env.OPENAI_API_KEY
-});
+//});
 
 // ⚡ Configuración CORS - ACEPTA CUALQUIER LOCALHOST:* AUTOMÁTICAMENTE
 app.use(
