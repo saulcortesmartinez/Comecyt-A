@@ -1,53 +1,35 @@
-import mysql from 'mysql2/promise';
+import pg from 'pg';
 import dotenv from 'dotenv';
 
 dotenv.config();
 
-// Pool de MySQL para Clever Cloud
-export const pool = mysql.createPool({
-  host: process.env.DB_HOST,
-  user: process.env.DB_USER,
-  password: process.env.DB_PASS,
-  database: process.env.DB_NAME,
-  port: process.env.DB_PORT || 3306,
-  waitForConnections: true,
-  connectionLimit: 10,
-  queueLimit: 0,
-  enableKeepAlive: true,
-  keepAliveInitialDelay: 0
-});
+const { Pool } = pg;
 
-// Función auxiliar para manejar INSERT IGNORE que MySQL sí soporta
-const originalQuery = pool.query.bind(pool);
-pool.query = async function(sql, values) {
-  let queryText = sql;
-  let queryParams = values;
-  
-  if (typeof sql === "object" && sql !== null) {
-    queryText = sql.text;
-    queryParams = sql.values;
-  }
-
-  console.log(`[MYSQL-DB] Ejecutando: ${queryText.substring(0, 100)}...`);
-  if (queryParams && queryParams.length > 0) {
-    console.log(`[MYSQL-DB] Parámetros:`, queryParams);
-  }
-
-  return originalQuery(queryText, queryParams);
+const poolConfig = {
+  connectionString: process.env.DATABASE_URL,
+  max: 10,
+  idleTimeoutMillis: 30000,
+  connectionTimeoutMillis: 2000,
 };
 
-// Método execute para compatibilidad
+if (process.env.NODE_ENV === "production") {
+  poolConfig.ssl = {
+    rejectUnauthorized: false
+  };
+}
+
+export const pool = new Pool(poolConfig);
+
+// Para que tu código con pool.execute siga funcionando
 pool.execute = pool.query;
 
-// Probar conexión al iniciar
-pool.getConnection()
-  .then(connection => {
-    console.log('✅ [MYSQL-DB] Conectado exitosamente a Clever Cloud');
-    connection.release();
+pool.connect()
+  .then(client => {
+    console.log('✅ [PG-DB] Conectado exitosamente a PostgreSQL Render');
+    client.release();
   })
   .catch(err => {
-    console.error('❌ [MYSQL-DB] ERROR DE CONEXIÓN:');
+    console.error('❌ [PG-DB] ERROR DE CONEXIÓN:');
     console.error('❌ Código:', err.code);
     console.error('❌ Mensaje:', err.message);
-    console.error('❌ Revisa tus variables DB_HOST, DB_USER, DB_PASS, DB_NAME en Render');
   });
