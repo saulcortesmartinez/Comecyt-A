@@ -6,7 +6,6 @@ import { MessageCircle, CheckCircle2, Lock, Circle } from "lucide-react";
 import "../Css/Temario.css";
 
 const API_URL = import.meta.env.VITE_API_URL || "http://localhost:4000";
-
 function Temario() {
   const navigate = useNavigate();
   const [modulos, setModulos] = useState([]);
