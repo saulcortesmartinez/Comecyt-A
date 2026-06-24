@@ -42,7 +42,7 @@ app.use(
   cors({
     origin: function (origin, callback) {
       if (!origin) return callback(null, true);
-      
+
       const allowedOrigins = [
         'http://localhost:5173',
         'http://localhost:3000',
@@ -51,17 +51,17 @@ app.use(
         'https://comecyt-a.vercel.app',
         'https://agora-frontend.vercel.app'
       ];
-      
+
       if (allowedOrigins.includes(origin) || origin.endsWith('.vercel.app') || origin.endsWith('.onrender.com')) {
         console.log(`✅ CORS: Permitido ${origin}`);
         return callback(null, true);
       }
-      
+
       if (origin.startsWith('http://localhost:') || origin.startsWith('http://127.0.0.1:')) {
         console.log(`✅ CORS: Permitido localhost ${origin}`);
         return callback(null, true);
       }
-      
+
       console.log(`❌ CORS: Bloqueado ${origin}`);
       callback(new Error('No permitido por CORS'));
     },
@@ -469,7 +469,7 @@ app.post('/api/alumno/progreso', verificarToken, async (req, res) => {
     const totalContenidos = modulos.reduce((acc, m) => acc + m.total_contenidos, 0);
     const contenidosCompletados = completados.length;
     const porcentajeGeneral = totalContenidos > 0
-     ? Math.round((contenidosCompletados / totalContenidos) * 100)
+    ? Math.round((contenidosCompletados / totalContenidos) * 100)
       : 0;
 
     const respuesta = {
@@ -577,10 +577,19 @@ app.use("/api/auth", authRoutes);
 
 console.log('🔥 [SERVER] Montando /api/alumno...');
 app.use("/api/alumno", alumnoRoutes);
-app.use("/api/modulo", modulosRoutes);
+
+// ✅ CORREGIDO: Cambié /api/modulo por /api/modulos (plural)
+console.log('🔥 [SERVER] Montando /api/modulos...');
+app.use("/api/modulos", modulosRoutes);
+
+console.log('🔥 [SERVER] Montando /api/docente...');
 app.use("/api/docente", docenteRoutes);
+
+console.log('🔥 [SERVER] Montando /api/admin...');
 app.use("/api/admin", adminRoutes);
+
 // ✅ AGREGADO: Ruta de certificados
+console.log('🔥 [SERVER] Montando /api/certificados...');
 app.use("/api/certificados", certificadosRoutes);
 
 const CERTS_DIR = "C:/Users/aguil/Downloads/proyecto_fer/Certificados";
@@ -643,6 +652,7 @@ const server = app.listen(PORT, () => {
   console.log(`📱 Webhook WhatsApp: http://localhost:${PORT}/webhook`);
   console.log(`🤖 Bot: ${openai? 'IA Activada' : 'IA Desactivada - Solo menú'}`);
   console.log(`📈 API Progreso: http://localhost:${PORT}/api/alumno/progreso`);
+  console.log(`📚 API Módulos: http://localhost:${PORT}/api/modulos`);
   console.log(`========================================\n`);
 });
 
