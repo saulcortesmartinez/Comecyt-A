@@ -3,7 +3,6 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from "axios";
 import { Clock, FileText, Trophy, XCircle, CheckCircle } from "lucide-react";
-import confetti from "canvas-confetti";
 import '@/Css/modulo_5_contenido_2.css';
 
 const API_URL = import.meta.env.VITE_API_URL || "http://localhost:4000";
