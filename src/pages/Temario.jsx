@@ -5,13 +5,12 @@ import axios from "axios";
 import { MessageCircle, CheckCircle2, Lock, Circle } from "lucide-react";
 import "../Css/Temario.css";
 
-// ✅ CORRECCIÓN: fallback a localhost si VITE_API_URL no está definido
 const API_URL = import.meta.env.VITE_API_URL || "http://localhost:4000";
 
 function Temario() {
   const navigate = useNavigate();
-  const [modulos, setModulos] = useState([]); // <- NUEVO: módulos desde BD
-  const [completados, setCompletados] = useState({}); // {1: [1,2,3], 2: [1],...}
+  const [modulos, setModulos] = useState([]);
+  const [completados, setCompletados] = useState({});
   const [loading, setLoading] = useState(true);
   const correo = localStorage.getItem("correo");
 
@@ -23,23 +22,17 @@ function Temario() {
       }
 
       try {
-        // 1. Cargar módulos desde tu backend nuevo
         const resModulos = await axios.get(`${API_URL}/api/modulos`);
         setModulos(resModulos.data);
 
-        // 2. Cargar progreso del alumno - usando POST como en tus otros archivos
-        // Este endpoint SÍ existe en tu backend
         const res = await axios.post(`${API_URL}/api/alumno/progreso`, { correo });
 
-        // ✅ CORRECCIÓN: construimos los completados desde progreso_actual
-        // Tu backend devuelve: { modulos: [{modulo_id:1, progreso_actual:3,...}] }
         const agrupados = {};
         const modulosProgreso = res.data?.modulos || [];
 
         modulosProgreso.forEach(modulo => {
           const progreso = Number(modulo.progreso_actual || 0);
           if (progreso > 0) {
-            // Creamos array [1,2,3...] hasta el progreso actual
             agrupados[modulo.modulo_id] = Array.from({ length: progreso }, (_, i) => i + 1);
           }
         });
@@ -47,7 +40,6 @@ function Temario() {
         setCompletados(agrupados);
       } catch (error) {
         console.error("Error cargando progreso:", error);
-        // Si falla, dejamos completados vacío pero no rompemos la app
         setCompletados({});
       } finally {
         setLoading(false);
@@ -57,7 +49,6 @@ function Temario() {
     cargarDatos();
   }, [correo]);
 
-  // Mapeo de iconos por título - ajusta según tus nombres reales
   const iconosModulos = {
     "Introducción a la Ciencia": "🔬",
     "Método Científico": "📊",
@@ -74,8 +65,8 @@ function Temario() {
   };
 
   const estaBloqueado = (moduloId, contenidoId) => {
-    if (contenidoId === 1) return false; // El primero siempre abierto
-    return!estaCompletado(moduloId, contenidoId - 1); // Bloqueado si el anterior no está
+    if (contenidoId === 1) return false;
+    return!estaCompletado(moduloId, contenidoId - 1);
   };
 
   const handleClick = (moduloId, contenidoId) => {
@@ -101,7 +92,6 @@ function Temario() {
           <p className="modulo-descripcion">{modulo.descripcion}</p>
 
           <div className="temas-lista">
-            {/* Generamos los contenidos dinámicamente según total_contenidos */}
             {Array.from({ length: modulo.total_contenidos }, (_, i) => {
               const contenidoId = i + 1;
               const completado = estaCompletado(modulo.modulo_id, contenidoId);
