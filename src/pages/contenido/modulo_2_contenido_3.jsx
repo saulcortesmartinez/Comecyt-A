@@ -24,11 +24,9 @@ export default function ModuloFacebookGruposPaginasEventos() {
   const [scrolledBottom, setScrolledBottom] = useState(false);
   const [gated, setGated] = useState(true);
   const [progreso, setProgreso] = useState(0);
-
   const [guardando, setGuardando] = useState(false);
   const [progresoCargado, setProgresoCargado] = useState(false);
   const [totalContenidos, setTotalContenidos] = useState(8);
-
   const navigate = useNavigate();
 
   const showToast = (message, type = "info") => {
