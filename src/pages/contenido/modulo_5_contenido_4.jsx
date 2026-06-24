@@ -3,7 +3,6 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from "axios";
 import { Clock, Trophy, XCircle } from "lucide-react";
-import confetti from "canvas-confetti";
 import '@/Css/modulo_5_contenido_4.css';
 
 const API_URL = import.meta.env.VITE_API_URL || "http://localhost:4000";
@@ -62,14 +61,7 @@ const Modulo5Contenido4 = () => {
         }
     ];
 
-    const lanzarConfeti = () => {
-        const duration = 3000;
-        const end = Date.now() + duration;
-        (function frame() {
-            confetti({ particleCount: 5, angle: 60, spread: 55, origin: { x: 0 }, colors: ['#28a745', '#007bff', '#ffc107'] });
-            confetti({ particleCount: 5, angle: 120, spread: 55, origin: { x: 1 }, colors: ['#28a745', '#007bff', '#ffc107'] });
-            if (Date.now() < end) requestAnimationFrame(frame);
-        })();
+    
     };
 
     useEffect(() => {
