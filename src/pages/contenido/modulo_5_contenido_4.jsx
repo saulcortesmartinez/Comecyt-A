@@ -61,7 +61,9 @@ const Modulo5Contenido4 = () => {
         }
     ];
 
-    
+    // confeti - si ya tienes tu propia función, borra esta
+    const lanzarConfeti = () => {
+        // placeholder, no quita nada de tu lógica
     };
 
     useEffect(() => {
@@ -77,7 +79,7 @@ const Modulo5Contenido4 = () => {
                 const res = await axios.post(
                     `${API_URL}/api/alumno/progreso`,
                     { correo },
-                    token ? { headers: { Authorization: `Bearer ${token}` } } : {}
+                    token? { headers: { Authorization: `Bearer ${token}` } } : {}
                 );
                 const modulosData = res.data.modulos || [];
                 const moduloActual = modulosData.find((m) => m.modulo_id === MODULO_ID);
@@ -102,7 +104,7 @@ const Modulo5Contenido4 = () => {
             setScrolledBottom(true);
             return;
         }
-        if (timerActive && timeLeft > 0 && !showResult) {
+        if (timerActive && timeLeft > 0 &&!showResult) {
             const timer = setTimeout(() => setTimeLeft(timeLeft - 1), 1000);
             return () => clearTimeout(timer);
         } else if (timeLeft === 0) {
@@ -122,8 +124,8 @@ const Modulo5Contenido4 = () => {
 
     const handleAnswer = (questionIdx, optionIdx) => {
         if (showResult) return;
-        if (timeLeft === 0 && !modoLibre) return;
-        setAnswers({ ...answers, [questionIdx]: optionIdx });
+        if (timeLeft === 0 &&!modoLibre) return;
+        setAnswers({...answers, [questionIdx]: optionIdx });
     };
 
     const handleFinish = () => {
@@ -150,7 +152,7 @@ const Modulo5Contenido4 = () => {
             const response = await axios.post(
                 `${API_URL}/api/alumno/progreso/actualizar`,
                 { correo, modulo_id: MODULO_ID, progreso_actual: NUM_CONTENIDO },
-                token ? { headers: { Authorization: `Bearer ${token}` } } : {}
+                token? { headers: { Authorization: `Bearer ${token}` } } : {}
             );
 
             if (response.data?.success) {
@@ -184,7 +186,7 @@ const Modulo5Contenido4 = () => {
         if (modoLibre) return "Modo Repaso 🔄";
         const mins = Math.floor(seconds / 60);
         const secs = seconds % 60;
-        return `${mins}:${secs < 10 ? '0' : ''}${secs}`;
+        return `${mins}:${secs < 10? '0' : ''}${secs}`;
     };
 
     const allAnswered = Object.keys(answers).length === 3;
@@ -193,7 +195,7 @@ const Modulo5Contenido4 = () => {
     // ✅ CAMBIO: Ahora siempre está en true para habilitar el botón
     const puedeAvanzar = true;
 
-    const juegoBloqueado = showResult || (timeLeft === 0 && !modoLibre);
+    const juegoBloqueado = showResult || (timeLeft === 0 &&!modoLibre);
 
     if (!progresoCargado) {
         return (
@@ -220,7 +222,7 @@ const Modulo5Contenido4 = () => {
                     </div>
 
                     <div className="mb-6 text-center">
-                        <div className={`inline-block px-6 py-3 rounded-xl ${timeLeft < 30 && !modoLibre ? 'bg-red-500/20 border-red-400' : 'bg-cyan-500/20 border-cyan-400'} border-2`}>
+                        <div className={`inline-block px-6 py-3 rounded-xl ${timeLeft < 30 &&!modoLibre? 'bg-red-500/20 border-red-400' : 'bg-cyan-500/20 border-cyan-400'} border-2`}>
                             <p className="text-white text-2xl font-bold" style={{ textShadow: '0 0 10px rgba(0, 217, 255, 0.5)' }}>
                                 ⏰ {formatTime(timeLeft)}
                             </p>
@@ -242,7 +244,7 @@ const Modulo5Contenido4 = () => {
                                                     key={oIdx}
                                                     onClick={() => handleAnswer(qIdx, oIdx)}
                                                     disabled={juegoBloqueado}
-                                                    className={`option-btn ${isSelected ? 'selected' : ''}`}
+                                                    className={`option-btn ${isSelected? 'selected' : ''}`}
                                                 >
                                                     {opt}
                                                 </button>
@@ -256,7 +258,7 @@ const Modulo5Contenido4 = () => {
 
                     {!showResult && (timeLeft === 0 || allAnswered) && (
                         <button onClick={handleFinish} className="btn-finish-game">
-                            {allAnswered ? '✅ TERMINAR Y VER RESULTADO' : '⏰ SE ACABÓ EL TIEMPO - VER RESULTADO'}
+                            {allAnswered? '✅ TERMINAR Y VER RESULTADO' : '⏰ SE ACABÓ EL TIEMPO - VER RESULTADO'}
                         </button>
                     )}
 
@@ -269,10 +271,10 @@ const Modulo5Contenido4 = () => {
                                 <div className="particle"></div>
                                 <div className="particle"></div>
                             </div>
-                            {aprobo ? (
+                            {aprobo? (
                                 <>
                                     <Trophy size={80} color="#ffc107" />
-                                    <h3>¡{score === 3 ? 'LEYENDA' : 'MUY BIEN'}!</h3>
+                                    <h3>¡{score === 3? 'LEYENDA' : 'MUY BIEN'}!</h3>
                                     <p>Obtuviste {score} de 3 respuestas correctas</p>
                                 </>
                             ) : (
@@ -287,8 +289,8 @@ const Modulo5Contenido4 = () => {
                                 <p className="text-cyan-400 font-bold mb-3">Respuestas correctas:</p>
                                 {questions.map((q, idx) => (
                                     <p key={idx} className="text-gray-300 text-sm mb-2">
-                                        <strong className={answers[idx] === q.correct ? 'text-green-400' : 'text-red-400'}>
-                                            {idx + 1}. {answers[idx] === q.correct ? '✓' : '✗'}
+                                        <strong className={answers[idx] === q.correct? 'text-green-400' : 'text-red-400'}>
+                                            {idx + 1}. {answers[idx] === q.correct? '✓' : '✗'}
                                         </strong> {q.options[q.correct]}
                                     </p>
                                 ))}
@@ -304,18 +306,18 @@ const Modulo5Contenido4 = () => {
 
                     <footer className="contenido-footer mt-8">
                         <div className="avance-mensaje">
-                            {timerActive && !showResult && (
+                            {timerActive &&!showResult && (
                                 <p className="avance-texto toast-info">
                                     <Clock size={16} style={{ marginRight: '8px' }} />
                                     Tienes {formatTime(timeLeft)} para responder.
                                 </p>
                             )}
-                            {showResult && !aprobo && (
+                            {showResult &&!aprobo && (
                                 <p className="avance-texto toast-error">
                                     ❌ Necesitas mínimo {CALIFICACION_MINIMA}/3 para aprobar.
                                 </p>
                             )}
-                            {showResult && aprobo && !scrolledBottom && !modoLibre && (
+                            {showResult && aprobo &&!scrolledBottom &&!modoLibre && (
                                 <p className="avance-texto toast-info">
                                     📜 Desliza hasta el final para habilitar "Finalizar"
                                 </p>
@@ -332,11 +334,11 @@ const Modulo5Contenido4 = () => {
                                 Anterior
                             </button>
                             <button
-                                className={`btn-siguiente ${!puedeAvanzar || guardando ? "btn-disabled" : ""}`}
+                                className={`btn-siguiente ${!puedeAvanzar || guardando? "btn-disabled" : ""}`}
                                 onClick={handleSiguiente}
-                                disabled={guardando || !puedeAvanzar}
+                                disabled={guardando ||!puedeAvanzar}
                             >
-                                {guardando ? "Guardando..." : "Finalizar Módulo"}
+                                {guardando? "Guardando..." : "Finalizar Módulo"}
                             </button>
                         </div>
                     </footer>
