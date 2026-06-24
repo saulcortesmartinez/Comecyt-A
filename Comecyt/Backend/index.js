@@ -3,7 +3,7 @@ import dotenv from "dotenv";
 import express from "express";
 import axios from "axios";
 import { pool } from "./config/database.js";
-import { OpenAI } from "openai";
+//import { OpenAI } from "openai";
 import multer from 'multer';
 import path from 'path';
 import fs from 'fs';
@@ -27,8 +27,8 @@ const WHATSAPP_TOKEN = process.env.WHATSAPP_TOKEN;
 const PHONE_NUMBER_ID = process.env.WHATSAPP_PHONE_NUMBER_ID;
 
 // Configuración OpenAI
-const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY
+//const openai = new OpenAI({
+  //apiKey: process.env.OPENAI_API_KEY
 });
 
 // ⚡ Configuración CORS - ACEPTA CUALQUIER LOCALHOST:* AUTOMÁTICAMENTE
