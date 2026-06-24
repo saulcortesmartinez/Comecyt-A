@@ -23,47 +23,32 @@ function Temario() {
       }
 
       try {
-<<<<<<< HEAD
-        // ✅ CORRECCIÓN: usamos POST como en tus otros archivos, no GET
-        // Este endpoint SÍ existe en tu backend
-        const res = await axios.post(`${API_URL}/api/alumno/progreso`, { correo });
-=======
         // 1. Cargar módulos desde tu backend nuevo
         const resModulos = await axios.get(`${API_URL}/api/modulos`);
         setModulos(resModulos.data);
 
-        // 2. Cargar progreso del alumno
-        const resProgreso = await axios.get(`${API_URL}/progreso/contenidos-completados/${correo}`);
->>>>>>> b7483f78714a08b1da36c684ff2656ae233c9af4
+        // 2. Cargar progreso del alumno - usando POST como en tus otros archivos
+        // Este endpoint SÍ existe en tu backend
+        const res = await axios.post(`${API_URL}/api/alumno/progreso`, { correo });
 
         // ✅ CORRECCIÓN: construimos los completados desde progreso_actual
         // Tu backend devuelve: { modulos: [{modulo_id:1, progreso_actual:3,...}] }
         const agrupados = {};
-<<<<<<< HEAD
-        const modulos = res.data?.modulos || [];
+        const modulosProgreso = res.data?.modulos || [];
 
-        modulos.forEach(modulo => {
+        modulosProgreso.forEach(modulo => {
           const progreso = Number(modulo.progreso_actual || 0);
           if (progreso > 0) {
             // Creamos array [1,2,3...] hasta el progreso actual
             agrupados[modulo.modulo_id] = Array.from({ length: progreso }, (_, i) => i + 1);
           }
-=======
-        resProgreso.data.forEach(item => {
-          if (!agrupados[item.modulo_id]) agrupados[item.modulo_id] = [];
-          agrupados[item.modulo_id].push(item.num_contenido);
->>>>>>> b7483f78714a08b1da36c684ff2656ae233c9af4
         });
 
         setCompletados(agrupados);
       } catch (error) {
-<<<<<<< HEAD
         console.error("Error cargando progreso:", error);
         // Si falla, dejamos completados vacío pero no rompemos la app
         setCompletados({});
-=======
-        console.error("Error cargando datos:", error);
->>>>>>> b7483f78714a08b1da36c684ff2656ae233c9af4
       } finally {
         setLoading(false);
       }
