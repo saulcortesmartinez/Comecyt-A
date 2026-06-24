@@ -3,7 +3,6 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { Clock, FileText, Trophy, XCircle, CheckCircle } from "lucide-react";
-import confetti from "canvas-confetti";
 import { useCourseProgress } from "@/hooks/useGuardarProgreso";
 import "@/Css/modulo_5_contenido_1.css"; // Reutiliza el mismo CSS
 
@@ -50,16 +49,6 @@ function RetoFormularioModulo5_1() {
         isActivityCompleted,
         guardarProgresoBackend
     } = useCourseProgress();
-
-    const lanzarConfeti = () => {
-        const duration = 3000;
-        const end = Date.now() + duration;
-        (function frame() {
-            confetti({ particleCount: 5, angle: 60, spread: 55, origin: { x: 0 }, colors: ['#28a745', '#007bff', '#ffc107'] });
-            confetti({ particleCount: 5, angle: 120, spread: 55, origin: { x: 1 }, colors: ['#28a745', '#007bff', '#ffc107'] });
-            if (Date.now() < end) requestAnimationFrame(frame);
-        })();
-    };
 
     useEffect(() => {
         const correo = localStorage.getItem("correo");
@@ -153,7 +142,6 @@ function RetoFormularioModulo5_1() {
         setMostrarResultados(true);
 
         if (aciertos >= CALIFICACION_MINIMA) {
-            lanzarConfeti();
             completeActivity(MODULO_ID, NUM_CONTENIDO);
         }
     };

@@ -26,20 +26,42 @@ const VERIFY_TOKEN = process.env.WHATSAPP_VERIFY_TOKEN;
 const WHATSAPP_TOKEN = process.env.WHATSAPP_TOKEN;
 const PHONE_NUMBER_ID = process.env.WHATSAPP_PHONE_NUMBER_ID;
 
-// Configuración OpenAI
-const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY
-});
+// ✅ Configuración OpenAI OPCIONAL - Ya no truena si no hay API Key
+let openai = null;
+if (process.env.OPENAI_API_KEY) {
+  openai = new OpenAI({
+    apiKey: process.env.OPENAI_API_KEY
+  });
+  console.log('✅ OpenAI configurado correctamente');
+} else {
+  console.log('⚠️ OpenAI deshabilitado - Falta OPENAI_API_KEY');
+}
 
-// ⚡ Configuración CORS - ACEPTA CUALQUIER LOCALHOST:* AUTOMÁTICAMENTE
+// ✅ Configuración CORS - ACEPTA LOCALHOST Y VERCEL/RENDER
 app.use(
   cors({
     origin: function (origin, callback) {
       if (!origin) return callback(null, true);
-      if (origin.startsWith('http://localhost:') || origin.startsWith('http://127.0.0.1:')) {
+
+      const allowedOrigins = [
+        'http://localhost:5173',
+        'http://localhost:3000',
+        'http://127.0.0.1:5173',
+        'https://agora-backend-hi9s.onrender.com',
+        'https://comecyt-a.vercel.app',
+        'https://agora-frontend.vercel.app'
+      ];
+
+      if (allowedOrigins.includes(origin) || origin.endsWith('.vercel.app') || origin.endsWith('.onrender.com')) {
         console.log(`✅ CORS: Permitido ${origin}`);
         return callback(null, true);
       }
+
+      if (origin.startsWith('http://localhost:') || origin.startsWith('http://127.0.0.1:')) {
+        console.log(`✅ CORS: Permitido localhost ${origin}`);
+        return callback(null, true);
+      }
+
       console.log(`❌ CORS: Bloqueado ${origin}`);
       callback(new Error('No permitido por CORS'));
     },
@@ -110,7 +132,7 @@ const verificarToken = (req, res, next) => {
 app.use((req, res, next) => {
   const timestamp = new Date().toLocaleTimeString();
   console.log(`\n[${timestamp}] 🌐 ${req.method} ${req.originalUrl}`);
-  if ((req.method === 'POST' || req.method === 'PUT') && !req.originalUrl.includes('/webhook')) {
+  if ((req.method === 'POST' || req.method === 'PUT') &&!req.originalUrl.includes('/webhook')) {
     console.log(`[${timestamp}] 📦 Body:`, JSON.stringify(req.body, null, 2));
   }
   next();
@@ -236,8 +258,12 @@ async function obtenerBecasActivas() {
   }
 }
 
-// 👈 ACTUALIZADO: IA ahora responde CUALQUIER COSA
+// ✅ ACTUALIZADO: IA ahora es opcional - Si no hay API Key responde mensaje fijo
 async function respuestaIA(preguntaUsuario, telefono) {
+  if (!openai) {
+    return 'El bot de IA está temporalmente deshabilitado. Un asesor de COMECYT te contactará pronto.\n\nEscribe "menu" para ver opciones.';
+  }
+
   try {
     const prompt = `Eres el asistente oficial de COMECYT Estado de México 🤖
 
@@ -269,12 +295,13 @@ app.get("/", (req, res) => {
   res.send("Servidor Node.js funcionando correctamente 🌱");
 });
 
-// ✅ Ruta de health check
+// ✅ Ruta de health check - ACTUALIZADA
 app.get("/health", (req, res) => {
   res.json({
     status: "OK",
     timestamp: new Date().toISOString(),
-    uptime: process.uptime()
+    uptime: process.uptime(),
+    openai: openai? "enabled" : "disabled"
   });
 });
 
@@ -375,7 +402,7 @@ app.get('/api/dudas', async (req, res) => {
 app.post('/api/dudas/responder', async (req, res) => {
   const { id, telefono, respuesta } = req.body;
 
-  if (!id || !telefono || !respuesta) {
+  if (!id ||!telefono ||!respuesta) {
     return res.status(400).json({ error: 'Faltan datos: id, telefono, respuesta' });
   }
 
@@ -442,7 +469,7 @@ app.post('/api/alumno/progreso', verificarToken, async (req, res) => {
     const totalContenidos = modulos.reduce((acc, m) => acc + m.total_contenidos, 0);
     const contenidosCompletados = completados.length;
     const porcentajeGeneral = totalContenidos > 0
-      ? Math.round((contenidosCompletados / totalContenidos) * 100)
+    ? Math.round((contenidosCompletados / totalContenidos) * 100)
       : 0;
 
     const respuesta = {
@@ -496,7 +523,7 @@ app.post('/api/alumno/progreso/actualizar', verificarToken, async (req, res) => 
       INSERT INTO progreso_modulos (correo, modulo_id, progreso_actual)
       VALUES (?,?,?)
       ON DUPLICATE KEY UPDATE progreso_actual =?
-    `, [correo, modulo_id, nuevoProgreso, nuevoProgreso]);
+    `, [correo, modulo_id, nuevoProgreso]);
 
     console.log(`✅ Progreso actualizado: ${correo} - Módulo ${modulo_id}: ${nuevoProgreso}%`);
     res.json({ success: true, progreso: nuevoProgreso });
@@ -550,10 +577,19 @@ app.use("/api/auth", authRoutes);
 
 console.log('🔥 [SERVER] Montando /api/alumno...');
 app.use("/api/alumno", alumnoRoutes);
-app.use("/api/modulo", modulosRoutes);
+
+// ✅ CORREGIDO: Cambié /api/modulo por /api/modulos (plural)
+console.log('🔥 [SERVER] Montando /api/modulos...');
+app.use("/api/modulos", modulosRoutes);
+
+console.log('🔥 [SERVER] Montando /api/docente...');
 app.use("/api/docente", docenteRoutes);
+
+console.log('🔥 [SERVER] Montando /api/admin...');
 app.use("/api/admin", adminRoutes);
+
 // ✅ AGREGADO: Ruta de certificados
+console.log('🔥 [SERVER] Montando /api/certificados...');
 app.use("/api/certificados", certificadosRoutes);
 
 const CERTS_DIR = "C:/Users/aguil/Downloads/proyecto_fer/Certificados";
@@ -562,7 +598,7 @@ app.use("/certificados", express.static(CERTS_DIR));
 // ===== LISTAR TODAS LAS RUTAS REGISTRADAS - VERSIÓN SEGURA =====
 function printRoutes() {
   if (!app._router) {
-    console.log('⚠️ No hay rutas registradas aún');
+    console.log('⚠ No hay rutas registradas aún');
     return;
   }
 
@@ -574,7 +610,7 @@ function printRoutes() {
         console.log('🔍 RUTA:', methods, basePath + r.route.path);
       } else if (r.name === 'router' && r.handle.stack) {
         const match = r.regexp.toString().match(/^\/\^\\\/([^\\\/]*)/);
-        const newBase = match ? basePath + '/' + match[1] : basePath;
+        const newBase = match? basePath + '/' + match[1] : basePath;
         printStack(r.handle.stack, newBase);
       }
     });
@@ -612,10 +648,11 @@ const server = app.listen(PORT, () => {
   console.log(`✅ Servidor corriendo en http://localhost:${PORT}`);
   console.log(`📍 Entorno: ${process.env.NODE_ENV || 'development'}`);
   console.log(`🗄 Base de datos: ${process.env.DB_NAME || 'bd_comecyt'}`);
-  console.log(`🌐 CORS: Acepta cualquier localhost:*`);
+  console.log(`🌐 CORS: Acepta localhost, Vercel y Render`);
   console.log(`📱 Webhook WhatsApp: http://localhost:${PORT}/webhook`);
-  console.log(`🤖 Bot con Botones + BD + IA Libre + Panel de Dudas activado`);
+  console.log(`🤖 Bot: ${openai? 'IA Activada' : 'IA Desactivada - Solo menú'}`);
   console.log(`📈 API Progreso: http://localhost:${PORT}/api/alumno/progreso`);
+  console.log(`📚 API Módulos: http://localhost:${PORT}/api/modulos`);
   console.log(`========================================\n`);
 });
 
