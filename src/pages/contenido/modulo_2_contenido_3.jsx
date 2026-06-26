@@ -8,17 +8,12 @@ import gruposImg from "../../assets/grupos_fb.png";
 import paginasImg from "../../assets/paginas_fb.png";
 import eventosImg from "../../assets/eventos_fb.png";
 
-const API_URL = "http://localhost:4000";
+const API_URL = import.meta.env.VITE_API_URL || "http://localhost:4000";
 const MODULO_ID = 2;
 const NUM_CONTENIDO = 3;
 
 export default function ModuloFacebookGruposPaginasEventos() {
-  const [toast, setToast] = useState({
-    visible: false,
-    message: "",
-    type: "info",
-  });
-
+  const [toast, setToast] = useState({ visible: false, message: "", type: "info" });
   const [tiempoRestante, setTiempoRestante] = useState(120);
   const [timerTerminado, setTimerTerminado] = useState(false);
   const [scrolledBottom, setScrolledBottom] = useState(false);
@@ -31,108 +26,59 @@ export default function ModuloFacebookGruposPaginasEventos() {
 
   const showToast = (message, type = "info") => {
     setToast({ visible: true, message, type });
-    setTimeout(() => {
-      setToast((t) => ({ ...t, visible: false }));
-    }, 2500);
+    setTimeout(() => setToast((t) => ({...t, visible: false })), 2500);
   };
-
-  useEffect(() => {
-    console.log("🔥 SÍ ENTRA AL COMPONENTE Contenido", NUM_CONTENIDO);
-  }, []);
 
   useEffect(() => {
     const fetchProgreso = async () => {
       try {
         const correo = localStorage.getItem("correo");
         const token = localStorage.getItem("token");
-        if (!correo) {
-          setProgresoCargado(true);
-          return;
-        }
-
-        const resp = await axios.post(
-          `${API_URL}/api/alumno/progreso`,
-          { correo },
-          token ? { headers: { Authorization: `Bearer ${token}` } } : {}
-        );
-
-        const moduloActual = resp.data.modulos.find(
-          (m) => m.modulo_id === MODULO_ID
-        );
-
-        const p = Number(moduloActual?.progreso_actual ?? 0);
+        if (!correo) { setProgresoCargado(true); return; }
+        const resp = await axios.post(`${API_URL}/api/alumno/progreso`, { correo }, token? { headers: { Authorization: `Bearer ${token}` } } : {});
+        const moduloActual = resp.data.modulos.find((m) => m.modulo_id === MODULO_ID);
+        const p = Number(moduloActual?.progreso_actual?? 0);
         setProgreso(p);
-        setTotalContenidos(moduloActual?.total_contenidos ?? 8);
-
+        setTotalContenidos(moduloActual?.total_contenidos?? 8);
         if (p >= NUM_CONTENIDO) {
-          setGated(false);
-          setTimerTerminado(true);
-          setScrolledBottom(true);
-        } else {
-          setGated(true);
-        }
+          setGated(false); setTimerTerminado(true); setScrolledBottom(true);
+        } else { setGated(true); }
       } catch (err) {
         console.error("Error obteniendo progreso:", err);
         showToast("No se pudo obtener tu progreso, pero puedes seguir leyendo.", "error");
-      } finally {
-        setProgresoCargado(true);
-      }
+      } finally { setProgresoCargado(true); }
     };
-
     window.scrollTo({ top: 0, left: 0, behavior: "instant" });
     fetchProgreso();
   }, []);
 
   useEffect(() => {
     if (!progresoCargado) return;
-
-    if (gated) {
-      setTiempoRestante(120);
-      setTimerTerminado(false);
-    } else {
-      setTiempoRestante(0);
-      setTimerTerminado(true);
-      setScrolledBottom(true);
-      return;
-    }
-
+    if (gated) { setTiempoRestante(120); setTimerTerminado(false); }
+    else { setTiempoRestante(0); setTimerTerminado(true); setScrolledBottom(true); return; }
     const interval = setInterval(() => {
       setTiempoRestante((prev) => {
-        if (prev <= 1) {
-          clearInterval(interval);
-          setTimerTerminado(true);
-          return 0;
-        }
+        if (prev <= 1) { clearInterval(interval); setTimerTerminado(true); return 0; }
         return prev - 1;
       });
     }, 1000);
-
     return () => clearInterval(interval);
   }, [gated, progresoCargado]);
 
   useEffect(() => {
     if (!gated) return;
-
     const handleScroll = () => {
       const scrollPosition = window.innerHeight + window.scrollY;
       const pageHeight = document.documentElement.offsetHeight;
-      if (scrollPosition >= pageHeight - 80) {
-        setScrolledBottom(true);
-      }
+      if (scrollPosition >= pageHeight - 80) setScrolledBottom(true);
     };
-
     window.addEventListener("scroll", handleScroll);
     handleScroll();
     return () => window.removeEventListener("scroll", handleScroll);
   }, [gated]);
 
-  const puedeAvanzar = !gated || (timerTerminado && scrolledBottom);
-
-  const formatearTiempo = (segundos) => {
-    const m = Math.floor(segundos / 60);
-    const s = segundos % 60;
-    return `${m}:${s.toString().padStart(2, "0")}`;
-  };
+  const puedeAvanzar =!gated || (timerTerminado && scrolledBottom);
+  const formatearTiempo = (segundos) => `${Math.floor(segundos / 60)}:${(segundos % 60).toString().padStart(2, "0")}`;
 
   const irAnterior = () => {
     window.scrollTo({ top: 0, left: 0, behavior: "instant" });
@@ -144,43 +90,26 @@ export default function ModuloFacebookGruposPaginasEventos() {
     setGuardando(true);
     const correo = localStorage.getItem("correo");
     const token = localStorage.getItem("token");
-
     try {
       const response = await axios.post(
         `${API_URL}/api/alumno/progreso/actualizar`,
         { correo, modulo_id: MODULO_ID, progreso_actual: NUM_CONTENIDO },
-        token ? { headers: { Authorization: `Bearer ${token}` } } : {}
+        token? { headers: { Authorization: `Bearer ${token}` } } : {}
       );
-
       if (response.data?.success) {
         window.scrollTo(0, 0);
-        if (NUM_CONTENIDO >= totalContenidos) {
-          navigate("/inicio");
-        } else {
-          navigate(`/modulo/${MODULO_ID}/contenido/${NUM_CONTENIDO + 1}`);
-        }
-      } else {
-        showToast('Error al guardar progreso. Intenta de nuevo.', 'error');
-      }
+        NUM_CONTENIDO >= totalContenidos? navigate("/inicio") : navigate(`/modulo/${MODULO_ID}/contenido/${NUM_CONTENIDO + 1}`);
+      } else { showToast('Error al guardar progreso. Intenta de nuevo.', 'error'); }
     } catch (err) {
       console.error("❌ Error al guardar:", err.response?.data || err);
       showToast('Error de conexión al guardar progreso', 'error');
-    } finally {
-      setGuardando(false);
-    }
+    } finally { setGuardando(false); }
   };
 
   if (!progresoCargado) {
     return (
       <div className="fb-func-container">
-        <div style={{
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
-          height: '100vh',
-          fontSize: '1.2rem',
-          color: '#6a0f3c'
-        }}>
+        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh', fontSize: '1.2rem', color: '#6a0f3c' }}>
           <p>Cargando contenido...</p>
         </div>
       </div>
@@ -189,302 +118,65 @@ export default function ModuloFacebookGruposPaginasEventos() {
 
   return (
     <div className="fb-func-container">
-      {toast.visible && (
-        <div className={`toast toast-${toast.type}`}>{toast.message}</div>
-      )}
-
+      {toast.visible && (<div className={`toast toast-${toast.type}`}>{toast.message}</div>)}
       <header className="fb-func-header">
         <div className="fb-func-header-inner">
           <h1>Grupos, páginas y eventos en Facebook</h1>
-          <p className="sub">
-            Aprende a usar Facebook para crear comunidades, representar
-            negocios o proyectos y organizar actividades con otras personas.
-          </p>
+          <p className="sub">Aprende a usar Facebook para crear comunidades, representar negocios o proyectos y organizar actividades con otras personas.</p>
         </div>
       </header>
-
       <main>
         <section className="content-grid">
           <article className="card">
-            <header className="card-head">
-              <h2 className="section-title inline">
-                <span className="section-number">3.1</span>
-                Grupos y comunidades
-              </h2>
-            </header>
+            <header className="card-head"><h2 className="section-title inline"><span className="section-number">3.1</span> Grupos y comunidades</h2></header>
             <div className="card-body">
               <div className="two-col">
                 <div>
                   <h3>¿Para qué sirven los grupos?</h3>
-                  <p>
-                    Un grupo de Facebook funciona como una{" "}
-                    <strong>comunidad digital</strong>. Sirve para estudiar con
-                    compañeros, organizar actividades de la escuela, compartir
-                    noticias de un barrio o seguir un tema específico.
-                  </p>
-                  <h4>Creación de grupos</h4>
-                  <p>
-                    Cualquier usuario puede crear un grupo y decidir quién puede
-                    entrar y participar.
-                  </p>
-                  <ul className="card-body">
-                    <li>
-                      En el menú de Facebook, haz clic en{" "}
-                      <strong>Grupos</strong>.
-                    </li>
-                    <li>
-                      Selecciona <strong>Crear grupo</strong>.
-                    </li>
-                    <li>
-                      Escribe el <strong>nombre del grupo</strong> y elige el{" "}
-                      <strong>nivel de privacidad</strong> (público o privado).
-                    </li>
-                    <li>
-                      Agrega a tus miembros e incluye una{" "}
-                      <strong>descripción</strong>.
-                    </li>
-                  </ul>
-
-                  <h4>Tipos de grupos</h4>
-                  <ul className="card-body">
-                    <li>
-                      <strong>Públicos:</strong> cualquier persona puede
-                      encontrarlos y ver las publicaciones.
-                    </li>
-                    <li>
-                      <strong>Privados:</strong> solo los miembros ven las
-                      publicaciones; se debe enviar solicitud para entrar.
-                    </li>
-                  </ul>
+                  <p>Un grupo de Facebook funciona como una <strong>comunidad digital</strong>.</p>
                 </div>
-
                 <figure className="media-side">
-                  <img
-                    src={gruposImg}
-                    alt="Ejemplo de grupos en Facebook"
-                    className="side-image"
-                  />
+                  <img src={gruposImg} alt="Ejemplo de grupos en Facebook" className="side-image" />
                   <figcaption>Ejemplo de grupos en Facebook</figcaption>
                 </figure>
               </div>
-              <h4>Interacción dentro de los grupos</h4>
-              <p>
-                Dentro de un grupo puedes publicar texto, fotos, enlaces,
-                encuestas y archivos. También puedes reaccionar, comentar y
-                participar en debates. Los administradores moderan el contenido
-                y aceptan o rechazan nuevas solicitudes.
-              </p>
             </div>
           </article>
-
           <article className="card">
-            <header className="card-head">
-              <h2 className="section-title inline">
-                <span className="section-number">3.2</span>
-                Páginas de Facebook
-              </h2>
-              <p className="card-sub">
-                Las páginas representan negocios, marcas, proyectos o figuras
-                públicas y permiten llegar a muchas personas.
-              </p>
-            </header>
-
+            <header className="card-head"><h2 className="section-title inline"><span className="section-number">3.2</span> Páginas de Facebook</h2></header>
             <div className="card-body">
               <div className="two-col">
-                <div>
-                  <h3>¿Qué es una página de Facebook?</h3>
-                  <p>
-                    Una página es diferente a un perfil personal: está pensada
-                    para <strong>organizaciones, comercios, escuelas, marcas</strong>{" "}
-                    o <strong>personas públicas</strong> que quieren compartir
-                    información con una audiencia amplia.
-                  </p>
-
-                  <h4>Creación de una página</h4>
-                  <ol className="steps-list">
-                    <li>
-                      En el menú, haz clic en <strong>Páginas</strong>.
-                    </li>
-                    <li>
-                      Selecciona <strong>Crear nueva página</strong>.
-                    </li>
-                    <li>
-                      Escribe el <strong>nombre</strong>, elige una{" "}
-                      <strong>categoría</strong> y agrega una{" "}
-                      <strong>descripción</strong> corta.
-                    </li>
-                    <li>
-                      Añade una <strong>foto de perfil</strong> y una{" "}
-                      <strong>imagen de portada</strong>.
-                    </li>
-                  </ol>
-
-                  <h4>Administración de páginas</h4>
-                  <ul>
-                    <li>
-                      Publicar noticias, promociones o avisos importantes.
-                    </li>
-                    <li>
-                      Responder mensajes y comentarios.
-                    </li>
-                    <li>
-                      Asignar <strong>roles</strong> (administrador, editor,
-                      moderador).
-                    </li>
-                  </ul>
-
-                  <h4>Publicidad y estadísticas</h4>
-                  <p>
-                    Desde una página se pueden crear{" "}
-                    <strong>anuncios pagados</strong> y ver{" "}
-                    <strong>estadísticas</strong> de alcance e interacciones.
-                  </p>
-                </div>
-
+                <div><p>Una página es diferente a un perfil personal...</p></div>
                 <figure className="media-side">
-                  <img
-                    src={paginasImg}
-                    alt="Ejemplo de página de Facebook para un negocio o proyecto."
-                    className="side-image"
-                  />
-                  <figcaption>
-                    Ejemplo de página con foto, botón de contacto y publicaciones.
-                  </figcaption>
+                  <img src={paginasImg} alt="Ejemplo de página de Facebook" className="side-image" />
                 </figure>
               </div>
             </div>
           </article>
-
           <article className="card">
-            <header className="card-head">
-              <h2 className="section-title inline">
-                <span className="section-number">3.3</span>
-                Eventos en Facebook
-              </h2>
-              <p className="card-sub">
-                Los eventos sirven para organizar reuniones, clases, talleres o
-                actividades en línea o presenciales.
-              </p>
-            </header>
-
+            <header className="card-head"><h2 className="section-title inline"><span className="section-number">3.3</span> Eventos en Facebook</h2></header>
             <div className="card-body">
               <div className="two-col">
-                <div>
-                  <h3>¿Para qué sirven los eventos?</h3>
-                  <p>
-                    Un evento permite invitar a otras personas a una actividad
-                    específica: reunión, conferencia, kermés o curso.
-                  </p>
-
-                  <h4>Pasos para crear un evento</h4>
-                  <ol className="steps-list">
-                    <li>
-                      En el menú, entra a <strong>Eventos</strong>.
-                    </li>
-                    <li>
-                      Haz clic en <strong>Crear evento</strong>.
-                    </li>
-                    <li>
-                      Elige si será <strong>público</strong> o{" "}
-                      <strong>privado</strong>.
-                    </li>
-                    <li>
-                      Escribe <strong>nombre</strong>, <strong>fecha/hora</strong>, y{" "}
-                      <strong>ubicación</strong>.
-                    </li>
-                    <li>
-                      Agrega <strong>imagen</strong> y <strong>descripción</strong>.
-                    </li>
-                  </ol>
-
-                  <h4>Invitaciones y confirmación</h4>
-                  <ul>
-                    <li>
-                      Puedes invitar amigos, miembros de grupo o seguidores.
-                    </li>
-                    <li>
-                      Las personas marcan <strong>Asistirán</strong>,{" "}
-                      <strong>Interesadas</strong> o <strong>No asistirán</strong>.
-                    </li>
-                    <li>
-                      El organizador puede enviar recordatorios y avisos.
-                    </li>
-                  </ul>
-                </div>
-
+                <div><p>Un evento permite invitar a otras personas a una actividad específica.</p></div>
                 <figure className="media-side">
-                  <img
-                    src={eventosImg}
-                    alt="Ejemplo de evento creado en Facebook"
-                    className="side-image"
-                  />
-                  <figcaption>
-                    Vista de un evento con nombre, fecha, lugar y opciones.
-                  </figcaption>
+                  <img src={eventosImg} alt="Ejemplo de evento creado en Facebook" className="side-image" />
                 </figure>
               </div>
             </div>
           </article>
-        </section>
-
-        <section className="activities">
-          <h2 className="section-title inline">
-            Actividad práctica del módulo
-          </h2>
-          <ol>
-            <li>
-              En equipo, piensen en una <strong>comunidad</strong> que podrían
-              crear.
-            </li>
-            <li>
-              Diseñen el <strong>nombre del grupo</strong>, <strong>objetivo</strong> y privacidad.
-            </li>
-            <li>
-              Elijan una <strong>idea de página</strong> y qué contenido publicarían.
-            </li>
-            <li>
-              Imaginen un <strong>evento</strong> y anoten fecha, lugar e invitados.
-            </li>
-          </ol>
-          <p className="hint">
-            Recuerda: todo lo que compartas debe ser respetuoso y cuidar tu información personal.
-          </p>
         </section>
       </main>
-
       <footer className="contenido-footer">
         <div className="avance-mensaje">
-          {gated && !timerTerminado && (
-            <p>
-              ⏳ Lee el contenido. El botón <strong>Siguiente</strong> se
-              habilitará en {formatearTiempo(tiempoRestante)}.
-            </p>
-          )}
-          {gated && timerTerminado && !scrolledBottom && (
-            <p>
-              👇 Desplázate hasta el final para habilitar <strong>Siguiente</strong>.
-            </p>
-          )}
-          {!gated && (
-            <p>
-              ✅ Ya completaste antes este contenido. Puedes avanzar libremente.
-            </p>
-          )}
-          {gated && timerTerminado && scrolledBottom && (
-            <p>✅ Ya puedes continuar al siguiente contenido.</p>
-          )}
+          {gated &&!timerTerminado && (<p>⏳ Lee el contenido. El botón <strong>Siguiente</strong> se habilitará en {formatearTiempo(tiempoRestante)}.</p>)}
+          {gated && timerTerminado &&!scrolledBottom && (<p>👇 Desplázate hasta el final para habilitar <strong>Siguiente</strong>.</p>)}
+          {!gated && (<p>✅ Ya completaste antes este contenido. Puedes avanzar libremente.</p>)}
+          {gated && timerTerminado && scrolledBottom && (<p>✅ Ya puedes continuar al siguiente contenido.</p>)}
         </div>
-
         <div className="botones-nav">
-          <button className="btn-anterior" onClick={irAnterior}>
-            ← Anterior
-          </button>
-          <button
-            className={`btn-siguiente ${!puedeAvanzar ? "btn-siguiente-locked" : ""}`}
-            onClick={finalizarContenido}
-            disabled={!puedeAvanzar || guardando}
-          >
-            {guardando ? "Guardando..." : puedeAvanzar ? "Siguiente →" : "Siguiente 🔒"}
+          <button className="btn-anterior" onClick={irAnterior}>← Anterior</button>
+          <button className={`btn-siguiente ${!puedeAvanzar? "btn-siguiente-locked" : ""}`} onClick={finalizarContenido} disabled={!puedeAvanzar || guardando}>
+            {guardando? "Guardando..." : puedeAvanzar? "Siguiente →" : "Siguiente 🔒"}
           </button>
         </div>
       </footer>
