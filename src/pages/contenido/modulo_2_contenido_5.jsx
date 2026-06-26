@@ -10,7 +10,7 @@ import Seguridad2_fbImg from "../../assets/seguridad2_fb.png";
 import Paso2_fbImg from "../../assets/paso2_fb.png";
 import RecuperarCon_fbImg from "../../assets/recuperarcon_fb.png";
 
-const API_URL = "http://localhost:4000";
+const API_URL = import.meta.env.VITE_API_URL || "http://localhost:4000";
 const MODULO_ID = 2;
 const NUM_CONTENIDO = 5;
 
@@ -46,7 +46,7 @@ export default function ModuloFacebookSeguridad() {
   const showToast = (message, type = "info") => {
     setToast({ visible: true, message, type });
     setTimeout(() => {
-      setToast((t) => ({ ...t, visible: false }));
+      setToast((t) => ({...t, visible: false }));
     }, 2500);
   };
 
@@ -63,6 +63,7 @@ export default function ModuloFacebookSeguridad() {
     const fetchProgreso = async () => {
       try {
         const correo = localStorage.getItem("correo");
+        const token = localStorage.getItem("token");
         if (!correo) {
           setProgresoCargado(true);
           return;
@@ -70,7 +71,8 @@ export default function ModuloFacebookSeguridad() {
 
         const resp = await axios.post(
           `${API_URL}/api/alumno/progreso`,
-          { correo }
+          { correo },
+          token? { headers: { Authorization: `Bearer ${token}` } } : {}
         );
         const modulosData = resp.data.modulos || [];
         setModulos(modulosData);
@@ -81,7 +83,7 @@ export default function ModuloFacebookSeguridad() {
 
         if (modulo2) {
           setTotalContenidos(modulo2.total_contenidos);
-          const p = Number(modulo2.progreso_actual ?? 0);
+          const p = Number(modulo2.progreso_actual?? 0);
           setProgreso(p);
 
           if (p >= NUM_CONTENIDO) {
@@ -150,7 +152,7 @@ export default function ModuloFacebookSeguridad() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, [gated]);
 
-  const puedeAvanzar = !gated || (timerTerminado && scrolledBottom);
+  const puedeAvanzar =!gated || (timerTerminado && scrolledBottom);
 
   const formatearTiempo = (segundos) => {
     const m = Math.floor(segundos / 60);
@@ -161,7 +163,7 @@ export default function ModuloFacebookSeguridad() {
   const handleChange = (e) => {
     const { name, value } = e.target;
     setAnswers((prev) => ({
-      ...prev,
+     ...prev,
       [name]: value,
     }));
     setQuizAnswered(false);
@@ -188,7 +190,7 @@ export default function ModuloFacebookSeguridad() {
 
     showToast(
       `Obtuviste ${score} de 6 respuestas correctas.`,
-      score >= 4 ? "success" : "info"
+      score >= 4? "success" : "info"
     );
   };
 
@@ -224,7 +226,7 @@ export default function ModuloFacebookSeguridad() {
       const response = await axios.post(
         `${API_URL}/api/alumno/progreso/actualizar`,
         { correo, modulo_id: MODULO_ID, progreso_actual: NUM_CONTENIDO },
-        token ? { headers: { Authorization: `Bearer ${token}` } } : {}
+        token? { headers: { Authorization: `Bearer ${token}` } } : {}
       );
 
       if (response.data?.success) {
@@ -523,7 +525,7 @@ export default function ModuloFacebookSeguridad() {
         </h2>
 
         <form className="quiz-form" onSubmit={handleQuizSubmit}>
-          <div className={`q ${quizAnswered ? feedback.q1 || "" : ""}`}>
+          <div className={`q ${quizAnswered? feedback.q1 || "" : ""}`}>
             <label>
               1) Si quieres que solo tus contactos vean una publicación,
               ¿qué opción de privacidad debes elegir?
@@ -537,13 +539,13 @@ export default function ModuloFacebookSeguridad() {
             {quizAnswered && feedback.q1 && (
               <p className={`answer-feedback ${feedback.q1}`}>
                 {feedback.q1 === "correct"
-                  ? "✅ Correcto: la opción “Amigos” permite que solo tus contactos vean la publicación."
+                 ? "✅ Correcto: la opción “Amigos” permite que solo tus contactos vean la publicación."
                   : "❗ Si quieres que solo tus contactos vean la publicación, debes elegir la opción “Amigos”, no Público ni Solo yo."}
               </p>
             )}
           </div>
 
-          <div className={`q ${quizAnswered ? feedback.q2 || "" : ""}`}>
+          <div className={`q ${quizAnswered? feedback.q2 || "" : ""}`}>
             <label>
               2) ¿Qué característica distingue principalmente a un{" "}
               <strong>grupo privado</strong>?
@@ -563,13 +565,13 @@ export default function ModuloFacebookSeguridad() {
             {quizAnswered && feedback.q2 && (
               <p className={`answer-feedback ${feedback.q2}`}>
                 {feedback.q2 === "correct"
-                  ? "✅ Correcto: en un grupo privado solo los miembros aprobados pueden ver el contenido."
+                 ? "✅ Correcto: en un grupo privado solo los miembros aprobados pueden ver el contenido."
                   : "❗ En un grupo privado las publicaciones no son públicas; solo las ven los miembros aceptados."}
               </p>
             )}
           </div>
 
-          <div className={`q ${quizAnswered ? feedback.q3 || "" : ""}`}>
+          <div className={`q ${quizAnswered? feedback.q3 || "" : ""}`}>
             <label>
               3) ¿Qué opción debes revisar para saber desde qué dispositivos
               está abierta tu cuenta?
@@ -590,13 +592,13 @@ export default function ModuloFacebookSeguridad() {
             {quizAnswered && feedback.q3 && (
               <p className={`answer-feedback ${feedback.q3}`}>
                 {feedback.q3 === "correct"
-                  ? "✅ Correcto: en “Dónde has iniciado sesión” ves los dispositivos con tu cuenta abierta."
+                 ? "✅ Correcto: en “Dónde has iniciado sesión” ves los dispositivos con tu cuenta abierta."
                   : "❗ Para revisar dispositivos activos debes ir a “Seguridad e inicio de sesión” y luego a “Dónde has iniciado sesión”."}
               </p>
             )}
           </div>
 
-          <div className={`q ${quizAnswered ? feedback.q4 || "" : ""}`}>
+          <div className={`q ${quizAnswered? feedback.q4 || "" : ""}`}>
             <label>
               4) ¿Qué medida aumenta más la seguridad de tu cuenta además de
               la contraseña?
@@ -616,13 +618,13 @@ export default function ModuloFacebookSeguridad() {
             {quizAnswered && feedback.q4 && (
               <p className={`answer-feedback ${feedback.q4}`}>
                 {feedback.q4 === "correct"
-                  ? "✅ Correcto: la autenticación en dos pasos agrega una capa extra de seguridad."
+                 ? "✅ Correcto: la autenticación en dos pasos agrega una capa extra de seguridad."
                   : "❗ Cambiar la foto o agregar amigos no protege tu cuenta; la seguridad aumenta con la autenticación en dos pasos."}
               </p>
             )}
           </div>
 
-          <div className={`q ${quizAnswered ? feedback.q5 || "" : ""}`}>
+          <div className={`q ${quizAnswered? feedback.q5 || "" : ""}`}>
             <label>
               5) Si olvidaste tu contraseña, ¿qué suele enviarte Facebook para
               que recuperes el acceso?
@@ -642,13 +644,13 @@ export default function ModuloFacebookSeguridad() {
             {quizAnswered && feedback.q5 && (
               <p className={`answer-feedback ${feedback.q5}`}>
                 {feedback.q5 === "correct"
-                  ? "✅ Correcto: normalmente se envía un código de seguridad para confirmar que eres tú."
+                 ? "✅ Correcto: normalmente se envía un código de seguridad para confirmar que eres tú."
                   : "❗ Facebook no te obliga a crear otra cuenta; primero intenta recuperar la cuenta con un código de seguridad."}
               </p>
             )}
           </div>
 
-          <div className={`q ${quizAnswered ? feedback.q6 || "" : ""}`}>
+          <div className={`q ${quizAnswered? feedback.q6 || "" : ""}`}>
             <label>
               6) ¿Por qué es importante mantener actualizado tu teléfono o
               correo de recuperación en Facebook?
@@ -668,7 +670,7 @@ export default function ModuloFacebookSeguridad() {
             {quizAnswered && feedback.q6 && (
               <p className={`answer-feedback ${feedback.q6}`}>
                 {feedback.q6 === "correct"
-                  ? "✅ Correcto: si tus datos están actualizados, Facebook puede ayudarte a recuperar tu cuenta."
+                 ? "✅ Correcto: si tus datos están actualizados, Facebook puede ayudarte a recuperar tu cuenta."
                   : "❗ El teléfono y el correo de recuperación sirven para que puedas recuperar tu cuenta, no para decorar el perfil ni recibir más publicidad."}
               </p>
             )}
@@ -684,9 +686,9 @@ export default function ModuloFacebookSeguridad() {
             <p>
               Puntaje: <strong>{quizScore} / 6</strong>
             </p>
-            <p className={quizScore === 6 ? "ok" : "warn"}>
+            <p className={quizScore === 6? "ok" : "warn"}>
               {quizScore === 6
-                ? "¡Excelente! Manejas muy bien la seguridad y configuración básica de Facebook. 🎉"
+               ? "¡Excelente! Manejas muy bien la seguridad y configuración básica de Facebook. 🎉"
                 : "Buen trabajo. Revisa las tarjetas de seguridad y vuelve a intentarlo si quieres mejorar tu puntaje."}
             </p>
           </div>
@@ -695,13 +697,13 @@ export default function ModuloFacebookSeguridad() {
 
       <footer className="contenido-footer">
         <div className="avance-mensaje">
-          {gated && !timerTerminado && (
+          {gated &&!timerTerminado && (
             <p>
               ⏳ Lee el contenido. El botón <strong>Siguiente</strong> se
               habilitará en {formatearTiempo(tiempoRestante)}.
             </p>
           )}
-          {gated && timerTerminado && !scrolledBottom && (
+          {gated && timerTerminado &&!scrolledBottom && (
             <p>
               👇 Desplázate hasta el final de la página para habilitar el botón{" "}
               <strong>Siguiente</strong>.
@@ -722,11 +724,11 @@ export default function ModuloFacebookSeguridad() {
             ← Anterior
           </button>
           <button
-            className={`btn-siguiente ${!puedeAvanzar || guardando ? "btn-disabled" : ""}`}
+            className={`btn-siguiente ${!puedeAvanzar || guardando? "btn-disabled" : ""}`}
             onClick={finalizarContenido}
-            disabled={guardando || !puedeAvanzar}
+            disabled={guardando ||!puedeAvanzar}
           >
-            {guardando ? "Guardando..." : "Siguiente →"}
+            {guardando? "Guardando..." : "Siguiente →"}
           </button>
         </div>
       </footer>
