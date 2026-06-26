@@ -10,6 +10,7 @@ import Seguridad2_fbImg from "../../assets/seguridad2_fb.png";
 import Paso2_fbImg from "../../assets/paso2_fb.png";
 import RecuperarCon_fbImg from "../../assets/recuperarcon_fb.png";
 
+
 const API_URL = import.meta.env.VITE_API_URL || "http://localhost:4000";
 const MODULO_ID = 2;
 const NUM_CONTENIDO = 5;
