@@ -4,10 +4,10 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import "../../Css/modulo_2_contenido_5.css";
 
-import Publicacion_fbImg from "../../assets/publicacion_fb.png";
-import Seguridad_fbImg from "../../assets/seguridad_fb.png";
-import Seguridad2_fbImg from "../../assets/seguridad2_fb.png";
-import Paso2_fbImg from "../../assets/paso2_fb.png";
+import publicacion_fbImg from "../../assets/publicacion_fb.png";
+import seguridad_fbImg from "../../assets/seguridad_fb.png";
+import seguridad2_fbImg from "../../assets/seguridad2_fb.png";
+import paso2_fbImg from "../../assets/paso2_fb.png";
 import RecuperarCon_fbImg from "../../assets/recuperarcon_fb.png";
 
 const API_URL = "http://localhost:4000";
@@ -319,7 +319,7 @@ export default function ModuloFacebookSeguridad() {
 
               <figure className="media-side">
                 <img
-                  src={Publicacion_fbImg}
+                  src={publicacion_fbImg}
                   className="step-image"
                   alt="Ejemplo de privacidad en publicación de Facebook"
                 />
@@ -396,12 +396,12 @@ export default function ModuloFacebookSeguridad() {
 
               <figure className="media-side">
                 <img
-                  src={Seguridad_fbImg}
+                  src={seguridad_fbImg}
                   className="step-image"
                   alt="Opciones de seguridad en Facebook"
                 />
                 <img
-                  src={Seguridad2_fbImg}
+                  src={seguridad2_fbImg}
                   className="step-image"
                   alt="Más ajustes de seguridad en Facebook"
                 />
@@ -484,7 +484,7 @@ export default function ModuloFacebookSeguridad() {
 
               <figure className="media-side">
                 <img
-                  src={Paso2_fbImg}
+                  src={paso2_fbImg}
                   className="step-image"
                   alt="Pantalla de recuperación de Facebook"
                 />

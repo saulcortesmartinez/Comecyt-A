@@ -5,11 +5,11 @@ import axios from "axios";
 import "../../Css/modulo_2_contenido_4.css";
 
 
-import Publicacion_fbImg from "../../assets/publicacion_fb.png"; // Minúscula
-import Seguridad_fbImg from "../../assets/seguridad_fb.png";     // Minúscula
-import Seguridad2_fbImg from "../../assets/seguridad2_fb.png";   // Minúscula
+import publicacion_fbImg from "../../assets/publicacion_fb.png"; // Minúscula
+import seguridad_fbImg from "../../assets/seguridad_fb.png";     // Minúscula
+import seguridad2_fbImg from "../../assets/seguridad2_fb.png";   // Minúscula
 import RecuperarCon_fbImg from "../../assets/recuperarcon_fb.png"; // Minúscula
-import Paso2_fbImg from "../../assets/paso2_fb.png";             // Minúscula
+import paso2_fbImg from "../../assets/paso2_fb.png";             // Minúscula
 
 const API_URL = "http://localhost:4000";
 const MODULO_ID = 2; // ✅ Es módulo 2
@@ -329,7 +329,7 @@ export default function ModuloFacebookSeguridad() {
 
               <figure className="media-side">
                 <img
-                  src={Publicacion_fbImg}
+                  src={publicacion_fbImg}
                   className="step-image"
                   alt="Ejemplo de privacidad en publicación de Facebook"
                 />
@@ -406,12 +406,12 @@ export default function ModuloFacebookSeguridad() {
 
               <figure className="media-side">
                 <img
-                  src={Seguridad_fbImg}
+                  src={seguridad_fbImg}
                   className="step-image"
                   alt="Opciones de seguridad en Facebook"
                 />
                 <img
-                  src={Seguridad2_fbImg}
+                  src={seguridad2_fbImg}
                   className="step-image"
                   alt="Más ajustes de seguridad en Facebook"
                 />
@@ -494,7 +494,7 @@ export default function ModuloFacebookSeguridad() {
 
               <figure className="media-side">
                 <img
-                  src={Paso2_fbImg}
+                  src={paso2_fbImg}
                   className="step-image"
                   alt="Pantalla de recuperación de Facebook"
                 />
