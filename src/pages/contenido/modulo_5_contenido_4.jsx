@@ -4,6 +4,11 @@ import { useNavigate } from 'react-router-dom';
 import axios from "axios";
 import { Trophy, XCircle } from "lucide-react";
 import '@/Css/modulo_5_contenido_4.css';
+import Publicacion_fbImg from "../../assets/publicacion_fb.png";
+import Seguridad_fbImg from "../../assets/seguridad_fb.png";
+import Seguridad2_fbImg from "../../assets/seguridad2_fb.png";
+import Paso2_fbImg from "../../assets/paso2_fb.png";
+import RecuperarCon_fbImg from "../../assets/recuperarcon_fb.png";
 
 const API_URL = import.meta.env.VITE_API_URL || "http://localhost:4000";
 const MODULO_ID = 5;
