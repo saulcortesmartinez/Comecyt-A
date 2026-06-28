@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from "axios";
 import { Trophy, XCircle } from "lucide-react";
-import '@/Css/modulo_5_contenido_4.css';
+import "../..Css/modulo_5_contenido_4.css";
 import Publicacion_fbImg from "../../assets/publicacion_fb.png";
 import Seguridad_fbImg from "../../assets/seguridad_fb.png";
 import Seguridad2_fbImg from "../../assets/seguridad2_fb.png";
